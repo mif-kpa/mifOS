@@ -19,7 +19,11 @@ public interface RealMachine {
 
 	public Registers getRegister();
 	public boolean loadDump(Collection<Byte> data);
-
+	/**
+	 * priskiriame RealMachine.Event realizacij1, kurioje bus apibrezti eventu funkcijos
+	 * @param event
+	 * @return
+	 */
 	public boolean event(Event event);
 
 	public Collection<Byte> halt();
