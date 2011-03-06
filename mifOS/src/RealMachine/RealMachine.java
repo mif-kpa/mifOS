@@ -9,19 +9,19 @@ public interface RealMachine {
 	public boolean stop();
 	public boolean step();
 
-	public boolean putChar(char ch);
-	public Byte[] getScreen();
-	public Byte[] getMemoryDump();
-	public Byte[] getExternalMemory();
+	public boolean putChar(byte ch);
+	public byte[] getScreen();
+	public int[] getMemoryDump();
+	public int[] getExternalMemory();
 	/**
 	 * gauti virtualia atminti pagal puslapiu lentele
 	 * @return Byte[]
 	 */
-	public Byte[] getVirtualMemory();
-	public void changeMemory(int adr, byte data);
+	public int[] getVirtualMemory();
+	public boolean changeMemory(int adr, int data);
 
 	public Registers getRegister();
-	public boolean loadDump(Byte[] data);
+	public boolean loadDump(int[] data);
 	/**
 	 * priskiriame RealMachine.Event realizacij1, kurioje bus apibrezti eventu funkcijos
 	 * @param event
@@ -32,5 +32,5 @@ public interface RealMachine {
 	 * nutraukiame masinos darba
 	 * @return Byte[] atminties masyvas
 	 */
-	public Byte[] halt();
+	public int[] halt();
 }
