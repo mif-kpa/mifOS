@@ -13,7 +13,7 @@ public class Machine implements RealMachine {
 	private int screenBufferPointer = 0;
 	private Registers registers = new Registers();
 
-	public static RealMachine createRM() {
+	public static RealMachine createMachine() {
 		return new Machine();
 	}
 
