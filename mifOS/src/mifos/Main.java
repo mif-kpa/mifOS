@@ -18,7 +18,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        //EmulatorFrame.createAndShow();
+        EmulatorFrame.createAndShow();
 
     }
 

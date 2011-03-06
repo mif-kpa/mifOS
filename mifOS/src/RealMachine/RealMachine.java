@@ -13,6 +13,11 @@ public interface RealMachine {
 	public Byte[] getScreen();
 	public Byte[] getMemoryDump();
 	public Byte[] getExternalMemory();
+	/**
+	 * gauti virtualia atminti pagal puslapiu lentele
+	 * @return Byte[]
+	 */
+	public Byte[] getVirtualMemory();
 	public void changeMemory(int adr, byte data);
 
 	public Registers getRegister();
@@ -20,12 +25,12 @@ public interface RealMachine {
 	/**
 	 * priskiriame RealMachine.Event realizacij1, kurioje bus apibrezti eventu funkcijos
 	 * @param event
-	 * @return
+	 * @return Byte[]
 	 */
 	public boolean event(Event event);
 	/**
 	 * nutraukiame masinos darba
-	 * @return atminties masyvas
+	 * @return Byte[] atminties masyvas
 	 */
 	public Byte[] halt();
 }
