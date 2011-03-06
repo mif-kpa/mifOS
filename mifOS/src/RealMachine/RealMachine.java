@@ -1,7 +1,5 @@
 package RealMachine;
 
-import java.util.Collection;
-
 /**
  *
  * @author neworld
@@ -12,19 +10,22 @@ public interface RealMachine {
 	public boolean step();
 
 	public boolean putChar(char ch);
-	public Collection<Byte> getScreen();
-	public Collection<Byte> getMemoryDump();
-	public Collection<Byte> getExternalMemory();
+	public Byte[] getScreen();
+	public Byte[] getMemoryDump();
+	public Byte[] getExternalMemory();
 	public void changeMemory(int adr, byte data);
 
 	public Registers getRegister();
-	public boolean loadDump(Collection<Byte> data);
+	public boolean loadDump(Byte[] data);
 	/**
 	 * priskiriame RealMachine.Event realizacij1, kurioje bus apibrezti eventu funkcijos
 	 * @param event
 	 * @return
 	 */
 	public boolean event(Event event);
-
-	public Collection<Byte> halt();
+	/**
+	 * nutraukiame masinos darba
+	 * @return atminties masyvas
+	 */
+	public Byte[] halt();
 }
