@@ -5,8 +5,8 @@ package RealMachine;
  * @author neworld
  */
 public class Machine implements RealMachine {
-	private int ram[] = new int[0xFFFF];
-	private int external[] = new int[0x5FFFF];
+	private int ram[] = new int[0x10000];
+	private int external[] = new int[0x60000];
 	private byte screen[] = new byte[80*20];
 	private byte screenBuffer[] = new byte[80];
 	private int screenPointer = 0;
@@ -64,7 +64,7 @@ public class Machine implements RealMachine {
 	}
 
 	public boolean changeMemory(int adr, int data) {
-		if (adr < 0 || adr > 0xFFFF) return false;
+		if (adr < 0 || adr > ram.length) return false;
 
 		ram[adr] = data;
 
@@ -84,7 +84,7 @@ public class Machine implements RealMachine {
 	}
 
 	public boolean loadDump(int[] data) {
-		if (data.length > 0xFFFF) return false;
+		if (data.length > ram.length) return false;
 		
 		for (int i = 0; i < data.length; i++)
 			ram[i] = data[i];
