@@ -3,8 +3,11 @@
  * and open the template in the editor.
  */
 
-package emulator.GUI;
+package GUI;
 
+import RealMachine.Machine;
+import Event.RMEventLauncher;
+import RealMachine.RealMachine;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
@@ -48,9 +51,12 @@ public class EmulatorFrame extends JFrame
     //--------------------------------------------------------------------------
     public static void createAndShow()
     {
+        RMEventLauncher eventLauncher = new RMEventLauncher();
+        RealMachine machine = Machine.createMachine();
         EmulatorFrame emulatorFrame = new EmulatorFrame();
         EmulatorPaneController emulatorPaneController =
-                                      new EmulatorPaneController(emulatorFrame);
+                                    new EmulatorPaneController
+                                        (emulatorFrame, machine, eventLauncher);
 
         emulatorFrame.setVisible(true);
     }

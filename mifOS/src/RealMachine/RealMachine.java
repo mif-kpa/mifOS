@@ -1,5 +1,7 @@
 package RealMachine;
 
+import Event.Event;
+
 /**
  *
  * @author neworld

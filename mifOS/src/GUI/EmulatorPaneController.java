@@ -3,13 +3,18 @@
  * and open the template in the editor.
  */
 
-package emulator.GUI;
+package GUI;
 
-import emulator.rmComponents.ChannelInputDevice;
-import emulator.rmComponents.Register;
+import FileUtilities.FileUtilities;
+import Event.RMEventLauncher;
+import Event.RMEventListener;
+import RealMachine.RealMachine;
+import rmComponents.ChannelInputDevice;
+import rmComponents.Register;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.JFileChooser;
 
 /**
@@ -20,14 +25,20 @@ public class EmulatorPaneController
 {
 
     private EmulatorFrame emulatorFrame;
+    private RealMachine machine;
+    private RMEventLauncher eventLauncher;
 
-    public EmulatorPaneController(EmulatorFrame emulatorFrame)
+    public EmulatorPaneController(EmulatorFrame emulatorFrame,
+                                                          RealMachine machine,
+                                                          RMEventLauncher event)
     {
         this.emulatorFrame = emulatorFrame;
-        this.addActionListeners();
+        this.machine = machine;
+        this.eventLauncher = eventLauncher;
+        this.addListeners();
     }
 
-    private void addActionListeners()
+    private void addListeners()
     {
         this.emulatorFrame.getMainPane().
                            getRestartCPU().addActionListener
@@ -45,9 +56,10 @@ public class EmulatorPaneController
                            getExecuteByStep().addActionListener
                                (new ExecuteProgramByStepButtonActionListener());
 
+        this.eventLauncher.addListener(new RMListener());
         //-------------KeyListener-------------
-        this.emulatorFrame.getMainPane().getInput().
-                                   addKeyListener(new ChannelInputDevice(this));
+        /*this.emulatorFrame.getMainPane().getInput().
+                                   addKeyListener(new ChannelInputDevice(this));*/
     }
 
     //--------------------------------------------------------------------------
@@ -77,6 +89,18 @@ public class EmulatorPaneController
                 file = EmulatorPaneController.this.emulatorFrame.
                                             getMainPane().getFileChooser().
                                                               getSelectedFile();
+
+                try
+                {
+                    int[] program = FileUtilities.getDataFromFile(file);
+                    
+
+                } catch (IOException e)
+                {
+                    //Paleidziamas informacinis langas, paskutinis vartotojo
+                    //veiksmas anuliuojamas
+                }
+              
             }
         }
 
@@ -124,6 +148,26 @@ public class EmulatorPaneController
     {
 
         public void actionPerformed(ActionEvent ae)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    class RMListener implements RMEventListener
+    {
+
+        public void inputRequested()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public void outputRequested()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public void stepRequested()
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }

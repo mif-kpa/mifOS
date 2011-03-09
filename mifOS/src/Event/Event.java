@@ -3,7 +3,9 @@
  * and open the template in the editor.
  */
 
-package RealMachine;
+package Event;
+
+import RealMachine.RealMachine;
 
 /**
  *

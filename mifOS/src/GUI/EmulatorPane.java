@@ -9,9 +9,9 @@
  * Created on Mar 1, 2011, 10:37:40 AM
  */
 
-package emulator.GUI;
+package GUI;
 
-import emulator.rmComponents.Register;
+import rmComponents.Register;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;

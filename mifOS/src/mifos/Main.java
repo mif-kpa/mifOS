@@ -5,7 +5,7 @@
 
 package mifos;
 
-import emulator.GUI.EmulatorFrame;
+import GUI.EmulatorFrame;
 
 /**
  *
