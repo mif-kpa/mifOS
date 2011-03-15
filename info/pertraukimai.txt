@@ -1,0 +1,19 @@
+Supervizoriniai
+1) GD [1]
+2) PD [2]
+3) HALT [3]
+
+Programiniai
+4) neteisingas adresas [4]
+5) neteisingas operacijos kodas [5]
+6) neteisingas priskyrimas [6]
+7) perpildymas [7]
+
+
+Įvedimas/Išvedimas atliktas
+8) pirmas kanalas [8]
+9) antras kanalas [9]
+10) trečias kanalas [10]
+
+11) taimerio [11]
+

@@ -1,0 +1,12 @@
+CLxy   (įdeda į steką grįžimo adresą ir nušoką į [xy] adresą kurį vykdo)
+RETx  (sugrįžta iš CALL sumažindamas steko viršūnės reikšmę per x)
+PSHx  (įdeda reikšmę į steką. x nurodo kuris registras)
+POPx  (iš stekopaima reikšmę ir įdeda į registrą)
+
+x PUSH ir POP komandoms atitinka:
+
+1 : R
+2 : M
+3 : SF
+4 : PD (tik supervizorius)
+5 : PTR (tik supervizorius)
