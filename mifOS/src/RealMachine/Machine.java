@@ -107,6 +107,8 @@ public class Machine implements RealMachine {
 		int y = (instruction & 0xF0) >> 8;
 		int z = (instruction & 0xF);
 
+		int yz = (instruction & 0xFF);
+
 		if (komanda == 'H' && x == 'A' && y == 'L' && z == 'T') {
 			if (isSuper())
 				HALT();
@@ -118,6 +120,7 @@ public class Machine implements RealMachine {
 				case 'A': Axyz(x, y, z); break;
 				case 'S': Sxyz(x, y, z); break;
 				case 'U': USyz(y, z); break;
+				case 'T': Txyz(x, y, z); break;
 			}
 
 		}
@@ -134,6 +137,15 @@ public class Machine implements RealMachine {
 
 	private void HALT() {
 		halt();
+	}
+
+	private void Txyz(int x, int y, int z) {
+		if (x == 0) {
+			if (z == 0) registers.r = registers.ptr;
+			else registers.m = registers.ptr;
+		} else {
+			setActualWord(y * 0x10 + z, registers.ptr);
+		}
 	}
 
     // Sudetis
@@ -212,6 +224,20 @@ public class Machine implements RealMachine {
 		int adr2 = ram[vir];
 
 		return ram[adr2 * 0x100 + adr & 0xFF];
+	}
+
+	private void setActualWord(int adr, int word) {
+		adr %= 0x10000;
+
+		if (check(registers.mode, 0x1, 0x1)) {
+			//supervizoriaus rezimas
+			ram[adr] = word;
+		}
+
+		int vir = registers.ptr * 0x10 + ((adr & 0xF00) >> 16);
+		int adr2 = ram[vir];
+
+		ram[adr2 * 0x100 + adr & 0xFF] = word;
 	}
 
 	private boolean check(int word, int mask, int need) {
