@@ -100,6 +100,7 @@ public class Machine implements RealMachine {
 
 	private boolean makeStep() {
 		
+
 		if (events != null)
 			events.onStep(this);
 
@@ -195,5 +196,23 @@ public class Machine implements RealMachine {
 			ram[i] = data[i];
 		
 		return true;
+	}
+
+	public static void main() {
+		int[] dump = {
+			0x0010,   //0
+			0x0000,   //1
+			0x0000,   //2
+			0x0001,   //3
+			0x0000,   //4
+			0x0000,   //5
+			0x0000,   //6
+			0x0000    //7
+		};
+
+		RealMachine rm = Machine.createMachine();
+		rm.loadDump(dump);
+
+		
 	}
 }
