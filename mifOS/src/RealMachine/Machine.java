@@ -99,7 +99,7 @@ public class Machine implements RealMachine {
 	}
 
 	private boolean makeStep() {
-		int instruction = getActualyWord(registers.ic++);
+		int instruction = getActualWord(registers.ic++);
 		registers.ic %= 0x10000;
 
 		int komanda = instruction >> 24;
@@ -119,7 +119,7 @@ public class Machine implements RealMachine {
 			switch (komanda) {
 				case 'A': Axyz(x, y, z); break;
 				case 'S': Sxyz(x, y, z); break;
-				case 'U': USyz(y, z); break;
+				case 'U': if (x == 'U') USyz(y, z); else Uxyz(x, y, z); break;
 				case 'T': Txyz(x, y, z); break;
 			}
 
@@ -145,6 +145,15 @@ public class Machine implements RealMachine {
 			else registers.m = registers.ptr;
 		} else {
 			setActualWord(y * 0x10 + z, registers.ptr);
+		}
+	}
+
+	private void Uxyz(int x, int y, int z) {
+		if (x == 0) {
+			if (z == 0) registers.ptr = registers.r;
+			else registers.ptr = registers.m;
+		} else {
+			registers.ptr = getActualWord(y * 0x10 + z);
 		}
 	}
 
@@ -183,9 +192,9 @@ public class Machine implements RealMachine {
 
             case 1:
                 if (type)
-                    registers.r += getActualyWord(y * 0x10 + z);
+                    registers.r += getActualWord(y * 0x10 + z);
                 else
-                    registers.r -= getActualyWord(y * 0x10 + z);
+                    registers.r -= getActualWord(y * 0x10 + z);
                 break;
 
             case 16:
@@ -205,14 +214,14 @@ public class Machine implements RealMachine {
 
             case 17:
                 if (type)
-                    registers.m += getActualyWord(y * 0x10 + z);
+                    registers.m += getActualWord(y * 0x10 + z);
                 else
-                    registers.m += getActualyWord(y * 0x10 + z);
+                    registers.m += getActualWord(y * 0x10 + z);
                 break;
         }
     }
 
-	private int getActualyWord(int adr) {
+	private int getActualWord(int adr) {
 		adr %= 0x10000;
 
 		if (check(registers.mode, 0x1, 0x1)) {
