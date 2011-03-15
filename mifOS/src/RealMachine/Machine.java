@@ -106,16 +106,34 @@ public class Machine implements RealMachine {
 		int x = (instruction & 0xF00) >> 16;
 		int y = (instruction & 0xF0) >> 8;
 		int z = (instruction & 0xF);
-		switch (komanda) {
-			case 'A': Axyz(x, y, z); break;
-			case 'S': Sxyz(x, y, z); break;
-			case 'U': USyz(y, z); break;
+
+		if (komanda == 'H' && x == 'A' && y == 'L' && z == 'T') {
+			if (isSuper())
+				HALT();
+			else
+				setSuperMode();
+		} else {
+
+			switch (komanda) {
+				case 'A': Axyz(x, y, z); break;
+				case 'S': Sxyz(x, y, z); break;
+				case 'U': USyz(y, z); break;
+			}
+
 		}
 
 		if (events != null)
 			events.onStep(this);
 
 		return true;
+	}
+
+	private boolean isSuper() {
+		return check(registers.mode, 0x1, 0x1);
+	}
+
+	private void HALT() {
+		halt();
 	}
 
     // Sudetis
@@ -262,6 +280,8 @@ public class Machine implements RealMachine {
 		ram[5] = registers.m;
 		ram[6] = registers.r;
 		ram[7] = registers.ptr;
+
+		inited = false;
 
 		return ram;
 	}
