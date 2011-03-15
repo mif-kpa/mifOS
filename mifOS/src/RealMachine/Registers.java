@@ -17,4 +17,5 @@ public class Registers {
 	public int mode;
 	public int s;
 	public int sf;
+	public int ic;
 }
