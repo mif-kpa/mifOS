@@ -109,6 +109,7 @@ public class Machine implements RealMachine {
 		switch (komanda) {
 			case 'A': Axyz(x, y, z); break;
 			case 'S': Sxyz(x, y, z); break;
+			case 'U': USyz(y, z); break;
 		}
 
 		if (events != null)
@@ -118,14 +119,19 @@ public class Machine implements RealMachine {
 	}
 
     // Sudetis
-    public void Axyz(int x, int y, int z) {
+    private void Axyz(int x, int y, int z) {
         Arritmetic(true, x, y, z);
     }
 
     // Atimtis
-    public void Sxyz(int x, int y, int z) {
+    private void Sxyz(int x, int y, int z) {
         Arritmetic(false, x, y, z);
     }
+
+	private void USyz(int y, int z) {
+		registers.pd = y * 0x100 + z;
+		setUserMode();
+	}
 
     // Jei type yra true - sudetis, jei false - atimtis
     private void Arritmetic(boolean type, int x, int y, int z) {
