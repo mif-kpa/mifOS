@@ -99,7 +99,17 @@ public class Machine implements RealMachine {
 	}
 
 	private boolean makeStep() {
-		
+		int instruction = getActualyWord(registers.ic++);
+		registers.ic %= 0x10000;
+
+		int komanda = instruction >> 24;
+		int x = (instruction & 0xF00) >> 16;
+		int y = (instruction & 0xF0) >> 8;
+		int z = (instruction & 0xF);
+		switch (komanda) {
+			case 'A': Axyz(x, y, z); break;
+			case 'S': Sxyz(x, y, z); break;
+		}
 
 		if (events != null)
 			events.onStep(this);
@@ -107,7 +117,68 @@ public class Machine implements RealMachine {
 		return true;
 	}
 
+    // Sudetis
+    public void Axyz(int x, int y, int z) {
+        Arritmetic(true, x, y, z);
+    }
+
+    // Atimtis
+    public void Sxyz(int x, int y, int z) {
+        Arritmetic(false, x, y, z);
+    }
+
+    // Jei type yra true - sudetis, jei false - atimtis
+    private void Arritmetic(boolean type, int x, int y, int z) {
+        switch (x) {
+            case 0:
+                if (z == 0) {
+                    if (type)
+                        registers.r += registers.r;
+                    else
+                        registers.r -= registers.r;
+                }
+                else if (z ==1) {
+                    if (type)
+                        registers.r += registers.m;
+                    else
+                        registers.r -= registers.m;
+                }
+                break;
+
+            case 1:
+                if (type)
+                    registers.r += getActualyWord(y * 0x10 + z);
+                else
+                    registers.r -= getActualyWord(y * 0x10 + z);
+                break;
+
+            case 16:
+                if (z == 0) {
+                    if (type)
+                        registers.m += registers.r;
+                    else
+                        registers.m -= registers.r;
+                }
+                else if (z ==1) {
+                    if (type)
+                        registers.m += registers.m;
+                    else
+                        registers.m -= registers.m;
+                }
+                break;
+
+            case 17:
+                if (type)
+                    registers.m += getActualyWord(y * 0x10 + z);
+                else
+                    registers.m += getActualyWord(y * 0x10 + z);
+                break;
+        }
+    }
+
 	private int getActualyWord(int adr) {
+		adr %= 0x10000;
+
 		if (check(registers.mode, 0x1, 0x1)) {
 			//supervizoriaus rezimas
 			return ram[adr];
