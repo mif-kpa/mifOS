@@ -20,25 +20,19 @@ public class RMEventLauncher extends Event
 
     public boolean onStep(RealMachine rm)
     {
-        //proceso uzblokavimas
         rmel.stepRequested();
-        //proceso atblokavimas
         return true;
     }
 
     public boolean onScreen(RealMachine rm)
     {
-        //proceso uzblokavimas
         rmel.outputRequested();
-        //proceso atblokavimas
         return true;
     }
 
     public boolean onRequestInput(RealMachine rm)
     {
-        //proceso uzblokavimas
         rmel.inputRequested();
-        //proceso atblokavimas
         return true;
     }
 

@@ -29,8 +29,8 @@ public class EmulatorPaneController
     private RMEventLauncher eventLauncher;
 
     public EmulatorPaneController(EmulatorFrame emulatorFrame,
-                                                          RealMachine machine,
-                                                          RMEventLauncher event)
+                                                  RealMachine machine,
+                                                  RMEventLauncher eventLauncher)
     {
         this.emulatorFrame = emulatorFrame;
         this.machine = machine;
@@ -92,7 +92,7 @@ public class EmulatorPaneController
 
                 try
                 {
-                    int[] program = FileUtilities.getDataFromFile(file);
+                    int[] programCode = FileUtilities.getDataFromFile(file);
                     
 
                 } catch (IOException e)
@@ -160,6 +160,11 @@ public class EmulatorPaneController
         public void inputRequested()
         {
             throw new UnsupportedOperationException("Not supported yet.");
+            /*EmulatorPaneController.this.emulatorFrame.
+                                    getMainPane().setRegisterValue
+                                                          (Register.CHST1, "1");
+            EmulatorPaneController.this.emulatorFrame.
+                                     getMainPane().setInputEditableStatus(true);*/
         }
 
         public void outputRequested()
@@ -170,6 +175,7 @@ public class EmulatorPaneController
         public void stepRequested()
         {
             throw new UnsupportedOperationException("Not supported yet.");
+            //atnaujinami duomenys apie VM
         }
 
     }
