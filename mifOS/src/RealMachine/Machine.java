@@ -120,10 +120,21 @@ public class Machine implements RealMachine {
 				case 'A': Axyz(x, y, z); break;
 				case 'S': Sxyz(x, y, z); break;
 				case 'C': Cxyz(x, y, z); break;
-				case 'U': if (x == 'U') USyz(y, z); else Uxyz(x, y, z); break;
+				case 'U':
+					if (x == 'U') USyz(y, z);
+					else Uxyz(x, y, z);
+				break;
 				case 'T': Txyz(x, y, z); break;
 				case 'I': dataSend(false, x, y, z); break;
 				case 'L': dataSend(true, x, y, z); break;
+				case 'J':
+					if (x == 'M') jump(4, y, z);
+				break;
+				case 'D': Dxyz(x, y, z); break;
+				case 'B': Bxyz(x, y, z); break;
+				case 'Z': Zxyz(x, y, z); break;
+				case '0': _0xyz(x, y, z); break;
+				case '1': _1xyz(x, y, z); break;
 			}
 
 		}
@@ -160,6 +171,43 @@ public class Machine implements RealMachine {
 			case 0: generateSF(registers.r); break;
 			case 1: generateSF(registers.m); break;
 		}
+	}
+
+	private void Dxyz(int x, int y, int z) {
+		if (check(registers.sf, 01000, 01000)) jump(x, y, z);
+	}
+
+	private void Bxyz(int x, int y, int z) {
+		if (check(registers.sf, 01000, 0)) jump(x, y, z);
+	}
+
+	private void Zxyz(int x, int y, int z) {
+		if (check(registers.sf, 1, 1)) jump(x, y, z);
+	}
+
+	private void _0xyz(int x, int y, int z) {
+		if (check(registers.sf, 010000, 010000)) jump(x, y, z);
+	}
+
+	private void _1xyz(int x, int y, int z) {
+		if (check(registers.sf, 010000, 0)) jump(x, y, z);
+	}
+
+	private void jump(int adr) {
+		registers.ic = adr;
+	}
+
+	private void jump(int x, int y, int z) {
+		int adr = 0;
+		switch (x) {
+			case 0: adr = registers.r; break;
+			case 1: adr = registers.m; break;
+			case 2: adr = getActualWord(0x100 * y + z); break;
+			case 3: adr = (registers.ic + 0x100 * y + z) % 0x10000; break;
+			case 4: adr = 0x100 * y + z; break;
+		}
+		jump(adr);
+
 	}
 
 	private void generateSF(int value) {
