@@ -119,6 +119,7 @@ public class Machine implements RealMachine {
 			switch (komanda) {
 				case 'A': Axyz(x, y, z); break;
 				case 'S': Sxyz(x, y, z); break;
+				case 'C': Cxyz(x, y, z); break;
 				case 'U': if (x == 'U') USyz(y, z); else Uxyz(x, y, z); break;
 				case 'T': Txyz(x, y, z); break;
 			}
@@ -188,13 +189,17 @@ public class Machine implements RealMachine {
 
     // Sudetis
     private void Axyz(int x, int y, int z) {
-        Arritmetic(true, x, y, z);
+        Arritmetic(true, true, x, y, z);
     }
 
     // Atimtis
     private void Sxyz(int x, int y, int z) {
-        Arritmetic(false, x, y, z);
+        Arritmetic(false, true, x, y, z);
     }
+	//lyginimas
+	private void Cxyz(int x, int y, int z) {
+		Arritmetic(false, true, x, y, z);
+	}
 
 	private void USyz(int y, int z) {
 		registers.pd = y * 0x100 + z;
@@ -202,16 +207,18 @@ public class Machine implements RealMachine {
 	}
 
     // Jei type yra true - sudetis, jei false - atimtis
-    private void Arritmetic(boolean type, int x, int y, int z) {
+    private void Arritmetic(boolean type, boolean save, int x, int y, int z) {
 		int op1 = 0, op2 = 0, rez = 0;
         switch (x) {
             case 0:
                 if (z == 0) {
 					op1 = op2 = registers.r;
-                    if (type)
-                        registers.r += registers.r;
-                    else
-                        registers.r -= registers.r;
+					if (save) {
+						if (type)
+							registers.r += registers.r;
+						else
+							registers.r -= registers.r;
+					}
 
 					rez = registers.r;
                 }
@@ -219,10 +226,12 @@ public class Machine implements RealMachine {
 					op1 = registers.r;
 					op2 = registers.m;
 
-                    if (type)
-                        registers.r += registers.m;
-                    else
-                        registers.r -= registers.m;
+					if (save) {
+						if (type)
+							registers.r += registers.m;
+						else
+							registers.r -= registers.m;
+					}
 
 					rez = registers.r;
                 }
@@ -232,10 +241,12 @@ public class Machine implements RealMachine {
 				op1 = registers.r;
 				op2 = getActualWord(y * 0x10 + z);
 
-                if (type)
-                    registers.r += getActualWord(y * 0x10 + z);
-                else
-                    registers.r -= getActualWord(y * 0x10 + z);
+				if (save) {
+					if (type)
+						registers.r += getActualWord(y * 0x10 + z);
+					else
+						registers.r -= getActualWord(y * 0x10 + z);
+				}
 
 				rez = registers.r;
 				
@@ -245,21 +256,24 @@ public class Machine implements RealMachine {
                 if (z == 0) {
 					op1 = registers.m;
 					op2 = registers.r;
-
-                    if (type)
-                        registers.m += registers.r;
-                    else
-                        registers.m -= registers.r;
+					if (save) {
+						if (type)
+							registers.m += registers.r;
+						else
+							registers.m -= registers.r;
+					}
 
 					rez = registers.m;
                 }
                 else if (z ==1) {
 					op1 = op2 = registers.m;
 
-                    if (type)
-                        registers.m += registers.m;
-                    else
-                        registers.m -= registers.m;
+					if (save) {
+						if (type)
+							registers.m += registers.m;
+						else
+							registers.m -= registers.m;
+					}
 
 					rez = registers.m;
                 }
@@ -269,10 +283,12 @@ public class Machine implements RealMachine {
 				op1 = registers.m;
 				op2 = getActualWord(y * 0x10 + z);
 
-                if (type)
-                    registers.m += getActualWord(y * 0x10 + z);
-                else
-                    registers.m += getActualWord(y * 0x10 + z);
+				if (save) {
+					if (type)
+						registers.m += getActualWord(y * 0x10 + z);
+					else
+						registers.m += getActualWord(y * 0x10 + z);
+				}
 
 				rez = registers.m;
 
