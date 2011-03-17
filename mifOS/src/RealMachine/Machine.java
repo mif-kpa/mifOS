@@ -103,9 +103,9 @@ public class Machine implements RealMachine {
 		registers.ic %= 0x10000;
 
 		int komanda = instruction >> 24;
-		int x = (instruction & 0xF00) >> 16;
-		int y = (instruction & 0xF0) >> 8;
-		int z = (instruction & 0xF);
+		int x = (instruction & 0xFF0000) >> 16;
+		int y = (instruction & 0xFF00) >> 8;
+		int z = (instruction & 0xFF);
 
 		int yz = (instruction & 0xFF);
 
@@ -125,8 +125,8 @@ public class Machine implements RealMachine {
 					else Uxyz(x, y, z);
 				break;
 				case 'T': Txyz(x, y, z); break;
-				case 'I': dataSend(false, x, y, z); break;
-				case 'L': dataSend(true, x, y, z); break;
+				case 'I': dataSend(true, x, y, z); break;
+				case 'L': dataSend(false, x, y, z); break;
 				case 'J':
 					if (x == 'M') jump(4, y, z);
 				break;
@@ -552,7 +552,7 @@ public class Machine implements RealMachine {
 		return true;
 	}
 
-	public static void main() {
+	public static void main(String[] args) {
 		int[] dump = {
 			0x0010,   //0
 			0x0000,   //1
@@ -561,12 +561,58 @@ public class Machine implements RealMachine {
 			0x0000,   //4
 			0x0000,   //5
 			0x0000,   //6
-			0x0000    //7
+			0x0000,   //7
+			0x0000,   //8
+			0x0000,   //9
+			0x0000,   //A
+			0x0000,   //B
+			0x0000,   //C
+			0x0000,   //D
+			0x0000,   //E
+			0x0000,   //F
+			0x4C010011,   //10
+			0x48414C54   //11
 		};
 
 		RealMachine rm = Machine.createMachine();
 		rm.loadDump(dump);
 
-		
+		for (int x = 20; x > 0; x--)
+			rm.step();
+
+		int[] mem = rm.getMemoryDump();
+
+		int i = 0;
+
+		for (int m : mem) {
+			if (i++ % 16 == 0) {
+				System.out.println();
+				System.out.print(i / 16 + ": ");
+			}
+
+			System.out.print(parseInt(m) + " ");
+
+			if (i > 80) break;
+		}
+	}
+
+	public static String parseInt(int v) {
+		String rez = "";
+
+		char[] a = new char[8];
+
+		for (int i = 7; i >= 0; i--) {
+			int b = v % 0x10;
+			v >>= 4;
+			if (b <= 9)
+				a[i] = (char)(48 + b);
+			else
+				a[i] = (char)(65 + b - 10);
+		}
+
+		for (char c : a)
+			rez += c;
+
+		return rez;
 	}
 }

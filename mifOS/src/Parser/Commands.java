@@ -12,7 +12,7 @@ import RealMachine.Registers;
  * @author Piotr Petunov
  */
 public class Commands {
-
+/*
     // Sudetis
     public void Axyz(byte x, byte y, byte z) {
         Arritmetic(true, x, y, z);
@@ -193,5 +193,5 @@ public class Commands {
                 break;
         }
     }
-
+*/
 }
