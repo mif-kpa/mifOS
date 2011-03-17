@@ -135,6 +135,9 @@ public class Machine implements RealMachine {
 				case 'Z': Zxyz(x, y, z); break;
 				case '0': _0xyz(x, y, z); break;
 				case '1': _1xyz(x, y, z); break;
+				case 'N': Nxyz(x, y, z); break;
+				case 'O': Oxyz(x, y, z); break;
+				case 'X': Xxyz(x, y, z); break;
 			}
 
 		}
@@ -195,6 +198,66 @@ public class Machine implements RealMachine {
 
 	private void jump(int adr) {
 		registers.ic = adr;
+	}
+
+	private void Nxyz(int x, int y, int z) {
+		logika((byte)0, x, y, z);
+	}
+
+	private void Oxyz(int x, int y, int z) {
+		logika((byte)1, x, y, z);
+	}
+	private void Xxyz(int x, int y, int z) {
+		logika((byte)2, x, y, z);
+	}
+
+	private void logika(byte comm, int x, int y, int z) {
+		int op1 = 0, op2 = 0;
+
+		switch (x) {
+			case 0:
+					if (z == 0) {
+						op1 = registers.r;
+						op2 = registers.r;
+					} else {
+						op1 = registers.r;
+						op2 = registers.m;
+					}
+				break;
+			case 1:
+					op1 = registers.r;
+					op2 = getActualWord(y * 0x100 + z);
+				break;
+
+			case 16:
+					if (z == 0) {
+						op1 = registers.m;
+						op2 = registers.r;
+					} else {
+						op1 = registers.m;
+						op2 = registers.m;
+					}
+				break;
+			case 17:
+					op1 = registers.m;
+					op2 = getActualWord(y * 0x100 + z);
+				break;
+		}
+
+		int ats = 0;
+
+		switch (comm) {
+			case 0: ats = op1 & op2; break;
+			case 1: ats = op1 | op2; break;
+			case 2: ats = op1 ^ op2; break;
+		}
+
+		if (check(x, 010000, 010000))
+			registers.m = ats;
+		else
+			registers.r = ats;
+
+		generateSF(ats);
 	}
 
 	private void jump(int x, int y, int z) {
