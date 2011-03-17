@@ -1,0 +1,13 @@
+JMyz  (besalyginis perdavimas adresu yz)
+Dxyz  (jeigu unsigned ir didenis)
+Bxyz  (jeigu unsigned ir mazesnis)
+Zxyz  (jeigu nulis)
+0xyz  (jeigu signed ir didesnis)
+1xyz  (jeigu signed ir mazesnis)
+
+x reikšmės:
+0 - registras R;
+1 - registtas M;
+2 - imamas adresas iš atminties adresu [yz];
+3 - yz nurodo poslinkį, kuris pridedamas prie IC, kuris buna padidėjęs per 1 po komandos įvykdymo. yz interpretuojamas kaip signed skaičius
+4 - nušokama [yz] adresu
