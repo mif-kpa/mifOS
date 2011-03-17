@@ -122,6 +122,8 @@ public class Machine implements RealMachine {
 				case 'C': Cxyz(x, y, z); break;
 				case 'U': if (x == 'U') USyz(y, z); else Uxyz(x, y, z); break;
 				case 'T': Txyz(x, y, z); break;
+				case 'I': dataSend(false, x, y, z); break;
+				case 'L': dataSend(true, x, y, z); break;
 			}
 
 		}
@@ -130,6 +132,38 @@ public class Machine implements RealMachine {
 			events.onStep(this);
 
 		return true;
+	}
+
+	/**
+	 * duomenu reg <-> mem persiuntimas
+	 * @param kryptis false: reg->mem; true: mem->reg;
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	private void dataSend(boolean kryptis, int x, int y, int z) {
+		int adr = y * 0x100 + z;
+
+		if (kryptis) {
+			switch (x) {
+				case 0: setActualWord(adr, registers.r); break;
+				case 1: setActualWord(adr, registers.m); break;
+			}
+		} else {
+			switch (x) {
+				case 0: registers.r = getActualWord(adr); break;
+				case 1: registers.m = getActualWord(adr); break;
+			}
+		}
+
+		switch (x) {
+			case 0: generateSF(registers.r); break;
+			case 1: generateSF(registers.m); break;
+		}
+	}
+
+	private void generateSF(int value) {
+		generateSF(value, 0, 0);
 	}
 
 	private void generateSF(int value, int op1, int op2) {
