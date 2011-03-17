@@ -131,6 +131,35 @@ public class Machine implements RealMachine {
 		return true;
 	}
 
+	private void generateSF(int value, int op1, int op2) {
+		int rez = 0;
+		if (value == 0) rez += 1;
+		if (check(value, 0x00A0, 0x00A0)) rez += 010;
+		if (check(value, 0xA000, 0xA000)) rez += 0100;
+
+		byte[] a = extract(op1);
+		byte[] b = extract(op2);
+
+		for (int i = 15; i > 0; i--)
+			if (a[i] < b[i]) {
+				rez += 01000;
+				break;
+			}
+
+		if (op1 < op2) rez += 010000;
+	}
+
+	private byte[] extract(int value) {
+		int y = value;
+		byte[] rez = new byte[16];
+		for (int i = 0; (i < 16 && y != 0); i++) {
+			rez[i] = (byte)(y % 2);
+			y = y >> 1;
+		}
+
+		return rez;
+	}
+
 	private boolean isSuper() {
 		return check(registers.mode, 0x1, 0x1);
 	}
@@ -174,51 +203,83 @@ public class Machine implements RealMachine {
 
     // Jei type yra true - sudetis, jei false - atimtis
     private void Arritmetic(boolean type, int x, int y, int z) {
+		int op1 = 0, op2 = 0, rez = 0;
         switch (x) {
             case 0:
                 if (z == 0) {
+					op1 = op2 = registers.r;
                     if (type)
                         registers.r += registers.r;
                     else
                         registers.r -= registers.r;
+
+					rez = registers.r;
                 }
                 else if (z ==1) {
+					op1 = registers.r;
+					op2 = registers.m;
+
                     if (type)
                         registers.r += registers.m;
                     else
                         registers.r -= registers.m;
+
+					rez = registers.r;
                 }
                 break;
 
             case 1:
+				op1 = registers.r;
+				op2 = getActualWord(y * 0x10 + z);
+
                 if (type)
                     registers.r += getActualWord(y * 0x10 + z);
                 else
                     registers.r -= getActualWord(y * 0x10 + z);
+
+				rez = registers.r;
+				
                 break;
 
             case 16:
                 if (z == 0) {
+					op1 = registers.m;
+					op2 = registers.r;
+
                     if (type)
                         registers.m += registers.r;
                     else
                         registers.m -= registers.r;
+
+					rez = registers.m;
                 }
                 else if (z ==1) {
+					op1 = op2 = registers.m;
+
                     if (type)
                         registers.m += registers.m;
                     else
                         registers.m -= registers.m;
+
+					rez = registers.m;
                 }
                 break;
 
             case 17:
+				op1 = registers.m;
+				op2 = getActualWord(y * 0x10 + z);
+
                 if (type)
                     registers.m += getActualWord(y * 0x10 + z);
                 else
                     registers.m += getActualWord(y * 0x10 + z);
+
+				rez = registers.m;
+
                 break;
         }
+
+		generateSF(rez, op1, op2);
     }
 
 	private int getActualWord(int adr) {
