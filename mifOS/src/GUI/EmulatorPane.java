@@ -27,7 +27,7 @@ public class EmulatorPane extends javax.swing.JPanel {
     /** Creates new form EmulatorPane */
     public EmulatorPane() {
         initComponents();
-        initModel(256);
+        initModel(4096);
         initRegisters();
     }
 
@@ -92,7 +92,7 @@ public class EmulatorPane extends javax.swing.JPanel {
         listRMMemory.setModel(this.model);
         jScrollPane1.setViewportView(listRMMemory);
 
-        titleRMMemory.setText("RM atmintis:");
+        titleRMMemory.setText("VM atmintis:");
 
         console.setColumns(20);
         console.setEditable(false);
@@ -264,6 +264,11 @@ public class EmulatorPane extends javax.swing.JPanel {
         for (int index = 0; index < listValues.length; index++)
         {
             if (index < 16)
+            {
+                listValues[index] =
+                          "00" + Integer.toHexString(index).toUpperCase() + ":";
+            }
+            else if ((index > 15) && (index < 256))
             {
                 listValues[index] =
                            "0" + Integer.toHexString(index).toUpperCase() + ":";
@@ -455,5 +460,15 @@ public class EmulatorPane extends javax.swing.JPanel {
         String memoryValue = (String)this.model.getElementAt(virtualAddress);
         String[] splittedValue = memoryValue.split(": ", 2);
         return splittedValue[1];
+    }
+
+    public void setValueVMMemory(int virtualAddress, int newValue)
+    {
+        String oldValue = (String)this.model.getElementAt(virtualAddress);
+        String[] splittedOldValue = oldValue.split(": ", 2);
+        this.model.setElementAt
+                            (splittedOldValue[0]
+                               + Integer.toHexString(newValue).toUpperCase(),
+                                                                virtualAddress);
     }
 }

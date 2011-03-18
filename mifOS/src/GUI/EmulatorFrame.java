@@ -53,6 +53,7 @@ public class EmulatorFrame extends JFrame
     {
         RMEventLauncher eventLauncher = new RMEventLauncher();
         RealMachine machine = Machine.createMachine();
+        machine.event(eventLauncher);
         EmulatorFrame emulatorFrame = new EmulatorFrame();
         EmulatorPaneController emulatorPaneController =
                                     new EmulatorPaneController

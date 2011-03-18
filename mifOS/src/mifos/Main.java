@@ -6,6 +6,7 @@
 package mifos;
 
 import GUI.EmulatorFrame;
+import RealMachine.Machine;
 
 /**
  *
@@ -19,7 +20,7 @@ public class Main {
     public static void main(String[] args) {
 
         EmulatorFrame.createAndShow();
-
+        //Machine.main(args);
     }
 
 }

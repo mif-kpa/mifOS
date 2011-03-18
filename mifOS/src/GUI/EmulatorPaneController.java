@@ -93,6 +93,14 @@ public class EmulatorPaneController
                 try
                 {
                     int[] programCode = FileUtilities.getDataFromFile(file);
+                    EmulatorPaneController.this.machine.loadDump(programCode);
+
+                    for (int index = 0; index < programCode.length; index++)
+                    {
+                        EmulatorPaneController.this.emulatorFrame.
+                                            getMainPane().setValueVMMemory
+                                                    (index, programCode[index]);
+                    }
                     
 
                 } catch (IOException e)
@@ -106,15 +114,19 @@ public class EmulatorPaneController
 
     }
 
-    class ExecuteProgramButtonActionListener extends Thread implements ActionListener
+    class ExecuteProgramButtonActionListener implements ActionListener
     {
 
         public void actionPerformed(ActionEvent ae)
         {
-            this.start();
+            do
+            {
+                EmulatorPaneController.this.machine.step();
+
+            } while(0 != 0 /*isRunning*/);
         }
 
-        @Override
+        /*@Override
         public void run()
         {
             EmulatorPaneController.this.emulatorFrame.
@@ -139,7 +151,7 @@ public class EmulatorPaneController
 
             EmulatorPaneController.this.emulatorFrame.
                              getMainPane().getExecuteProgram().setEnabled(true);
-        }
+        }*/
 
 
     }
@@ -149,7 +161,7 @@ public class EmulatorPaneController
 
         public void actionPerformed(ActionEvent ae)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            EmulatorPaneController.this.machine.step();
         }
 
     }
@@ -174,8 +186,39 @@ public class EmulatorPaneController
 
         public void stepRequested()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
-            //atnaujinami duomenys apie VM
+            int ic = EmulatorPaneController.this.machine.getRegister().ic;
+            int sf = EmulatorPaneController.this.machine.getRegister().sf;
+            int r = EmulatorPaneController.this.machine.getRegister().r;
+            int m = EmulatorPaneController.this.machine.getRegister().m;
+
+            EmulatorPaneController.this.emulatorFrame.
+                                    getMainPane().setRegisterValue
+                                              (Register.R, Integer.toString(r));
+
+            EmulatorPaneController.this.emulatorFrame.
+                                    getMainPane().setRegisterValue
+                                              (Register.M, Integer.toString(m));
+
+            EmulatorPaneController.this.emulatorFrame.
+                                    getMainPane().setRegisterValue
+                                            (Register.IC, Integer.toString(ic));
+
+            EmulatorPaneController.this.emulatorFrame.
+                                    getMainPane().setRegisterValue
+                                            (Register.SF, Integer.toString(sf));
+
+
+            int[] virtualMemory =
+                         EmulatorPaneController.this.machine.getVirtualMemory();
+
+            for (int index = 0; index < virtualMemory.length; index++)
+                    {
+                        EmulatorPaneController.this.emulatorFrame.
+                                            getMainPane().setValueVMMemory
+                                                    (index, virtualMemory[index]);
+                    }
+
+            //atnaujiname VM atminti(jos rodyni)!!!
         }
 
     }

@@ -235,7 +235,7 @@
     </Container>
     <Component class="javax.swing.JLabel" name="titleRMMemory">
       <Properties>
-        <Property name="text" type="java.lang.String" value="RM atmintis:"/>
+        <Property name="text" type="java.lang.String" value="VM atmintis:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">

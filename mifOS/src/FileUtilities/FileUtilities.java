@@ -44,8 +44,8 @@ public class FileUtilities
             if (base == -1)
             {
                 base = 3;
-                index++;
                 data[index] = word;
+                index++;
                 word = 0;
             }
         }
