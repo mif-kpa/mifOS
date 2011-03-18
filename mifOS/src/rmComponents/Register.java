@@ -14,10 +14,11 @@ public enum Register
     R(1),
     M(2),
     IC(3),
-    SF(4),
-    CHST1(5),
-    CHST2(6),
-    CHST3(7);
+    S(4),
+    SF(5),
+    CHST1(6),
+    CHST2(7),
+    CHST3(8);
 
     private final int value;
 

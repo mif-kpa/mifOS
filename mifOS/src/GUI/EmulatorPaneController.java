@@ -95,13 +95,7 @@ public class EmulatorPaneController
                     int[] programCode = FileUtilities.getDataFromFile(file);
                     EmulatorPaneController.this.machine.loadDump(programCode);
 
-                    for (int index = 0; index < programCode.length; index++)
-                    {
-                        EmulatorPaneController.this.emulatorFrame.
-                                            getMainPane().setValueVMMemory
-                                                    (index, programCode[index]);
-                    }
-                    
+                    EmulatorPaneController.this.setVMMemoryValues();
 
                 } catch (IOException e)
                 {
@@ -190,37 +184,42 @@ public class EmulatorPaneController
             int sf = EmulatorPaneController.this.machine.getRegister().sf;
             int r = EmulatorPaneController.this.machine.getRegister().r;
             int m = EmulatorPaneController.this.machine.getRegister().m;
+            int s = EmulatorPaneController.this.machine.getRegister().s;
 
             EmulatorPaneController.this.emulatorFrame.
-                                    getMainPane().setRegisterValue
-                                              (Register.R, Integer.toString(r));
+                          getMainPane().setRegisterValue
+                             (Register.R, Integer.toHexString(r).toUpperCase());
 
             EmulatorPaneController.this.emulatorFrame.
-                                    getMainPane().setRegisterValue
-                                              (Register.M, Integer.toString(m));
+                          getMainPane().setRegisterValue
+                             (Register.M, Integer.toHexString(m).toUpperCase());
 
             EmulatorPaneController.this.emulatorFrame.
-                                    getMainPane().setRegisterValue
-                                            (Register.IC, Integer.toString(ic));
+                          getMainPane().setRegisterValue
+                           (Register.IC, Integer.toHexString(ic).toUpperCase());
 
             EmulatorPaneController.this.emulatorFrame.
-                                    getMainPane().setRegisterValue
-                                            (Register.SF, Integer.toString(sf));
+                          getMainPane().setRegisterValue
+                           (Register.SF, Integer.toHexString(sf).toUpperCase());
 
+            EmulatorPaneController.this.emulatorFrame.
+                          getMainPane().setRegisterValue
+                             (Register.S, Integer.toHexString(s).toUpperCase());
 
-            int[] virtualMemory =
-                         EmulatorPaneController.this.machine.getVirtualMemory();
-
-            for (int index = 0; index < virtualMemory.length; index++)
-                    {
-                        EmulatorPaneController.this.emulatorFrame.
-                                            getMainPane().setValueVMMemory
-                                                    (index, virtualMemory[index]);
-                    }
-
-            //atnaujiname VM atminti(jos rodyni)!!!
+            EmulatorPaneController.this.setVMMemoryValues();
         }
 
     }
     //--------------------------------------------------------------------------
+
+    private void setVMMemoryValues()
+    {
+        int[] memoryDump = this.machine.getMemoryDump();
+        for (int index = 0x10 ; index <= 0x100E; index++)
+        {
+            EmulatorPaneController.this.emulatorFrame.
+                                            getMainPane().setValueVMMemory
+                                              (index - 0x10, memoryDump[index]);
+        }
+    }
 }
