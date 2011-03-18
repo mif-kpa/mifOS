@@ -70,6 +70,8 @@ public class EmulatorPane extends javax.swing.JPanel {
         registerCHST3Value = new javax.swing.JLabel();
         stateCPUTitle = new javax.swing.JLabel();
         stateCPUValue = new javax.swing.JLabel();
+        registerS = new javax.swing.JLabel();
+        registerSValue = new javax.swing.JLabel();
 
         vmRegistersTitle.setText("VM registrai:");
 
@@ -130,53 +132,60 @@ public class EmulatorPane extends javax.swing.JPanel {
 
         stateCPUValue.setText("laisvas");
 
+        registerS.setText("S:");
+
+        registerSValue.setText("####");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(vmRegistersTitle)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(registerIC)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(registerICValue))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(registerM)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(registerMValue))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(registerR)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(registerRValue)))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(registerCHST3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(registerCHST3Value))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(registerCHST2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(registerCHST2Value))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(registerCHST1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(registerCHST1Value))
-                                    .addComponent(titleChannelRegisters)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(registerSF)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(registerSFValue))
-                            .addComponent(titleRMMemory))))
-                .addGap(26, 26, 26)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(vmRegistersTitle)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(registerIC)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(registerICValue))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(registerM)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(registerMValue))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(registerR)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(registerRValue)))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(registerCHST3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(registerCHST3Value))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(registerCHST2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(registerCHST2Value))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(registerCHST1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(registerCHST1Value))
+                                .addComponent(titleChannelRegisters)))
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(titleRMMemory)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(registerSF)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(registerSFValue))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(registerS)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(registerSValue))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(titleConsole)
@@ -211,7 +220,7 @@ public class EmulatorPane extends javax.swing.JPanel {
                     .addComponent(stateCPUTitle)
                     .addComponent(stateCPUValue))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(registerR)
@@ -232,11 +241,15 @@ public class EmulatorPane extends javax.swing.JPanel {
                             .addComponent(registerICValue))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(registerS)
+                            .addComponent(registerSValue))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(registerSF)
                             .addComponent(registerSFValue))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(titleRMMemory)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -252,7 +265,7 @@ public class EmulatorPane extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(executeProgram)
                             .addComponent(executeByStep))))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -266,17 +279,17 @@ public class EmulatorPane extends javax.swing.JPanel {
             if (index < 16)
             {
                 listValues[index] =
-                          "00" + Integer.toHexString(index).toUpperCase() + ":";
+                         "00" + Integer.toHexString(index).toUpperCase() + ": ";
             }
             else if ((index > 15) && (index < 256))
             {
                 listValues[index] =
-                           "0" + Integer.toHexString(index).toUpperCase() + ":";
+                          "0" + Integer.toHexString(index).toUpperCase() + ": ";
             }
             else
             {
                 listValues[index] =
-                                 Integer.toHexString(index).toUpperCase() + ":";
+                                Integer.toHexString(index).toUpperCase() + ": ";
             }
         }
 
@@ -305,8 +318,10 @@ public class EmulatorPane extends javax.swing.JPanel {
     private javax.swing.JLabel registerMValue;
     private javax.swing.JLabel registerR;
     private javax.swing.JLabel registerRValue;
+    private javax.swing.JLabel registerS;
     private javax.swing.JLabel registerSF;
     private javax.swing.JLabel registerSFValue;
+    private javax.swing.JLabel registerSValue;
     private javax.swing.JButton restartCPU;
     private javax.swing.JLabel stateCPUTitle;
     private javax.swing.JLabel stateCPUValue;
@@ -334,6 +349,7 @@ public class EmulatorPane extends javax.swing.JPanel {
         this.setRegisterValue(Register.R, "0000");
         this.setRegisterValue(Register.M, "0000");
         this.setRegisterValue(Register.IC, "00");
+        this.setRegisterValue(Register.S, "0000");
         this.setRegisterValue(Register.SF, "0");
 
         this.setRegisterValue(Register.CHST1, "0");
@@ -409,6 +425,9 @@ public class EmulatorPane extends javax.swing.JPanel {
             case IC: this.registerICValue.setText(value);
                 break;
 
+            case S: this.registerSValue.setText(value);
+                break;
+
             case SF: this.registerSFValue.setText(value);
                 break;
 
@@ -467,7 +486,7 @@ public class EmulatorPane extends javax.swing.JPanel {
         String oldValue = (String)this.model.getElementAt(virtualAddress);
         String[] splittedOldValue = oldValue.split(": ", 2);
         this.model.setElementAt
-                            (splittedOldValue[0]
+                            (splittedOldValue[0] + ": "
                                + Integer.toHexString(newValue).toUpperCase(),
                                                                 virtualAddress);
     }

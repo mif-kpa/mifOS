@@ -10,6 +10,7 @@ import Event.RMEventLauncher;
 import RealMachine.RealMachine;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -38,7 +39,7 @@ public class EmulatorFrame extends JFrame
         this.setTitle("RM emuliatorius");
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.add(mainPane);
-        this.setSize(700, 400);
+        this.setSize(730, 400);
         this.setResizable(false);
     }
 
@@ -60,5 +61,11 @@ public class EmulatorFrame extends JFrame
                                         (emulatorFrame, machine, eventLauncher);
 
         emulatorFrame.setVisible(true);
+    }
+
+    public static void showErrorMessage(String msg)
+    {
+        JOptionPane errorFrame = new JOptionPane();
+        JOptionPane.showMessageDialog(errorFrame, msg);
     }
 }
