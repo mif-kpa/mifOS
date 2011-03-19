@@ -2,7 +2,13 @@ CLxy   (įdeda į steką grįžimo adresą ir nušoką į [xy] adresą kurį vyk
 RETx  (sugrįžta iš CALL sumažindamas steko viršūnės reikšmę per x)
 PSHx  (įdeda reikšmę į steką. x nurodo kuris registras)
 POPx  (iš stekopaima reikšmę ir įdeda į registrą)
+SLxy  (postumis į kairę per y)
+SRxy  (postumis i desine per y)
+SPxy  (postumis i desine su pataisymu per y)
+LOxy  (loopas i xy koordinates)
+LPxy  (loopas kur x nenaudojamas, o y nurodo poslinki)
 
+=====================================
 x PUSH ir POP komandoms atitinka:
 
 1 : R
@@ -10,3 +16,15 @@ x PUSH ir POP komandoms atitinka:
 3 : SF
 4 : PD (tik supervizorius)
 5 : PTR (tik supervizorius)
+=====================================
+x SLxy, SRxy, SPxy atitinka:
+
+1 : R
+2 : M
+=====================================
+Loop'o veikimas:
+
+if (registers.m != 0) {
+    registers.m--;
+    jump(x, y);
+}
