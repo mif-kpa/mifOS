@@ -515,7 +515,7 @@ public class Machine implements RealMachine {
 	}
 
 	public int[] getVirtualMemory() {
-		int[] vm = new int[0xFFF];
+		int[] vm = new int[0x1000];
 
 		for (byte i = 0; i < 0x10; i++) {
 			int adr = registers.ptr * 0x10 + i;
