@@ -138,6 +138,10 @@ public class Machine implements RealMachine {
 				case 'N': Nxyz(x, y, z); break;
 				case 'O': Oxyz(x, y, z); break;
 				case 'X': Xxyz(x, y, z); break;
+				case 'P':
+					if (x == 'S' && y == 'H') PSHx(z);
+					if (x == 'P' && y == 'P') POPx(z);
+					break;
 			}
 
 		}
@@ -618,5 +622,29 @@ public class Machine implements RealMachine {
 
 	public boolean isRunning() {
 		return running;
+	}
+
+	private void PSHx(int x) {
+		registers.s++;
+		registers.s &= 0xFFFF;
+		switch (x) {
+			case 1: ram[registers.s] = registers.r; break;
+			case 2: ram[registers.s] = registers.m; break;
+			case 3: ram[registers.s] = registers.sf; break;
+			case 4: ram[registers.s] = registers.pd; break;
+			case 5: ram[registers.s] = registers.ptr; break;
+		}
+	}
+
+	private void POPx(int x) {
+		registers.s--;
+		registers.s &= 0xFFFF;
+		switch (x) {
+			case 1: registers.r = ram[registers.s]; break;
+			case 2: registers.m = ram[registers.s]; break;
+			case 3: registers.sf = ram[registers.s]; break;
+			case 4: registers.pd = ram[registers.s]; break;
+			case 5: registers.ptr = ram[registers.s]; break;
+		}
 	}
 }

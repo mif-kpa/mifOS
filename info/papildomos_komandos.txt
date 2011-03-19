@@ -1,5 +1,6 @@
 CLxy   (įdeda į steką grįžimo adresą ir nušoką į [xy] adresą kurį vykdo)
 RETx  (sugrįžta iš CALL sumažindamas steko viršūnės reikšmę per x)
+IRET  (sugrizta is interupo ir atsatto visus registrus)
 PSHx  (įdeda reikšmę į steką. x nurodo kuris registras)
 POPx  (iš stekopaima reikšmę ir įdeda į registrą)
 SLxy  (postumis į kairę per y)
