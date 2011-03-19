@@ -102,9 +102,9 @@ public class Machine implements RealMachine {
 		int instruction = getActualWord(registers.ic++);
 		registers.ic %= 0x10000;
 
-		int komanda = instruction >> 24;
-		int x = (instruction & 0xFF0000) >> 16;
-		int y = (instruction & 0xFF00) >> 8;
+		int komanda = instruction >>> 24;
+		int x = (instruction & 0xFF0000) >>> 16;
+		int y = (instruction & 0xFF00) >>> 8;
 		int z = (instruction & 0xFF);
 
 		int yz = (instruction & 0xFF);
@@ -146,6 +146,10 @@ public class Machine implements RealMachine {
 					if (x == 'L') sLxy(y, z);
 					if (x == 'R') sRxy(y, z);
 					if (x == 'P') sPxy(y, z);
+					break;
+				case 'l':
+					if (x == 'O') lOxy(y, z);
+					if (x == 'P') lPxy(z);
 					break;
 			}
 
@@ -675,6 +679,17 @@ public class Machine implements RealMachine {
 	}
 
 	private void loop(int adr) {
-		
+		if (registers.m != 0) {
+			registers.m--;
+			registers.ic = adr;
+		}
+	}
+
+	private void lOxy(int x, int y) {
+		loop(x * 0x100 + y);
+	}
+
+	private void lPxy(int y) {
+		loop(registers.ic - y);
 	}
 }

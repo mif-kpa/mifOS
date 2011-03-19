@@ -6,8 +6,8 @@ POPx  (iš stekopaima reikšmę ir įdeda į registrą)
 sLxy  (postumis į kairę per y)
 sRxy  (postumis i desine per y)
 sPxy  (postumis i desine su ženklo pataisymu per y)
-LOxy  (loopas i xy koordinates)
-LPxy  (loopas kur x nenaudojamas, o y nurodo poslinki)
+lOxy  (loopas i xy atminti)
+lPxy  (loopas kur y, o x nenaudojamas. x nurodo per kiek komandu nusokti atgal)
 
 =====================================
 x PUSH ir POP komandoms atitinka:
