@@ -150,6 +150,10 @@ public class Machine implements RealMachine {
 				case 'l':
 					if (x == 'O') lOxy(y, z);
 					if (x == 'P') lPxy(z);
+					if (x == 'e' && y == 'a' && z == 'v') leave();
+					break;
+				case 'E':
+					if (x == 'N' && y == 'T' && z == 'R') enter();
 					break;
 			}
 
@@ -642,6 +646,7 @@ public class Machine implements RealMachine {
 			case 3: ram[registers.s] = registers.sf; break;
 			case 4: ram[registers.s] = registers.pd; break;
 			case 5: ram[registers.s] = registers.ptr; break;
+			case 6: ram[registers.s] = registers.ic; break;
 		}
 	}
 
@@ -654,7 +659,24 @@ public class Machine implements RealMachine {
 			case 3: registers.sf = ram[registers.s]; break;
 			case 4: registers.pd = ram[registers.s]; break;
 			case 5: registers.ptr = ram[registers.s]; break;
+			case 6: registers.ic = ram[registers.s]; break;
 		}
+	}
+
+	private void enter() {
+		PSHx(1);
+		PSHx(2);
+		PSHx(3);
+		PSHx(4);
+		PSHx(5);
+	}
+
+	private void leave() {
+		POPx(5);
+		POPx(4);
+		POPx(3);
+		POPx(2);
+		POPx(1);
 	}
 
 	private void sLxy(int x, int y) {

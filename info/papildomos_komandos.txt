@@ -1,6 +1,8 @@
-CLxy   (įdeda į steką grįžimo adresą ir nušoką į [xy] adresą kurį vykdo)
+cLxy   (įdeda į steką grįžimo adresą ir nušoką į [xy] adresą kurį vykdo)
 RETx  (sugrįžta iš CALL sumažindamas steko viršūnės reikšmę per x)
 IRET  (sugrizta is interupo ir atsatto visus registrus)
+ENTR  (issaugo visus registrus i steka)
+leav  (ikrauna visus registrus is steko)
 PSHx  (įdeda reikšmę į steką. x nurodo kuris registras)
 POPx  (iš stekopaima reikšmę ir įdeda į registrą)
 sLxy  (postumis į kairę per y)
@@ -17,6 +19,7 @@ x PUSH ir POP komandoms atitinka:
 3 : SF
 4 : PD (tik supervizorius)
 5 : PTR (tik supervizorius)
+6 : ic
 =====================================
 x SLxy, SRxy, SPxy atitinka:
 
