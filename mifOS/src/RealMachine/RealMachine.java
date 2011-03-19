@@ -35,4 +35,6 @@ public interface RealMachine {
 	 * @return Byte[] atminties masyvas
 	 */
 	public int[] halt();
+
+	public boolean isRunning();
 }

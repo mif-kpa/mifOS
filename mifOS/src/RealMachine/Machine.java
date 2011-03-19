@@ -615,4 +615,8 @@ public class Machine implements RealMachine {
 
 		return rez;
 	}
+
+	public boolean isRunning() {
+		return running;
+	}
 }
