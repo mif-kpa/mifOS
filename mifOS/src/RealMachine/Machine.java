@@ -142,6 +142,11 @@ public class Machine implements RealMachine {
 					if (x == 'S' && y == 'H') PSHx(z);
 					if (x == 'P' && y == 'P') POPx(z);
 					break;
+				case 's':
+					if (x == 'L') sLxy(y, z);
+					if (x == 'R') sRxy(y, z);
+					if (x == 'P') sPxy(y, z);
+					break;
 			}
 
 		}
@@ -646,5 +651,30 @@ public class Machine implements RealMachine {
 			case 4: registers.pd = ram[registers.s]; break;
 			case 5: registers.ptr = ram[registers.s]; break;
 		}
+	}
+
+	private void sLxy(int x, int y) {
+		switch (x) {
+			case 1: registers.r <<= y; break;
+			case 2: registers.m <<= y; break;
+		}
+	}
+
+	private void sRxy(int x, int y) {
+		switch (x) {
+			case 1: registers.r >>>= y; break;
+			case 2: registers.m >>>= y; break;
+		}
+	}
+
+	private void sPxy(int x, int y) {
+		switch (x) {
+			case 1: registers.r >>= y; break;
+			case 2: registers.m >>= y; break;
+		}
+	}
+
+	private void loop(int adr) {
+		
 	}
 }
