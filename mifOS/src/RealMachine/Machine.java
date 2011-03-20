@@ -32,7 +32,7 @@ public class Machine implements RealMachine {
 		} else {
 			running = true;
 
-			//@TODO turi buti paleista masija
+			new Thread(new Runner(this)).start();
 
 			return true;
 		}
@@ -568,6 +568,9 @@ public class Machine implements RealMachine {
 
 		inited = false;
 
+		if (events != null)
+			events.onHalt(this);
+
 		return ram;
 	}
 
@@ -605,8 +608,7 @@ public class Machine implements RealMachine {
 		RealMachine rm = Machine.createMachine();
 		rm.loadDump(dump);
 
-		for (int x = 20; x > 0; x--)
-			rm.step();
+		rm.run();
 
 		int[] mem = rm.getMemoryDump();
 

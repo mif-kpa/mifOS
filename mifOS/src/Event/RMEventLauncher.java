@@ -40,4 +40,9 @@ public class RMEventLauncher extends Event
     {
         this.rmel = rmel;
     }
+
+	@Override
+	public boolean onHalt(RealMachine rm) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 }
