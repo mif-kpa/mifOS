@@ -18,4 +18,8 @@ public class Registers {
 	public int s;
 	public int sf;
 	public int ic;
+
+	public int chm1;
+	public int chm2;
+	public int chm3;
 }
