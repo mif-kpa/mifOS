@@ -155,6 +155,13 @@ public class Machine implements RealMachine {
 				case 'E':
 					if (x == 'N' && y == 'T' && z == 'R') enter();
 					break;
+				case 'c':
+					if (x == 'L') call(y, z);
+					break;
+				case 'R':
+					if (x == 'E' && y == 'T' && z < 40) RETx(z);
+					if (x == 'E' && y == 'T' && z == 'I') IRET();
+					break;
 			}
 
 		}
@@ -288,6 +295,10 @@ public class Machine implements RealMachine {
 		}
 		jump(adr);
 
+	}
+
+	private void jump(int x, int y) {
+		jump(4, x, y);
 	}
 
 	private void generateSF(int value) {
@@ -713,5 +724,54 @@ public class Machine implements RealMachine {
 
 	private void lPxy(int y) {
 		loop(registers.ic - y);
+	}
+
+	private void cLxy(int x, int y) {
+		call(x, y);
+	}
+
+	private void call(int x, int y) {
+		call(0x100 * x + y);
+	}
+
+	private void call(int x) {
+		PSHx(5);
+		jump(x);
+	}
+
+	private void RETx(int x) {
+		POPx(5);
+		registers.s -= x;
+		registers.s &= 0xFFFF;
+	}
+
+	private void IRET() {
+		leave();
+	}
+
+	private void interupt(int x) {
+		boolean wasSuper = false;
+
+		if (!isSuper())
+			halt();
+		else
+			wasSuper = true;
+
+
+		enter();
+
+		if (wasSuper) registers.pd = 0;
+
+		jump(2, 0, 7 + x);
+	}
+
+	private void interupt(int x, boolean changeR, int r, boolean changeM, int m) {
+		interupt(x);
+		
+		if (changeR)
+			registers.r = r;
+
+		if (changeM)
+			registers.m = m;
 	}
 }

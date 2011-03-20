@@ -1,6 +1,6 @@
 cLxy   (įdeda į steką grįžimo adresą ir nušoką į [xy] adresą kurį vykdo)
 RETx  (sugrįžta iš CALL sumažindamas steko viršūnės reikšmę per x)
-IRET  (sugrizta is interupo ir atsatto visus registrus)
+RETI  (sugrizta is interupo ir atsatto visus registrus)
 ENTR  (issaugo visus registrus i steka)
 leav  (ikrauna visus registrus is steko)
 PSHx  (įdeda reikšmę į steką. x nurodo kuris registras)
