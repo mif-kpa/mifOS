@@ -14,4 +14,5 @@ public interface RMEventListener
     public void inputRequested();
     public void outputRequested();
     public void stepRequested();
+    public void haltRequested();
 }

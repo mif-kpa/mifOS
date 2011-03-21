@@ -36,13 +36,15 @@ public class RMEventLauncher extends Event
         return true;
     }
 
+    @Override
+    public boolean onHalt(RealMachine rm)
+    {
+        rmel.haltRequested();
+        return true;
+    }
+
     public void addListener(RMEventListener rmel)
     {
         this.rmel = rmel;
     }
-
-	@Override
-	public boolean onHalt(RealMachine rm) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
 }

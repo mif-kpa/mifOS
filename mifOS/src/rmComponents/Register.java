@@ -18,7 +18,14 @@ public enum Register
     SF(5),
     CHST1(6),
     CHST2(7),
-    CHST3(8);
+    CHST3(8),
+    PD(9),
+    PTR(10),
+    MODE(11),
+    SF_1(12),
+    SF_2(13),
+    SF_3(14),
+    SF_4(15);
 
     private final int value;
 
