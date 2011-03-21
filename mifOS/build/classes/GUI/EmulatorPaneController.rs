@@ -1,5 +1,0 @@
-emulator.GUI.EmulatorPaneController$ExecuteProgramButtonActionListener
-emulator.GUI.EmulatorPaneController
-emulator.GUI.EmulatorPaneController$LoadProgramButtonActionListener
-emulator.GUI.EmulatorPaneController$RestartCPUButtonActionListener
-emulator.GUI.EmulatorPaneController$ExecuteProgramByStepButtonActionListener
