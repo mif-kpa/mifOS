@@ -11,12 +11,13 @@
 
 package GUI;
 
+import MachineDataUtilities.MachineDataUtilities;
 import rmComponents.Register;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -26,8 +27,8 @@ public class EmulatorPane extends javax.swing.JPanel {
 
     /** Creates new form EmulatorPane */
     public EmulatorPane() {
+        initCellRenderer();
         initComponents();
-        initModel(4096);
         initRegisters();
     }
 
@@ -49,15 +50,11 @@ public class EmulatorPane extends javax.swing.JPanel {
         registerCHST1 = new javax.swing.JLabel();
         registerCHST2 = new javax.swing.JLabel();
         registerCHST3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listRMMemory = new javax.swing.JList();
         titleRMMemory = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jScrollPane2 = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
         titleConsole = new javax.swing.JLabel();
         input = new javax.swing.JTextField();
-        restartCPU = new javax.swing.JButton();
         loadProgram = new javax.swing.JButton();
         executeProgram = new javax.swing.JButton();
         executeByStep = new javax.swing.JButton();
@@ -72,7 +69,36 @@ public class EmulatorPane extends javax.swing.JPanel {
         stateCPUValue = new javax.swing.JLabel();
         registerS = new javax.swing.JLabel();
         registerSValue = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        memoryTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        registerMODEValue = new javax.swing.JLabel();
+        registerPDValue = new javax.swing.JLabel();
+        registerPTRValue = new javax.swing.JLabel();
+        registerSFValueR = new javax.swing.JLabel();
+        registerSValueR = new javax.swing.JLabel();
+        registerICValueR = new javax.swing.JLabel();
+        registerMValueR = new javax.swing.JLabel();
+        registerRValueR = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel11 = new javax.swing.JLabel();
+        registerSFValue_4 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        registerSFValue_3 = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
+        registerSFValue_2 = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
+        registerSFValue_1 = new javax.swing.JLabel();
 
+        vmRegistersTitle.setFont(new java.awt.Font("DejaVu Sans", 1, 13));
         vmRegistersTitle.setText("VM registrai:");
 
         registerR.setText("R:");
@@ -83,6 +109,7 @@ public class EmulatorPane extends javax.swing.JPanel {
 
         registerSF.setText("SF:");
 
+        titleChannelRegisters.setFont(new java.awt.Font("DejaVu Sans", 1, 13));
         titleChannelRegisters.setText("Kanalų registrai:");
 
         registerCHST1.setText("CHST[1]:");
@@ -91,10 +118,7 @@ public class EmulatorPane extends javax.swing.JPanel {
 
         registerCHST3.setText("CHST[3]:");
 
-        listRMMemory.setModel(this.model);
-        jScrollPane1.setViewportView(listRMMemory);
-
-        titleRMMemory.setText("VM atmintis:");
+        titleRMMemory.setText("RM atmintis:");
 
         console.setColumns(20);
         console.setEditable(false);
@@ -105,8 +129,6 @@ public class EmulatorPane extends javax.swing.JPanel {
         titleConsole.setText("Konsolė:");
 
         input.setEditable(false);
-
-        restartCPU.setText("Perkrauti procesorių");
 
         loadProgram.setText("Įkelti programą");
 
@@ -136,6 +158,77 @@ public class EmulatorPane extends javax.swing.JPanel {
 
         registerSValue.setText("####");
 
+        memoryTable.setModel(this.memoryTableModel);
+        try
+        {
+            this.memoryTable.setDefaultRenderer(Class.forName
+                ( "java.lang.String" ), this.memoryTableCellRenderer);
+        } catch(ClassNotFoundException e)
+        {
+            System.exit( 0 );
+        }
+
+        this.memoryTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+        for (int index = 0; index < 2; index++)
+        {
+            TableColumn tableColumn = memoryTable.getColumnModel().getColumn(index);
+            tableColumn.setPreferredWidth(40);
+        }
+
+        jScrollPane3.setViewportView(memoryTable);
+
+        jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 13));
+        jLabel1.setText("RM registrai:");
+
+        jLabel2.setText("R:");
+
+        jLabel3.setText("M:");
+
+        jLabel4.setText("IC:");
+
+        jLabel5.setText("S:");
+
+        jLabel6.setText("SF:");
+
+        jLabel7.setText("PTR:");
+
+        jLabel8.setText("PD:");
+
+        jLabel9.setText("MODE:");
+
+        registerMODEValue.setText("#");
+
+        registerPDValue.setText("####");
+
+        registerPTRValue.setText("####");
+
+        registerSFValueR.setText("####");
+
+        registerSValueR.setText("####");
+
+        registerICValueR.setText("####");
+
+        registerMValueR.setText("####");
+
+        registerRValueR.setText("####");
+
+        jLabel11.setText("SF registras:");
+
+        registerSFValue_4.setText("00");
+
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        registerSFValue_3.setText("00");
+
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        registerSFValue_2.setText("00");
+
+        jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        registerSFValue_1.setText("00");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -143,39 +236,56 @@ public class EmulatorPane extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(vmRegistersTitle)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(registerIC)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(registerICValue))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(registerM)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(registerMValue))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(registerR)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(registerRValue)))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(registerCHST3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(registerCHST3Value))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(registerCHST2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(registerCHST2Value))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(registerCHST1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(registerCHST1Value))
-                                .addComponent(titleChannelRegisters)))
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(titleRMMemory)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(titleConsole)
+                        .addGap(157, 157, 157)
+                        .addComponent(stateCPUTitle)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(stateCPUValue))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(input, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(loadProgram)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(executeByStep)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(executeProgram)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(registerSFValue_4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(registerSFValue_3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(registerSFValue_2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(registerSFValue_1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(registerIC)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(registerICValue))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(registerM)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(registerMValue))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(registerR)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(registerRValue))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(registerSF)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -184,116 +294,166 @@ public class EmulatorPane extends javax.swing.JPanel {
                         .addComponent(registerS)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(registerSValue))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(titleConsole)
-                        .addGap(55, 55, 55)
-                        .addComponent(stateCPUTitle)
+                        .addComponent(registerCHST3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stateCPUValue)
-                        .addGap(136, 136, 136))
+                        .addComponent(registerCHST3Value))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(restartCPU)
-                            .addComponent(executeProgram))
+                        .addComponent(registerCHST2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(executeByStep)
-                            .addComponent(loadProgram))
-                        .addGap(62, 62, 62))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(registerCHST2Value))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(registerCHST1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(registerCHST1Value))
+                    .addComponent(titleChannelRegisters)
+                    .addComponent(jLabel1)
+                    .addComponent(vmRegistersTitle)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(input, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2))
-                        .addContainerGap())))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8))
+                                .addGap(22, 22, 22))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(registerRValueR)
+                            .addComponent(registerMValueR)
+                            .addComponent(registerICValueR)
+                            .addComponent(registerSValueR)
+                            .addComponent(registerSFValueR)
+                            .addComponent(registerPTRValue)
+                            .addComponent(registerPDValue)
+                            .addComponent(registerMODEValue))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(vmRegistersTitle)
-                    .addComponent(titleChannelRegisters)
-                    .addComponent(titleConsole)
-                    .addComponent(stateCPUTitle)
-                    .addComponent(stateCPUValue))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(titleChannelRegisters)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(registerCHST1)
+                            .addComponent(registerCHST1Value))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(registerCHST2)
+                            .addComponent(registerCHST2Value))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(registerCHST3)
+                            .addComponent(registerCHST3Value))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(registerRValueR))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(registerMValueR))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(registerICValueR))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(registerSValueR))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(registerSFValueR))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(registerPTRValue)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(registerPDValue)
+                            .addComponent(jLabel8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(registerMODEValue)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(vmRegistersTitle)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(registerR)
-                            .addComponent(registerCHST1)
-                            .addComponent(registerCHST1Value)
                             .addComponent(registerRValue))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(registerM)
-                            .addComponent(registerCHST2)
-                            .addComponent(registerCHST2Value)
                             .addComponent(registerMValue))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(registerIC)
-                            .addComponent(registerCHST3)
-                            .addComponent(registerCHST3Value)
                             .addComponent(registerICValue))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(registerS)
                             .addComponent(registerSValue))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(registerSF)
-                            .addComponent(registerSFValue))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(titleRMMemory)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(registerSFValue)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(restartCPU)
-                            .addComponent(loadProgram))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(executeProgram)
-                            .addComponent(executeByStep))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(titleRMMemory)
+                            .addComponent(titleConsole)
+                            .addComponent(stateCPUTitle)
+                            .addComponent(stateCPUValue))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(loadProgram)
+                                    .addComponent(executeByStep)
+                                    .addComponent(executeProgram))
+                                .addGap(12, 12, 12)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(159, 159, 159))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jSeparator4)
+                                        .addComponent(jSeparator3)
+                                        .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(registerSFValue_4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(registerSFValue_3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(registerSFValue_2))
+                                    .addComponent(registerSFValue_1)))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private String[] generateListRMMemoryValues(int quantity)
+    private void initCellRenderer()
     {
-        String[] listValues = new String[quantity];
-
-        for (int index = 0; index < listValues.length; index++)
-        {
-            if (index < 16)
-            {
-                listValues[index] =
-                         "00" + Integer.toHexString(index).toUpperCase() + ": ";
-            }
-            else if ((index > 15) && (index < 256))
-            {
-                listValues[index] =
-                          "0" + Integer.toHexString(index).toUpperCase() + ": ";
-            }
-            else
-            {
-                listValues[index] =
-                                Integer.toHexString(index).toUpperCase() + ": ";
-            }
-        }
-
-        return listValues;
+        int[] pageArea = {-1, -1};
+        int[] virtualArea = {-1, -1};
+        this.memoryTableCellRenderer = 
+                             new MemoryTableCellRenderer(pageArea, virtualArea);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -301,11 +461,24 @@ public class EmulatorPane extends javax.swing.JPanel {
     private javax.swing.JButton executeByStep;
     private javax.swing.JButton executeProgram;
     private javax.swing.JTextField input;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JList listRMMemory;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JButton loadProgram;
+    private javax.swing.JTable memoryTable;
     private javax.swing.JLabel registerCHST1;
     private javax.swing.JLabel registerCHST1Value;
     private javax.swing.JLabel registerCHST2;
@@ -314,15 +487,26 @@ public class EmulatorPane extends javax.swing.JPanel {
     private javax.swing.JLabel registerCHST3Value;
     private javax.swing.JLabel registerIC;
     private javax.swing.JLabel registerICValue;
+    private javax.swing.JLabel registerICValueR;
     private javax.swing.JLabel registerM;
+    private javax.swing.JLabel registerMODEValue;
     private javax.swing.JLabel registerMValue;
+    private javax.swing.JLabel registerMValueR;
+    private javax.swing.JLabel registerPDValue;
+    private javax.swing.JLabel registerPTRValue;
     private javax.swing.JLabel registerR;
     private javax.swing.JLabel registerRValue;
+    private javax.swing.JLabel registerRValueR;
     private javax.swing.JLabel registerS;
     private javax.swing.JLabel registerSF;
     private javax.swing.JLabel registerSFValue;
+    private javax.swing.JLabel registerSFValueR;
+    private javax.swing.JLabel registerSFValue_1;
+    private javax.swing.JLabel registerSFValue_2;
+    private javax.swing.JLabel registerSFValue_3;
+    private javax.swing.JLabel registerSFValue_4;
     private javax.swing.JLabel registerSValue;
-    private javax.swing.JButton restartCPU;
+    private javax.swing.JLabel registerSValueR;
     private javax.swing.JLabel stateCPUTitle;
     private javax.swing.JLabel stateCPUValue;
     private javax.swing.JLabel titleChannelRegisters;
@@ -332,29 +516,23 @@ public class EmulatorPane extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private javax.swing.JFileChooser fileChooser = new JFileChooser();
-    private final DefaultListModel model = new DefaultListModel();
 
-
-    private void initModel(int quantity)
-    {
-        String[] modelValues = this.generateListRMMemoryValues(quantity);
-        for (int index = 0; index < modelValues.length; index++)
-        {
-            this.model.addElement(modelValues[index]);
-        }
-    }
+    private MemoryTableModel memoryTableModel = new MemoryTableModel();
+    private MemoryTableCellRenderer memoryTableCellRenderer;
 
     private void initRegisters()
     {
-        this.setRegisterValue(Register.R, "0000");
-        this.setRegisterValue(Register.M, "0000");
-        this.setRegisterValue(Register.IC, "00");
-        this.setRegisterValue(Register.S, "0000");
-        this.setRegisterValue(Register.SF, "0");
-
-        this.setRegisterValue(Register.CHST1, "0");
-        this.setRegisterValue(Register.CHST2, "0");
-        this.setRegisterValue(Register.CHST3, "0");
+        this.setRegisterValue(Register.R, 0);
+        this.setRegisterValue(Register.M, 0);
+        this.setRegisterValue(Register.IC, 0);
+        this.setRegisterValue(Register.S, 0);
+        this.setRegisterValue(Register.SF, 0);
+        this.setRegisterValue(Register.PD, 0);
+        this.setRegisterValue(Register.PTR, 0);
+        this.setRegisterValue(Register.MODE, 0);
+        this.setRegisterValue(Register.CHST1, 0);
+        this.setRegisterValue(Register.CHST2, 0);
+        this.setRegisterValue(Register.CHST3, 0);
     }
     //--------------------------------------------------------------------------
     public JButton getExecuteByStep()
@@ -372,16 +550,6 @@ public class EmulatorPane extends javax.swing.JPanel {
         return loadProgram;
     }
 
-    public JButton getRestartCPU()
-    {
-        return restartCPU;
-    }
-
-    public JList getListRMMemory()
-    {
-        return listRMMemory;
-    }
-
     public JFileChooser getFileChooser()
     {
         return fileChooser;
@@ -390,6 +558,11 @@ public class EmulatorPane extends javax.swing.JPanel {
     public JTextField getInput()
     {
         return input;
+    }
+
+    public MemoryTableCellRenderer getMemoryTableCellRenderer()
+    {
+        return memoryTableCellRenderer;
     }
     //--------------------------------------------------------------------------
 
@@ -412,39 +585,98 @@ public class EmulatorPane extends javax.swing.JPanel {
         this.console.setText(line);
     }
 
-    public void setRegisterValue(Register register, String value)
+    public void setRegisterValue(Register register, int value)
     {
         switch (register)
         {
-            case R: this.registerRValue.setText(value);
+            case R: 
+                this.registerRValue.
+                             setText(MachineDataUtilities.formatData(value, 8));
+                this.registerRValueR.
+                             setText(MachineDataUtilities.formatData(value, 8));
                 break;
 
-            case M: this.registerMValue.setText(value);
+            case M: 
+                this.registerMValue.
+                             setText(MachineDataUtilities.formatData(value, 8));
+                this.registerMValueR.
+                             setText(MachineDataUtilities.formatData(value, 8));
                 break;
 
-            case IC: this.registerICValue.setText(value);
+            case IC: 
+                this.registerICValue.
+                             setText(MachineDataUtilities.formatData(value, 4));
+                this.registerICValueR.
+                             setText(MachineDataUtilities.formatData(value, 4));
                 break;
 
-            case S: this.registerSValue.setText(value);
+            case S: 
+                this.registerSValue.
+                             setText(MachineDataUtilities.formatData(value, 8));
+                this.registerSValueR.
+                             setText(MachineDataUtilities.formatData(value, 8));
                 break;
 
-            case SF: this.registerSFValue.setText(value);
+            case SF: 
+                this.registerSFValue.
+                             setText(MachineDataUtilities.formatData(value, 8));
+                this.registerSFValueR.
+                             setText(MachineDataUtilities.formatData(value, 8));
                 break;
 
-            case CHST1: this.registerCHST1Value.setText(value);
+            case SF_1: 
+                this.registerSFValue_1.
+                             setText(MachineDataUtilities.formatData(value, 2));
                 break;
 
-            case CHST2: this.registerCHST2Value.setText(value);
+            case SF_2: 
+                this.registerSFValue_2.
+                             setText(MachineDataUtilities.formatData(value, 2));
                 break;
 
-            case CHST3: this.registerCHST3Value.setText(value);
+            case SF_3: 
+                this.registerSFValue_3.
+                             setText(MachineDataUtilities.formatData(value, 2));
                 break;
 
-            default: /*exception'as*/;
+            case SF_4: 
+                this.registerSFValue_4.
+                             setText(MachineDataUtilities.formatData(value, 2));
+                break;
+
+            case MODE: 
+                this.registerMODEValue.
+                             setText(MachineDataUtilities.formatData(value, 1));
+                break;
+
+            case PD: 
+                this.registerPDValue.
+                             setText(MachineDataUtilities.formatData(value, 8));
+                break;
+
+            case PTR: 
+                this.registerPTRValue.
+                             setText(MachineDataUtilities.formatData(value, 8));
+                break;
+
+            case CHST1: 
+                this.registerCHST1Value.
+                             setText(MachineDataUtilities.formatData(value, 1));
+                break;
+
+            case CHST2: 
+                this.registerCHST2Value.
+                             setText(MachineDataUtilities.formatData(value, 1));
+                break;
+
+            case CHST3: 
+                this.registerCHST3Value.
+                             setText(MachineDataUtilities.formatData(value, 1));
+                break;
         }
     }
 
-    public int getRegisterValue(Register register)
+    /*public int getRegisterValue(Register register)
     {
         switch(register)
         {
@@ -467,27 +699,24 @@ public class EmulatorPane extends javax.swing.JPanel {
 
             default: return 0;//exception'as
         }
-    }
+    }*/
 
     public void setInputEditableStatus(boolean status)
     {
         this.input.setEditable(status);
     }
 
-    public String getValueOfVMMemory(int virtualAddress)
+    public void setMemoryTableModelValue
+                        (int aValue, int rowIndex, int columnIndex)
     {
-        String memoryValue = (String)this.model.getElementAt(virtualAddress);
-        String[] splittedValue = memoryValue.split(": ", 2);
-        return splittedValue[1];
+        this.memoryTableModel.setValueAt
+                           (MachineDataUtilities.formatData(aValue, 8),
+                            rowIndex, columnIndex);
     }
 
-    public void setValueVMMemory(int virtualAddress, int newValue)
+    public void setMemoryTableModelValue
+                                 (String command, int rowIndex, int columnIndex)
     {
-        String oldValue = (String)this.model.getElementAt(virtualAddress);
-        String[] splittedOldValue = oldValue.split(": ", 2);
-        this.model.setElementAt
-                            (splittedOldValue[0] + ": "
-                               + Integer.toHexString(newValue).toUpperCase(),
-                                                                virtualAddress);
+        this.memoryTableModel.setValueAt(command, rowIndex, columnIndex);
     }
 }

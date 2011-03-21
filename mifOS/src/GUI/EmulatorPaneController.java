@@ -8,13 +8,14 @@ package GUI;
 import FileUtilities.FileUtilities;
 import Event.RMEventLauncher;
 import Event.RMEventListener;
+import Exception.MifOSException;
+import MachineDataUtilities.MachineDataUtilities;
 import RealMachine.RealMachine;
 import rmComponents.ChannelInputDevice;
 import rmComponents.Register;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import javax.swing.JFileChooser;
 
 /**
@@ -28,6 +29,8 @@ public class EmulatorPaneController
     private RealMachine machine;
     private RMEventLauncher eventLauncher;
 
+    private boolean machineIsRunning = true;
+
     public EmulatorPaneController(EmulatorFrame emulatorFrame,
                                                   RealMachine machine,
                                                   RMEventLauncher eventLauncher)
@@ -40,10 +43,6 @@ public class EmulatorPaneController
 
     private void addListeners()
     {
-        this.emulatorFrame.getMainPane().
-                           getRestartCPU().addActionListener
-                                         (new RestartCPUButtonActionListener());
-
         this.emulatorFrame.getMainPane().
                            getLoadProgram().addActionListener
                                         (new LoadProgramButtonActionListener());
@@ -63,16 +62,6 @@ public class EmulatorPaneController
     }
 
     //--------------------------------------------------------------------------
-    class RestartCPUButtonActionListener implements ActionListener
-    {
-
-        public void actionPerformed(ActionEvent ae)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-    }
-
     class LoadProgramButtonActionListener implements ActionListener
     {
 
@@ -95,12 +84,13 @@ public class EmulatorPaneController
                     int[] programCode = FileUtilities.getDataFromFile(file);
                     EmulatorPaneController.this.machine.loadDump(programCode);
 
-                    EmulatorPaneController.this.setVMMemoryValues();
+                    EmulatorPaneController.this.setMemoryValues();
+                    EmulatorPaneController.this.parseCommand();
+                    EmulatorPaneController.this.emulatorFrame.repaint();
 
-                } catch (IOException e)
+                } catch (MifOSException e)
                 {
-                    //Paleidziamas informacinis langas, paskutinis vartotojo
-                    //veiksmas anuliuojamas
+                    EmulatorFrame.showErrorMessage(e.getMessage());
                 }
               
             }
@@ -113,41 +103,29 @@ public class EmulatorPaneController
 
         public void actionPerformed(ActionEvent ae)
         {
-            do
+            try
             {
-                EmulatorPaneController.this.machine.step();
 
-            } while(0 != 0 /*isRunning*/);
+                if (EmulatorPaneController.this.machineIsRunning)
+                {
+                    do
+                    {
+                        EmulatorPaneController.this.machine.step();
+
+                    } while (EmulatorPaneController.this.machineIsRunning);
+                }
+                else
+                {
+                    String msg = "Programos toliau vykdyti negalima, "
+                                                  + "nes ji jau pabaigė savo darbą";
+                    throw new MifOSException(msg);
+                }
+
+            } catch(MifOSException e)
+            {
+                EmulatorFrame.showErrorMessage(e.getMessage());
+            }
         }
-
-        /*@Override
-        public void run()
-        {
-            EmulatorPaneController.this.emulatorFrame.
-                            getMainPane().getExecuteProgram().setEnabled(false);
-            
-            do
-            {   int registerICValue = EmulatorPaneController.
-                                    this.emulatorFrame.getMainPane().
-                                                  getRegisterValue(Register.IC);
-                String command = EmulatorPaneController.
-                                    this.emulatorFrame.getMainPane().
-                                            getValueOfVMMemory(registerICValue);
-
-                
-
-
-            } while (0 == 1); //klaidinga!!
-
-            EmulatorPaneController.this.emulatorFrame.
-                          getMainPane().getExecuteProgram().addActionListener
-                                     (new ExecuteProgramButtonActionListener());
-
-            EmulatorPaneController.this.emulatorFrame.
-                             getMainPane().getExecuteProgram().setEnabled(true);
-        }*/
-
-
     }
 
     class ExecuteProgramByStepButtonActionListener implements ActionListener
@@ -155,9 +133,25 @@ public class EmulatorPaneController
 
         public void actionPerformed(ActionEvent ae)
         {
-            EmulatorPaneController.this.machine.step();
-        }
+            try
+            {
+                if (EmulatorPaneController.this.machineIsRunning)
+                {
+                    EmulatorPaneController.this.machine.step();
+                }
+                else
+                {
+                    String msg = "Programos toliau vykdyti negalima, "
+                                              + "nes ji jau pabaigė savo darbą";
+                    throw new MifOSException(msg);
+                }
 
+
+            } catch(MifOSException e)
+            {
+                EmulatorFrame.showErrorMessage(e.getMessage());
+            }
+        }
     }
 
     class RMListener implements RMEventListener
@@ -181,45 +175,117 @@ public class EmulatorPaneController
         public void stepRequested()
         {
             int ic = EmulatorPaneController.this.machine.getRegister().ic;
-            int sf = EmulatorPaneController.this.machine.getRegister().sf;
+            int sf =
+                   EmulatorPaneController.this.machine.getRegister().sf;
             int r = EmulatorPaneController.this.machine.getRegister().r;
             int m = EmulatorPaneController.this.machine.getRegister().m;
             int s = EmulatorPaneController.this.machine.getRegister().s;
 
-            EmulatorPaneController.this.emulatorFrame.
-                          getMainPane().setRegisterValue
-                             (Register.R, Integer.toHexString(r).toUpperCase());
+            int pd = EmulatorPaneController.this.machine.getRegister().pd;
+            int ptr = EmulatorPaneController.this.machine.getRegister().ptr;
+            int mode = EmulatorPaneController.this.machine.getRegister().mode;
+
+            int sf_1 =
+                      EmulatorPaneController.this.machine.
+                                        getRegister().sf % 0x100;
+            
+             int sf_2 =
+                   EmulatorPaneController.this.machine.
+                                                getRegister().sf % 0x10000;
+             sf_2 = sf_2 / 0x100;
+
+             int sf_3 =
+                   EmulatorPaneController.this.machine.
+                                                getRegister().sf / 0x10000;
+             sf_3 = sf_3 % 0x100;
+
+             int sf_4 =
+                      EmulatorPaneController.this.machine.
+                                            getRegister().sf / 0x1000000;
 
             EmulatorPaneController.this.emulatorFrame.
-                          getMainPane().setRegisterValue
-                             (Register.M, Integer.toHexString(m).toUpperCase());
+                                  getMainPane().setRegisterValue(Register.R, r);
 
             EmulatorPaneController.this.emulatorFrame.
-                          getMainPane().setRegisterValue
-                           (Register.IC, Integer.toHexString(ic).toUpperCase());
+                                  getMainPane().setRegisterValue(Register.M, m);
 
             EmulatorPaneController.this.emulatorFrame.
-                          getMainPane().setRegisterValue
-                           (Register.SF, Integer.toHexString(sf).toUpperCase());
+                                getMainPane().setRegisterValue(Register.IC, ic);
 
             EmulatorPaneController.this.emulatorFrame.
-                          getMainPane().setRegisterValue
-                             (Register.S, Integer.toHexString(s).toUpperCase());
+                                getMainPane().setRegisterValue(Register.SF, sf);
 
-            EmulatorPaneController.this.setVMMemoryValues();
+            EmulatorPaneController.this.emulatorFrame.
+                                  getMainPane().setRegisterValue(Register.S, s);
+
+            EmulatorPaneController.this.emulatorFrame.
+                            getMainPane().setRegisterValue(Register.MODE, mode);
+
+            EmulatorPaneController.this.emulatorFrame.
+                              getMainPane().setRegisterValue(Register.PTR, ptr);
+
+            EmulatorPaneController.this.emulatorFrame.
+                                getMainPane().setRegisterValue(Register.PD, pd);
+
+            EmulatorPaneController.this.emulatorFrame.
+                            getMainPane().setRegisterValue(Register.SF_1, sf_1);
+
+            EmulatorPaneController.this.emulatorFrame.
+                            getMainPane().setRegisterValue(Register.SF_2, sf_2);
+
+            EmulatorPaneController.this.emulatorFrame.
+                            getMainPane().setRegisterValue(Register.SF_3, sf_3);
+
+            EmulatorPaneController.this.emulatorFrame.
+                            getMainPane().setRegisterValue(Register.SF_4, sf_4);
+
+
+            EmulatorPaneController.this.setPageTableAndVirtualMemoryArea();
+
+            EmulatorPaneController.this.setMemoryValues();
+            EmulatorPaneController.this.emulatorFrame.repaint();
         }
 
+        public void haltRequested()
+        {
+            EmulatorPaneController.this.machineIsRunning = false;
+        }
     }
     //--------------------------------------------------------------------------
-
-    private void setVMMemoryValues()
+    private void setMemoryValues()
     {
         int[] memoryDump = this.machine.getMemoryDump();
-        for (int index = 0x10 ; index <= 0x100E; index++)
+        for (int index = 0x0 ; index < 0xFFFF; index++)
         {
             EmulatorPaneController.this.emulatorFrame.
-                                            getMainPane().setValueVMMemory
-                                              (index - 0x10, memoryDump[index]);
+                                   getMainPane().setMemoryTableModelValue
+                                                  (memoryDump[index], index, 2);
+        }
+    }
+
+    private void setPageTableAndVirtualMemoryArea()
+    {
+        int ptr = this.machine.getRegister().ptr;
+
+        this.emulatorFrame.getMainPane().
+                getMemoryTableCellRenderer().setPageTableArea(ptr, ptr + 0xF);
+
+        this.emulatorFrame.getMainPane().
+                getMemoryTableCellRenderer().setPageTableArea(0x10, 0x100E);
+    }
+
+    private void parseCommand()
+    {
+        int[] memoryDump = this.machine.getMemoryDump();
+        for (int index = 0x10 ; index < 0xFFF; index++)
+        {
+            String command =
+                       MachineDataUtilities.parseInstruction(memoryDump[index]);
+
+
+            EmulatorPaneController.this.emulatorFrame.
+                                   getMainPane().setMemoryTableModelValue
+                                                     (command, index, 3);
         }
     }
 }

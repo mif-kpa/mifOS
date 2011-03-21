@@ -16,52 +16,68 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="vmRegistersTitle" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="registerIC" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="registerICValue" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="registerM" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="registerMValue" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="registerR" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="registerRValue" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="registerCHST3" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="registerCHST3Value" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="registerCHST2" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="registerCHST2Value" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="registerCHST1" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="registerCHST1Value" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="titleChannelRegisters" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Component id="jSeparator1" alignment="1" min="-2" pref="201" max="-2" attributes="1"/>
+                  <Component id="titleRMMemory" min="-2" max="-2" attributes="0"/>
+                  <Component id="jScrollPane3" min="-2" pref="245" max="-2" attributes="1"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="titleConsole" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
+                      <Component id="stateCPUTitle" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="stateCPUValue" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="titleRMMemory" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="jSeparator1" alignment="0" max="32767" attributes="1"/>
+                      <Component id="jScrollPane2" alignment="0" max="32767" attributes="1"/>
+                      <Component id="input" alignment="0" max="32767" attributes="1"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="loadProgram" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="executeByStep" min="-2" max="-2" attributes="1"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="executeProgram" min="-2" max="-2" attributes="1"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="registerSFValue_4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jSeparator2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="registerSFValue_3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jSeparator3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="registerSFValue_2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jSeparator4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="registerSFValue_1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="registerIC" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="registerICValue" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="registerM" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="registerMValue" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="registerR" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="registerRValue" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="registerSF" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -72,105 +88,52 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="registerSValue" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="titleConsole" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                      <Component id="stateCPUTitle" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="registerCHST3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="stateCPUValue" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
+                      <Component id="registerCHST3Value" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="restartCPU" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="executeProgram" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="registerCHST2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="executeByStep" min="-2" max="-2" attributes="0"/>
-                          <Component id="loadProgram" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
+                      <Component id="registerCHST2Value" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="registerCHST1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="registerCHST1Value" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="titleChannelRegisters" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <Component id="vmRegistersTitle" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="input" alignment="0" pref="329" max="32767" attributes="1"/>
-                          <Component id="jScrollPane2" alignment="1" max="32767" attributes="1"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-          </Group>
-      </Group>
-    </DimensionLayout>
-    <DimensionLayout dim="1">
-      <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="vmRegistersTitle" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="titleChannelRegisters" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="titleConsole" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="stateCPUTitle" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="stateCPUValue" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="1">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="registerR" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerCHST1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerCHST1Value" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerRValue" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="registerM" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerCHST2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerCHST2Value" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerMValue" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="registerIC" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerCHST3" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerCHST3Value" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerICValue" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="registerS" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerSValue" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="registerSF" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="registerSFValue" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jSeparator1" min="-2" pref="6" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="titleRMMemory" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="180" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="jScrollPane2" min="-2" pref="172" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="input" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="restartCPU" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="loadProgram" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="executeProgram" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="executeByStep" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="registerRValueR" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerMValueR" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerICValueR" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerSValueR" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerSFValueR" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerPTRValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerPDValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerMODEValue" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -178,10 +141,151 @@
           </Group>
       </Group>
     </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="titleChannelRegisters" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="registerCHST1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerCHST1Value" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="registerCHST2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerCHST2Value" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="registerCHST3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerCHST3Value" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerRValueR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerMValueR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerICValueR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerSValueR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerSFValueR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="registerPTRValue" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="registerPDValue" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="registerMODEValue" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="vmRegistersTitle" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="registerR" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerRValue" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="registerM" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerMValue" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="registerIC" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerICValue" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="registerS" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerSValue" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="registerSF" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="registerSFValue" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="titleRMMemory" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="titleConsole" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="stateCPUTitle" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="stateCPUValue" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jScrollPane2" min="-2" pref="172" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="input" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="loadProgram" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="executeByStep" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="executeProgram" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel11" max="32767" attributes="1"/>
+                                      <EmptySpace min="-2" pref="159" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jSeparator4" max="32767" attributes="1"/>
+                                      <Component id="jSeparator3" max="32767" attributes="1"/>
+                                      <Component id="jSeparator2" alignment="1" max="32767" attributes="1"/>
+                                      <Component id="registerSFValue_4" alignment="0" max="32767" attributes="1"/>
+                                      <Component id="registerSFValue_3" alignment="0" max="32767" attributes="1"/>
+                                      <Component id="registerSFValue_2" alignment="0" min="-2" max="-2" attributes="1"/>
+                                  </Group>
+                                  <Component id="registerSFValue_1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="jScrollPane3" alignment="0" pref="444" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JLabel" name="vmRegistersTitle">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="DejaVu Sans" size="13" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="VM registrai:"/>
       </Properties>
     </Component>
@@ -207,6 +311,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="titleChannelRegisters">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="DejaVu Sans" size="13" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Kanal&#x173; registrai:"/>
       </Properties>
     </Component>
@@ -225,28 +332,10 @@
         <Property name="text" type="java.lang.String" value="CHST[3]:"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JList" name="listRMMemory">
-          <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="this.model" type="code"/>
-            </Property>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
     <Component class="javax.swing.JLabel" name="titleRMMemory">
       <Properties>
-        <Property name="text" type="java.lang.String" value="VM atmintis:"/>
+        <Property name="text" type="java.lang.String" value="RM atmintis:"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JSeparator" name="jSeparator1">
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>
@@ -275,11 +364,6 @@
     <Component class="javax.swing.JTextField" name="input">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="restartCPU">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Perkrauti procesori&#x173;"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="loadProgram">
@@ -350,6 +434,155 @@
     <Component class="javax.swing.JLabel" name="registerSValue">
       <Properties>
         <Property name="text" type="java.lang.String" value="####"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="memoryTable">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="this.memoryTableModel" type="code"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="try&#xa;{&#xa;    this.memoryTable.setDefaultRenderer(Class.forName&#xa;               ( &quot;java.lang.String&quot; ), this.memoryTableCellRenderer);&#xa;} catch(ClassNotFoundException e)&#xa;{&#xa;    System.exit( 0 );&#xa;}&#xa;&#xa;this.memoryTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);&#xa;&#xa;for (int index = 0; index &lt; 2; index++)&#xa;{&#xa;    TableColumn tableColumn = memoryTable.getColumnModel().getColumn(index);&#xa;    tableColumn.setPreferredWidth(40);&#xa;}&#xa;&#xa;"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="DejaVu Sans" size="13" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="RM registrai:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="R:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="M:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="IC:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="S:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="SF:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="PTR:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="PD:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel9">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="MODE:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerMODEValue">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="#"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerPDValue">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="####"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerPTRValue">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="####"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerSFValueR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="####"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerSValueR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="####"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerICValueR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="####"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerMValueR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="####"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerRValueR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="####"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel11">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="SF registras:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerSFValue_4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator2">
+      <Properties>
+        <Property name="orientation" type="int" value="1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerSFValue_3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator3">
+      <Properties>
+        <Property name="orientation" type="int" value="1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerSFValue_2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator4">
+      <Properties>
+        <Property name="orientation" type="int" value="1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="registerSFValue_1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00"/>
       </Properties>
     </Component>
   </SubComponents>
