@@ -27,6 +27,16 @@ public class MachineDataUtilities
             return "HALT";
         }
 
+        if (command == 'E' && x == 'N' && y == 'T' && z == 'R')
+        {
+            return "ENTR";
+        }
+
+        if (command == 'l' && x == 'e' && y == 'a' && z == 'v')
+        {
+            return "leav";
+        }
+
         switch(command)
         {
             case 'A': 
@@ -73,28 +83,38 @@ public class MachineDataUtilities
 
             case 'J':
                 if (x == 'M')
-                {
-                    return "JM";
-                     /*return MachineDataUtilities.checkCommand
+                {                    
+                     MachineDataUtilities.checkCommand
                                     ("JM", MachineDataUtilities.
-                                                     parseJumpCommand(4, y, z));*/
+                                                     parseJumpCommand(4, y, z));
                 }
+                return "";
                 
                 
             case 'D':
-                return "D";
+                MachineDataUtilities.checkCommand
+                                    ("D", MachineDataUtilities.
+                                                     parseJumpCommand(x, y, z));
 
             case 'B':
-                return "B";
+                MachineDataUtilities.checkCommand
+                                    ("B", MachineDataUtilities.
+                                                     parseJumpCommand(x, y, z));
 
             case 'Z':
-                return "Z";
+                MachineDataUtilities.checkCommand
+                                    ("Z", MachineDataUtilities.
+                                                     parseJumpCommand(x, y, z));
 
             case '0':
-                return "0";
+                MachineDataUtilities.checkCommand
+                                    ("0", MachineDataUtilities.
+                                                     parseJumpCommand(x, y, z));
 
             case '1':
-                return "1";
+                MachineDataUtilities.checkCommand
+                                    ("0", MachineDataUtilities.
+                                                     parseJumpCommand(x, y, z));
 
             case 'N':
                return MachineDataUtilities.checkCommand
@@ -111,6 +131,73 @@ public class MachineDataUtilities
                                     ("X", MachineDataUtilities.
                                                     parseLogicCommand(x, y, z));
 
+            case 'c':
+                if (x == 'L')
+                {
+                    return "cL" + formatData(0x100 * y + z, 8);
+                }
+
+            case 'R':
+                if (x == 'E' && y == 'T')
+                {
+                    if (z == 'I')
+                    {
+                        return "RETI";
+                    }
+                    else
+                    {
+                        return "RET" + formatData(z, 8);
+                    }
+
+                }
+                return "";
+
+            case 'P':
+                if (x == 'S' && y == 'H')
+                {
+                    return MachineDataUtilities.checkCommand
+                                    ("PSH", MachineDataUtilities.
+                                                    parseStackCommand(z));
+                }
+                else if (x == 'O' && y == 'P')
+                {
+                    return MachineDataUtilities.checkCommand
+                                    ("POP", MachineDataUtilities.
+                                                    parseStackCommand(z));
+                }
+                return "";
+
+            case 's':
+                switch (x)
+                {
+                    case 'L':
+                        return MachineDataUtilities.checkCommand
+                                    ("sL", MachineDataUtilities.
+                                                    parseShiftCommand(y, z));
+
+                    case 'R':
+                        return MachineDataUtilities.checkCommand
+                                    ("sR", MachineDataUtilities.
+                                                    parseShiftCommand(y, z));
+
+                    case 'P':
+                         return MachineDataUtilities.checkCommand
+                                    ("sP", MachineDataUtilities.
+                                                    parseShiftCommand(y, z));
+                }
+                return "";
+
+            case 'l':
+                if (x == '0')
+                {
+                    return "lO [" + formatData(0x100 * y + z, 8) + "]";
+                }
+                else if (x == 'P') //nušokti per tiek komadų, todėl nėra []
+                {
+                    return "lO " + formatData(0x100 * y + z, 8);
+                }
+                return "";
+
             default: return "";
         }
 
@@ -122,9 +209,50 @@ public class MachineDataUtilities
         return MachineDataUtilities.parseJumpCommand(x, y, z);
     }*/
 
-    /*private static String parseJumpCommand(int x, int y, int z)
+    private static String parseShiftCommand(int x, int y)
     {
-        int adr = 0;
+        if (x == 1)
+        {
+            return "R, " + formatData(y, 8);
+        }
+        else if (x == 2)
+        {
+            return "M, " + formatData(y, 8);
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    private static String parseStackCommand(int x)
+    {
+        switch (x)
+        {
+            case 1:
+                return "R";
+
+            case 2:
+                return "M";
+
+            case 3:
+                return "SF";
+
+            case 4:
+                return "PD";
+
+            case 5:
+                return "PTR";
+
+            case 6:
+                return "ic";
+        }
+        
+        return formatData(x, 8);
+    }
+
+    private static String parseJumpCommand(int x, int y, int z)
+    {
         switch (x)
         {
             case 0:
@@ -133,24 +261,19 @@ public class MachineDataUtilities
             case 1:
                 return "M";
                 
-            case 2:
-                return Integer.toHexString(0x100 * y + z);
+            case 2: //Nušokama adresu, kuris yra nurodytu adresu
+                return "[[" + formatData(0x100 * y + z, 8) + "]]";
                 
-            case 3:
-                return
-
-                adr = (registers.ic + 0x100 * y + z) % 0x10000;
-                break;
+            case 3: //Nušokama per tiek komandų, todėl nereikia [] ženklų
+                return formatData((0x100 * y + z) % 0x10000, 8);
+                
             case 4:
-                adr = 0x100 * y + z;
-                break;
+                return "[" + formatData(0x100 * y + z, 8) + "]";
+                
         }
-        jump(adr);
-
-
-
-        return Integer.toHexString(16 * y + z);
-    }*/
+        
+        return formatData(16 * y + z, 8);
+    }
 
     private static String parseLogicCommand(int x, int y, int z)
     {
