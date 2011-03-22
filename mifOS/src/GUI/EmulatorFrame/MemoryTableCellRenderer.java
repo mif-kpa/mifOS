@@ -5,6 +5,7 @@
 
 package GUI.EmulatorFrame;
 
+import Exception.MifOSException;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JTable;
@@ -16,6 +17,8 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class MemoryTableCellRenderer extends DefaultTableCellRenderer
 {
+    private final static int COLUMN_COUNT = 4;
+
     private int[] mainProcessDescriptorArea = new int[2];
     private int[] interuptTableArea = new int[2];
     private int[] pageTableArea = new int[2];
@@ -35,18 +38,16 @@ public class MemoryTableCellRenderer extends DefaultTableCellRenderer
                                    int[] interuptTableArea,
                                    int[] pageTableArea, int[] virtualMemoryArea)
     {
-        this.mainProcessDescriptorArea[0] = mainProcessDescriptorArea[0];
-        this.mainProcessDescriptorArea[1] = mainProcessDescriptorArea[1];
+        System.arraycopy(mainProcessDescriptorArea, 0,
+                         this.mainProcessDescriptorArea, 0, 2);
 
-        this.interuptTableArea[0] = interuptTableArea[0];
-        this.interuptTableArea[1] = interuptTableArea[1];
+        System.arraycopy(interuptTableArea, 0,
+                         this.interuptTableArea, 0, 2);
 
-        this.pageTableArea[0] = pageTableArea[0];
-        this.pageTableArea[1] = pageTableArea[1];
-        
-        
-        //this.virtualMemoryArea[0] = virtualMemoryArea[0];
-        //this.virtualMemoryArea[1] = virtualMemoryArea[1];
+        System.arraycopy(pageTableArea, 0,
+                         this.pageTableArea, 0, 2);
+
+        System.arraycopy(virtualMemoryArea, 0, this.virtualMemoryArea, 0, 16);
     }
 
     @Override
@@ -62,48 +63,29 @@ public class MemoryTableCellRenderer extends DefaultTableCellRenderer
             if (column == 0)
             {
                 int addressValue = Integer.valueOf((String) value, 16);
-                if ((addressValue >= pageTableArea[0])
-                        && (addressValue <= pageTableArea[1]))
+
+                if (this.isMPDArea(addressValue))
                 {
-                    cell.setBackground(Color.RED);
+                    this.colorHoleLine(Color.YELLOW, table,
+                                       value, isSelected, hasFocus, row);
 
-                    Component virtualAddressCell =
-                                super.getTableCellRendererComponent
-                                   (table, value, isSelected, hasFocus, row, 1);
 
-                    Component addressValueCell =
-                                super.getTableCellRendererComponent
-                                   (table, value, isSelected, hasFocus, row, 2);
-
-                    Component commandValueCell =
-                                super.getTableCellRendererComponent
-                                   (table, value, isSelected, hasFocus, row, 3);
-
-                    virtualAddressCell.setBackground(Color.RED);
-                    addressValueCell.setBackground(Color.RED);
-                    // You can also customize the Font and Foreground this way
-                    // cell.setForeground();
-                    // cell.setFont();
-                }
-                else if ((addressValue >= virtualMemoryArea[0])
-                        && (addressValue <= virtualMemoryArea[1]))
+                } else if (this.isInteruptTableArea(addressValue))
                 {
-                    cell.setBackground(Color.GREEN);
-                    Component virtualAddressCell =
-                                super.getTableCellRendererComponent
-                                   (table, value, isSelected, hasFocus, row, 1);
+                    this.colorHoleLine(Color.BLUE, table,
+                                       value, isSelected, hasFocus, row);
 
-                    Component addressValueCell =
-                                super.getTableCellRendererComponent
-                                   (table, value, isSelected, hasFocus, row, 2);
 
-                    Component commandValueCell =
-                                super.getTableCellRendererComponent
-                                   (table, value, isSelected, hasFocus, row, 3);
+                } else if (this.isPageTableArea(addressValue))
+                {
+                    this.colorHoleLine(Color.GREEN, table,
+                                       value, isSelected, hasFocus, row);
 
-                    virtualAddressCell.setBackground(Color.GREEN);
-                    addressValueCell.setBackground(Color.GREEN);
 
+                } else if (this.isVirtualMemoryArea(addressValue))
+                {
+                    this.colorHoleLine(Color.RED, table,
+                                       value, isSelected, hasFocus, row);
                 }
                 else
                 {
@@ -120,15 +102,110 @@ public class MemoryTableCellRenderer extends DefaultTableCellRenderer
         return cell;
     }
 
-    public void setPageTableArea(int begin, int end)
+    //-------------------Color hole line----------------------------------------
+    private void colorHoleLine(Color color, JTable table,
+                               Object value, boolean isSelected,
+                               boolean hasFocus, int row)
+
     {
-        this.pageTableArea[0] = begin;
-        this.pageTableArea[1] = end;
+        for (int index = 0; index <= COLUMN_COUNT; index++)
+        {
+            Component cell = super.getTableCellRendererComponent
+                                   (table, value, isSelected, 
+                                   hasFocus, row, index);
+
+            cell.setBackground(color);
+        }
     }
 
-    public void setvirtualMemoryArea(int begin, int end)
+    //---------------------------Define Area------------------------------------
+    private boolean isMPDArea(int addressValue)
     {
-        this.virtualMemoryArea[0] = begin;
-        this.virtualMemoryArea[1] = end;
+        if ((addressValue >= this.mainProcessDescriptorArea[0])
+                && (addressValue <= this.mainProcessDescriptorArea[1]))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private boolean isInteruptTableArea(int addressValue)
+    {
+        if ((addressValue >= this.interuptTableArea[0])
+                && (addressValue <= this.interuptTableArea[1]))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private boolean isPageTableArea(int addressValue)
+    {
+         if ((addressValue >= this.pageTableArea[0])
+                && (addressValue <= this.pageTableArea[1]))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private boolean isVirtualMemoryArea(int addressValue)
+    {
+        for (int index = 0; index < this.virtualMemoryArea.length; index++)
+        {
+            if ((addressValue >= this.virtualMemoryArea[index])
+                    && (addressValue <= this.virtualMemoryArea[index] + 0xFF))
+            {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+    //--------------------------------------------------------------------------
+    //Nustatomi spalvinimo ruozai
+    public void setMPDArea(int[] area)
+    {
+        System.arraycopy(area, 0, this.mainProcessDescriptorArea, 0, 2);
+    }
+
+    public void setInteruptTableArea(int[] area)
+    {
+        System.arraycopy(area, 0, this.interuptTableArea, 0, 2);
+    }
+
+    public void setPageTableArea(int[] area)
+    {
+        System.arraycopy(area, 0, this.pageTableArea, 0, 2);
+    }
+
+    public void setVirtualMemoryArea(int[] area)
+    {
+        System.arraycopy(area, 0, this.virtualMemoryArea, 0, 16);
+    }
+
+    public void setVirtualMemoryAreaByIndex(int index, int value)
+                                                           throws MifOSException
+    {
+        if ((index > this.virtualMemoryArea.length) || (index < 0))
+        {
+            String msg = "MemoryTableCellRenderer.setVirtualMemoryAreaByIndex:\n"
+                             + "Nurodytas nekorektiškas indeksas";
+              throw new MifOSException(msg);
+        }
+        else
+        {
+            this.virtualMemoryArea[index] = value;
+        }
     }
 }

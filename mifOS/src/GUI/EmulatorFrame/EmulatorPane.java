@@ -465,10 +465,10 @@ public class EmulatorPane extends javax.swing.JPanel {
         int[] interuptArea = {-1, -1};
         int[] MPDArea = {-1, -1};
         int[] pageArea = {-1, -1};
-        int[] virtualArea = {-1, -1, -1, -1,
-                             -1, -1, -1, -1,
-                             -1, -1, -1, -1,
-                              -1, -1, -1, -1};
+        int[] virtualArea = {-257, -257, -257, -257,
+                             -257, -257, -257, -257,
+                             -257, -257, -257, -257,
+                              -257, -257, -257, -257};
         this.memoryTableCellRenderer = 
                              new MemoryTableCellRenderer(MPDArea, interuptArea,
                                                          pageArea, virtualArea);
@@ -701,6 +701,11 @@ public class EmulatorPane extends javax.swing.JPanel {
                              setText(MachineDataUtilities.formatData(value, 1));
                 break;
         }
+    }
+
+    public void setShowVMMemoryButtonState(boolean state)
+    {
+        this.showVMMemoryButton.setEnabled(state);
     }
 
     /*public int getRegisterValue(Register register)

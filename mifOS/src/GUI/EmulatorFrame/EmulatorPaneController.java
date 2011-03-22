@@ -30,7 +30,13 @@ public class EmulatorPaneController
     private RealMachine machine;
     private RMEventLauncher eventLauncher;
 
-    private boolean machineIsRunning = true;
+    private boolean machineIsRunning;
+    private boolean machineIsHalted;
+
+    //0 - neapibrezta
+    //1 - vykdoma nepazingsniui
+    private int executingType;
+    private boolean isSettedColorAreas;
 
     public EmulatorPaneController(EmulatorFrame emulatorFrame,
                                                   RealMachine machine,
@@ -113,23 +119,25 @@ public class EmulatorPaneController
         {
             try
             {
-
-                if (EmulatorPaneController.this.machineIsRunning)
+                if (EmulatorPaneController.this.machineIsHalted)
                 {
-                    do
-                    {
-                        EmulatorPaneController.this.
-                                    emulatorFrame.getMainPane().
-                                                    setCPUStateValue("užimtas");
-                        EmulatorPaneController.this.machine.step();
+                    String msg = "Programos toliau vykdyti negalima, "
+                                              + "nes ji jau pabaigė savo darbą";
+                    throw new MifOSException(msg);
 
-                    } while (EmulatorPaneController.this.machineIsRunning);
                 }
                 else
                 {
-                    String msg = "Programos toliau vykdyti negalima, "
-                                                  + "nes ji jau pabaigė savo darbą";
-                    throw new MifOSException(msg);
+                    //Nuo šiol nebus pasiekiamas "VM atmintis" mygtukas
+                    EmulatorPaneController.this.executingType = 1;
+
+                    EmulatorPaneController.this.machine.run();
+                    
+                    if (!EmulatorPaneController.this.isSettedColorAreas)
+                    {
+                        EmulatorPaneController.this.isSettedColorAreas = true;
+                        EmulatorPaneController.this.setColorAreas();
+                    }   
                 }
 
             } catch(MifOSException e)
@@ -146,18 +154,24 @@ public class EmulatorPaneController
         {
             try
             {
-                if (EmulatorPaneController.this.machineIsRunning)
-                {
-                    EmulatorPaneController.this.
-                                    emulatorFrame.getMainPane().
-                                                    setCPUStateValue("užimtas");
-                    EmulatorPaneController.this.machine.step();
-                }
-                else
+                if (EmulatorPaneController.this.machineIsHalted)
                 {
                     String msg = "Programos toliau vykdyti negalima, "
                                               + "nes ji jau pabaigė savo darbą";
                     throw new MifOSException(msg);
+
+                }
+                else
+                {
+                    //EmulatorPaneController.this.emulatorFrame.getMainPane().
+                      //                              setCPUStateValue("laisvas");
+                    EmulatorPaneController.this.machine.step();
+
+                    if (!EmulatorPaneController.this.isSettedColorAreas)
+                    {
+                        EmulatorPaneController.this.isSettedColorAreas = true;
+                        EmulatorPaneController.this.setColorAreas();
+                    }   
                 }
 
 
@@ -220,23 +234,41 @@ public class EmulatorPaneController
             int ptr = EmulatorPaneController.this.machine.getRegister().ptr;
             int mode = EmulatorPaneController.this.machine.getRegister().mode;
 
+            //------SF pabaiciui
             int sf_1 =
                       EmulatorPaneController.this.machine.
                                         getRegister().sf % 0x100;
             
-             int sf_2 =
+            int sf_2 =
                    EmulatorPaneController.this.machine.
                                                 getRegister().sf % 0x10000;
-             sf_2 = sf_2 / 0x100;
+            sf_2 = sf_2 / 0x100;
 
-             int sf_3 =
+            int sf_3 =
                    EmulatorPaneController.this.machine.
                                                 getRegister().sf / 0x10000;
-             sf_3 = sf_3 % 0x100;
+            sf_3 = sf_3 % 0x100;
 
-             int sf_4 =
+            int sf_4 =
                       EmulatorPaneController.this.machine.
                                             getRegister().sf / 0x1000000;
+
+            //-------CHST registrai
+            int chst1 = EmulatorPaneController.this.machine.getRegister().chm1;
+            int chst2 = EmulatorPaneController.this.machine.getRegister().chm2;
+            int chst3 = EmulatorPaneController.this.machine.getRegister().chm3;
+
+            //Nustatome ar leisti paspausti "VM atmintis" mygtuką
+            if ((mode == 0) && (EmulatorPaneController.this.executingType == 0))
+            {
+                EmulatorPaneController.this.emulatorFrame.
+                                 getMainPane().setShowVMMemoryButtonState(true);
+            }
+            else
+            {
+                EmulatorPaneController.this.emulatorFrame.
+                                getMainPane().setShowVMMemoryButtonState(false);
+            }
 
             EmulatorPaneController.this.emulatorFrame.
                                   getMainPane().setRegisterValue(Register.R, r);
@@ -274,8 +306,17 @@ public class EmulatorPaneController
             EmulatorPaneController.this.emulatorFrame.
                             getMainPane().setRegisterValue(Register.SF_4, sf_4);
 
+            EmulatorPaneController.this.emulatorFrame.
+                          getMainPane().setRegisterValue(Register.CHST1, chst1);
 
-            EmulatorPaneController.this.setPageTableAndVirtualMemoryArea();
+            EmulatorPaneController.this.emulatorFrame.
+                          getMainPane().setRegisterValue(Register.CHST2, chst2);
+
+            EmulatorPaneController.this.emulatorFrame.
+                          getMainPane().setRegisterValue(Register.CHST3, chst3);
+
+
+            //EmulatorPaneController.this.setPageTableAndVirtualMemoryArea();
 
             EmulatorPaneController.this.setMemoryValues();
             EmulatorPaneController.this.emulatorFrame.repaint();
@@ -286,7 +327,7 @@ public class EmulatorPaneController
             EmulatorPaneController.this.
                                     emulatorFrame.getMainPane().
                                                     setCPUStateValue("laisvas");
-            EmulatorPaneController.this.machineIsRunning = false;
+            EmulatorPaneController.this.machineIsHalted = true;
             String msg = "Mašina baigė darbą";
             EmulatorFrame.showMessage(msg);
         }
@@ -363,7 +404,7 @@ public class EmulatorPaneController
         }
     }
 
-    private void setPageTableAndVirtualMemoryArea()
+    /*private void setPageTableAndVirtualMemoryArea()
     {
         int ptr = this.machine.getRegister().ptr;
 
@@ -372,7 +413,7 @@ public class EmulatorPaneController
 
         this.emulatorFrame.getMainPane().
                 getMemoryTableCellRenderer().setPageTableArea(0x10, 0x100E);
-    }
+    }*/
 
     private void parseCommands()
     {
@@ -386,6 +427,50 @@ public class EmulatorPaneController
             EmulatorPaneController.this.emulatorFrame.
                                    getMainPane().setMemoryTableModelValue
                                                      (command, index, 3);
+        }
+    }
+
+    /**
+     * Nustato atminties spalvinimo intervalus:
+     * MPD - statiškai [0000 - 0002]
+     * Pertraukimu lentele - [0003 - 0005]
+     * Puslapiu lentele pagal PTR registra
+     * VM atmintis pagal puslapiu lentele
+     */
+    private void setColorAreas() throws MifOSException
+    {
+        int[] memoryDump = this.machine.getMemoryDump();
+        int ptr = this.machine.getRegister().ptr;
+        
+        int[] MPDArea = {0, 1};
+        int[] interuptArea = {2, 4};
+        int[] pageArea = {ptr, ptr + 15};
+
+        this.emulatorFrame.getMainPane().
+                               getMemoryTableCellRenderer().setMPDArea(MPDArea);
+        this.emulatorFrame.getMainPane().
+                               getMemoryTableCellRenderer().
+                                             setInteruptTableArea(interuptArea);
+        this.emulatorFrame.getMainPane().
+                               getMemoryTableCellRenderer().
+                                                     setPageTableArea(pageArea);
+
+        for (int index = 0; index < 16; index++)
+        {
+            int word = memoryDump[index + ptr];
+            int isGiven = word % 0x100;
+
+            //Ar šis blokas atminties yra išskirtas
+            //1 - jei taip
+            //0 - jei ne
+            if (isGiven == 1)
+            {
+                int blockAddress = word / 0x1000000;
+                this.emulatorFrame.getMainPane().
+                           getMemoryTableCellRenderer().
+                               setVirtualMemoryAreaByIndex(index, blockAddress);
+            }
+
         }
     }
 }
