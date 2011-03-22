@@ -44,6 +44,7 @@ public class MemoryTableCellRenderer extends DefaultTableCellRenderer
         this.pageTableArea[0] = pageTableArea[0];
         this.pageTableArea[1] = pageTableArea[1];
         
+        
         //this.virtualMemoryArea[0] = virtualMemoryArea[0];
         //this.virtualMemoryArea[1] = virtualMemoryArea[1];
     }

@@ -462,10 +462,16 @@ public class EmulatorPane extends javax.swing.JPanel {
 
     private void initCellRenderer()
     {
+        int[] interuptArea = {-1, -1};
+        int[] MPDArea = {-1, -1};
         int[] pageArea = {-1, -1};
-        int[] virtualArea = {-1, -1};
+        int[] virtualArea = {-1, -1, -1, -1,
+                             -1, -1, -1, -1,
+                             -1, -1, -1, -1,
+                              -1, -1, -1, -1};
         this.memoryTableCellRenderer = 
-                             new MemoryTableCellRenderer(pageArea, virtualArea);
+                             new MemoryTableCellRenderer(MPDArea, interuptArea,
+                                                         pageArea, virtualArea);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

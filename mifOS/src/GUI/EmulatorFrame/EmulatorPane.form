@@ -265,7 +265,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="jLabel11" pref="62" max="32767" attributes="1"/>
+                                      <Component id="jLabel11" pref="68" max="32767" attributes="1"/>
                                       <EmptySpace min="-2" pref="159" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
