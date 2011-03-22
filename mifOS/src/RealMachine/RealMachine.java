@@ -37,4 +37,10 @@ public interface RealMachine {
 	public int[] halt();
 
 	public boolean isRunning();
+
+	/**
+	 * pushinti vartotojo ivesti
+	 * @return
+	 */
+	public boolean pushData(byte[] data);
 }

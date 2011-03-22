@@ -776,4 +776,8 @@ public class Machine implements RealMachine {
 		if (changeM)
 			registers.m = m;
 	}
+
+	public boolean pushData(byte[] data) {
+		return true;
+	}
 }
