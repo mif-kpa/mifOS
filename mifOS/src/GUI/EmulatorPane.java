@@ -585,6 +585,11 @@ public class EmulatorPane extends javax.swing.JPanel {
         this.console.setText(line);
     }
 
+    public void setCPUStateValue(String cpuState)
+    {
+        this.stateCPUValue.setText(cpuState);
+    }
+
     public void setRegisterValue(Register register, int value)
     {
         switch (register)

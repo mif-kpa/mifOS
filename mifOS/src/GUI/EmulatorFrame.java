@@ -63,7 +63,7 @@ public class EmulatorFrame extends JFrame
         emulatorFrame.setVisible(true);
     }
 
-    public static void showErrorMessage(String msg)
+    public static void showMessage(String msg)
     {
         JOptionPane errorFrame = new JOptionPane();
         JOptionPane.showMessageDialog(errorFrame, msg);

@@ -85,12 +85,12 @@ public class EmulatorPaneController
                     EmulatorPaneController.this.machine.loadDump(programCode);
 
                     EmulatorPaneController.this.setMemoryValues();
-                    EmulatorPaneController.this.parseCommand();
+                    EmulatorPaneController.this.parseCommands();
                     EmulatorPaneController.this.emulatorFrame.repaint();
 
                 } catch (MifOSException e)
                 {
-                    EmulatorFrame.showErrorMessage(e.getMessage());
+                    EmulatorFrame.showMessage(e.getMessage());
                 }
               
             }
@@ -110,6 +110,9 @@ public class EmulatorPaneController
                 {
                     do
                     {
+                        EmulatorPaneController.this.
+                                    emulatorFrame.getMainPane().
+                                                    setCPUStateValue("užimtas");
                         EmulatorPaneController.this.machine.step();
 
                     } while (EmulatorPaneController.this.machineIsRunning);
@@ -123,7 +126,7 @@ public class EmulatorPaneController
 
             } catch(MifOSException e)
             {
-                EmulatorFrame.showErrorMessage(e.getMessage());
+                EmulatorFrame.showMessage(e.getMessage());
             }
         }
     }
@@ -137,6 +140,9 @@ public class EmulatorPaneController
             {
                 if (EmulatorPaneController.this.machineIsRunning)
                 {
+                    EmulatorPaneController.this.
+                                    emulatorFrame.getMainPane().
+                                                    setCPUStateValue("užimtas");
                     EmulatorPaneController.this.machine.step();
                 }
                 else
@@ -149,7 +155,7 @@ public class EmulatorPaneController
 
             } catch(MifOSException e)
             {
-                EmulatorFrame.showErrorMessage(e.getMessage());
+                EmulatorFrame.showMessage(e.getMessage());
             }
         }
     }
@@ -174,6 +180,10 @@ public class EmulatorPaneController
 
         public void stepRequested()
         {
+            EmulatorPaneController.this.
+                                    emulatorFrame.getMainPane().
+                                                    setCPUStateValue("laisvas");
+
             int ic = EmulatorPaneController.this.machine.getRegister().ic;
             int sf =
                    EmulatorPaneController.this.machine.getRegister().sf;
@@ -248,7 +258,12 @@ public class EmulatorPaneController
 
         public void haltRequested()
         {
+            EmulatorPaneController.this.
+                                    emulatorFrame.getMainPane().
+                                                    setCPUStateValue("laisvas");
             EmulatorPaneController.this.machineIsRunning = false;
+            String msg = "Mašina baigė darbą";
+            EmulatorFrame.showMessage(msg);
         }
     }
     //--------------------------------------------------------------------------
@@ -274,7 +289,7 @@ public class EmulatorPaneController
                 getMemoryTableCellRenderer().setPageTableArea(0x10, 0x100E);
     }
 
-    private void parseCommand()
+    private void parseCommands()
     {
         int[] memoryDump = this.machine.getMemoryDump();
         for (int index = 0x10 ; index < 0xFFF; index++)
