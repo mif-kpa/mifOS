@@ -5,7 +5,7 @@
 
 package mifos;
 
-import GUI.EmulatorFrame;
+import GUI.EmulatorFrame.EmulatorFrame;
 import RealMachine.Machine;
 
 /**
