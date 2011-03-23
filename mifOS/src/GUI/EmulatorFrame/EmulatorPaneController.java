@@ -35,7 +35,8 @@ public class EmulatorPaneController
     private RealMachine machine;
     private RMEventLauncher eventLauncher;
 
-    private boolean machineIsRunning;
+
+    private boolean memoryDumpIsLoad;
     private boolean machineIsHalted;
 
     //0 - neapibrezta
@@ -108,8 +109,13 @@ public class EmulatorPaneController
                     int[] programCode = FileUtilities.getDataFromFile(file);
                     EmulatorPaneController.this.machine.loadDump(programCode);
 
+                    EmulatorPaneController.this.memoryDumpIsLoad = true;
+
                     EmulatorPaneController.this.setRealMemoryValues();
                     EmulatorPaneController.this.parseCommands();
+
+                    EmulatorPaneController.this.emulatorFrame.
+                                 getMainPane().setLoadProgramButtonState(false);
                     EmulatorPaneController.this.emulatorFrame.repaint();
 
                 } catch (MifOSException e)
@@ -135,6 +141,12 @@ public class EmulatorPaneController
                                               + "nes ji jau pabaigė savo darbą";
                     throw new MifOSException(msg);
 
+                } if (!EmulatorPaneController.this.memoryDumpIsLoad)
+                {
+                    String msg = "Mašina negali pradėti darbo,"
+                                  + " nes programa nėra įkrauta";
+                    throw new MifOSException(msg);
+                    
                 }
                 else
                 {
@@ -163,6 +175,12 @@ public class EmulatorPaneController
                 {
                     String msg = "Programos toliau vykdyti negalima, "
                                               + "nes ji jau pabaigė savo darbą";
+                    throw new MifOSException(msg);
+
+                }  if (!EmulatorPaneController.this.memoryDumpIsLoad)
+                {
+                    String msg = "Mašina negali pradėti darbo,"
+                                  + " nes programa nėra įkrauta";
                     throw new MifOSException(msg);
 
                 }

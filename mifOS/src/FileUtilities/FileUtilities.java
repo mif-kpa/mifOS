@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class FileUtilities
 {
-    private static final int MAX_PROGRAM_LENGTH = 0xFF;
+    private static final int MAX_PROGRAM_LENGTH = 0xFFFF;
 
     public static int[] getDataFromFile(File file) throws MifOSException
     {

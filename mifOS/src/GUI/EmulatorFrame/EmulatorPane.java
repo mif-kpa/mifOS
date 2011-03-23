@@ -746,6 +746,11 @@ public class EmulatorPane extends javax.swing.JPanel {
         this.showVMMemoryButton.setEnabled(state);
     }
 
+    public void setLoadProgramButtonState(boolean state)
+    {
+        this.loadProgram.setEnabled(state);
+    }
+
     /*public int getRegisterValue(Register register)
     {
         switch(register)
