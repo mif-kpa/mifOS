@@ -141,6 +141,7 @@ public class Machine implements RealMachine {
 				case 'P':
 					if (x == 'S' && y == 'H') PSHx(z);
 					if (x == 'P' && y == 'P') POPx(z);
+					if (x == 'D') PD(y, z);
 					break;
 				case 's':
 					if (x == 'L') sLxy(y, z);
@@ -161,6 +162,9 @@ public class Machine implements RealMachine {
 				case 'R':
 					if (x == 'E' && y == 'T' && z < 40) RETx(z);
 					if (x == 'E' && y == 'T' && z == 'I') IRET();
+					break;
+				case 'G':
+					if (x == 'D') GD(y, z);
 					break;
 			}
 
@@ -778,6 +782,99 @@ public class Machine implements RealMachine {
 	}
 
 	public boolean pushData(byte[] data) {
+		for (int i = 0; i < data.length; i+= 4) {
+			int rez = 0;
+			if (data.length > i) rez += data[i] * 0x1000000;
+			if (data.length > i+1) rez += data[i + 1] * 0x10000;
+			if (data.length > i+2) rez += data[i + 2] * 0x100;
+			if (data.length > i+3) rez += data[i + 3];
+
+			ram[registers.chm2 + i / 4] = rez;
+		}
+
+		interupt(1, true, registers.chm2, false, 0);
+		registers.pd = 0;
+
 		return true;
 	}
+
+	private int virtualToReal(int virtual) {
+		int seg = virtual / 0x100;
+		int a = ram[registers.ptr + seg];
+		return a * 0x100 + virtual % 0x100;
+	}
+
+	private int virtualToReal(int x, int y) {
+		return virtualToReal(0x100 * x + y);
+	}
+
+	private void VMGD(int x, int y) {
+		int adr = 0x100 * x + y;
+		int realadr = virtualToReal(adr);
+
+		interupt(1, true, realadr, false, 0);
+	}
+
+	private void GD(int x, int y) {
+		if (!isSuper()) {
+			VMGD(x, y);
+			return;
+		}
+
+		registers.chm2 = 0x100 * x + y;
+		if (events != null)
+			events.onRequestInput(this);
+	}
+
+	private void pushOnScreen(byte[] data) {
+		for (byte b : data) {
+			if (b == 13)
+				screenPointer = ((screenPointer / 80) + 1) * 80;
+
+			screen[screenPointer++] = b;
+			if (screenPointer >= screen.length)
+				screenPointer = 0;
+		}
+	}
+
+	private void PD(int x, int y) {
+		int adr = 0x100 * x + y;
+
+		if (!isSuper()) adr = virtualToReal(adr);
+
+		byte[] buffer = new byte[256];
+		boolean stop = false;
+
+		for (int i = 0; i < 256; i+= 4) {
+			if (!stop) {
+				buffer[i * 4] = (byte)(ram[adr + i] & 0xFF000000 >>> 24);
+				if (buffer[i * 4] == 0) stop = true;
+			}
+			if (!stop) {
+				buffer[i * 4 + 1] = (byte)(ram[adr + i] & 0xFF0000 >>> 16);
+				if (buffer[i * 4 + 1] == 0) stop = true;
+			}
+			if (!stop) {
+				buffer[i + 2] = (byte)(ram[adr + i] & 0xFF00 >>> 8);
+				if (buffer[i + 2] == 0) stop = true;
+			}
+			if (!stop) {
+				buffer[i + 3] = (byte)(ram[adr + i] & 0xFF);
+				if (buffer[i + 3] == 0) stop = true;
+			}
+		}
+
+		//skaiciuojam ilgi
+		int ilgis;
+		for (ilgis = 0; (ilgis < buffer.length && buffer[ilgis] != 0); ilgis++);
+
+		byte[] realBuffer = new byte[ilgis];
+
+		for (int i = 0; i < ilgis; i++)
+			realBuffer[i] = buffer[i];
+
+		pushOnScreen(realBuffer);
+	}
+
+	
 }
