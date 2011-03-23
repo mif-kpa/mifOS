@@ -533,9 +533,9 @@ public class Machine implements RealMachine {
 		int[] vm = new int[0x1000];
 
 		for (byte i = 0; i < 0x10; i++) {
-			int adr = registers.ptr * 0x10 + i;
+			int adr = ram[registers.ptr * 0x10 + i];
 			for (int a = 0; a < 0x100; a++)
-				vm[i * 0x100 + a] = ram[adr];
+				vm[i * 0x100 + a] = ram[adr * 0x100 + a];
 		}
 
 		return vm;
