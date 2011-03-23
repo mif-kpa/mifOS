@@ -21,7 +21,7 @@ public class VMMemoryFrameController
 
     private void addListeners()
     {
-
+        //this.vmMemoryFrame.addWindowListener(null);
     }
 
     //-------------------------Listeners----------------------------------------

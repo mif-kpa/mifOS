@@ -613,7 +613,7 @@ public class EmulatorPaneController
         this.isSettedColorAreas = true;
         this.setVirtualMemoryAddress();
         this.setColorAreas();
-        //System.out.println(segmentQuantity);
+        
         VMMemoryFrame.create(EmulatorPaneController.this,
                              this.getGivenMemorySegmentCount());
     }

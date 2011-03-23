@@ -86,7 +86,7 @@ public class VMMemoryFrame extends javax.swing.JFrame {
     private void initFrame()
     {
         this.setTitle("VM atmintis");
-        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         this.setSize(900, 500);
         this.setResizable(false);
     }
