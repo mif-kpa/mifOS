@@ -9,6 +9,7 @@ import FileUtilities.FileUtilities;
 import Event.RMEventLauncher;
 import Event.RMEventListener;
 import Exception.MifOSException;
+import GUI.VMMemoryFrame.VMMemoryFrame;
 import MachineDataUtilities.MachineDataUtilities;
 import RealMachine.RealMachine;
 import java.awt.event.KeyEvent;
@@ -26,7 +27,11 @@ import javax.swing.JFileChooser;
 public class EmulatorPaneController
 {
 
+    private final static int MEMORY_SEGMENT_IS_NOT_GIVEN = -1;
+
     private EmulatorFrame emulatorFrame;
+    private VMMemoryFrame vmMemoryFrame;
+
     private RealMachine machine;
     private RMEventLauncher eventLauncher;
 
@@ -75,6 +80,11 @@ public class EmulatorPaneController
                                        addKeyListener(new ChannelInputDevice());
     }
 
+    public void setVMMemoryFrame(VMMemoryFrame vmMemoryFrame)
+    {
+        this.vmMemoryFrame = vmMemoryFrame;
+    }
+
     //--------------------------------------------------------------------------
     class LoadProgramButtonActionListener implements ActionListener
     {
@@ -98,7 +108,7 @@ public class EmulatorPaneController
                     int[] programCode = FileUtilities.getDataFromFile(file);
                     EmulatorPaneController.this.machine.loadDump(programCode);
 
-                    EmulatorPaneController.this.setMemoryValues();
+                    EmulatorPaneController.this.setRealMemoryValues();
                     EmulatorPaneController.this.parseCommands();
                     EmulatorPaneController.this.emulatorFrame.repaint();
 
@@ -133,11 +143,6 @@ public class EmulatorPaneController
 
                     EmulatorPaneController.this.machine.run();
                     
-                    if (!EmulatorPaneController.this.isSettedColorAreas)
-                    {
-                        EmulatorPaneController.this.isSettedColorAreas = true;
-                        EmulatorPaneController.this.setColorAreas();
-                    }   
                 }
 
             } catch(MifOSException e)
@@ -165,13 +170,7 @@ public class EmulatorPaneController
                 {
                     //EmulatorPaneController.this.emulatorFrame.getMainPane().
                       //                              setCPUStateValue("laisvas");
-                    EmulatorPaneController.this.machine.step();
-
-                    if (!EmulatorPaneController.this.isSettedColorAreas)
-                    {
-                        EmulatorPaneController.this.isSettedColorAreas = true;
-                        EmulatorPaneController.this.setColorAreas();
-                    }   
+                    EmulatorPaneController.this.machine.step();   
                 }
 
 
@@ -187,7 +186,7 @@ public class EmulatorPaneController
 
         public void actionPerformed(ActionEvent ae)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            EmulatorPaneController.this.vmMemoryFrame.setVisible(true);
         }
         
     }
@@ -219,6 +218,18 @@ public class EmulatorPaneController
 
         public void stepRequested()
         {
+            try
+            {
+                if (!EmulatorPaneController.this.isSettedColorAreas)
+                {
+                    EmulatorPaneController.this.prepareGUIToWork();
+                }
+
+            } catch(MifOSException e)
+            {
+                EmulatorFrame.showMessage(e.getMessage());
+            }
+
             EmulatorPaneController.this.
                                     emulatorFrame.getMainPane().
                                                     setCPUStateValue("laisvas");
@@ -318,8 +329,38 @@ public class EmulatorPaneController
 
             //EmulatorPaneController.this.setPageTableAndVirtualMemoryArea();
 
-            EmulatorPaneController.this.setMemoryValues();
+            EmulatorPaneController.this.setRealMemoryValues();
             EmulatorPaneController.this.emulatorFrame.repaint();
+
+            //---------Atnaujiname virtualia atmintį----------------------------
+            int[] virtualMemory =
+                         EmulatorPaneController.this.machine.getVirtualMemory();
+
+            int segmentNumber = 0;
+
+            for (int index = 0; index < 16; index++)
+            {
+                if (EmulatorPaneController.this.analyzePageTable(index)
+                        != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN);
+                {
+                    int[] virtualMemoryPart = new int[0x100];
+                    //System.out.println(index);
+                    System.arraycopy(virtualMemory, 
+                                     index * 0x100,
+                                     virtualMemoryPart, 0x0, 0x100);
+
+                    EmulatorPaneController.this.vmMemoryFrame.
+                                           updateVirtualMemoryTable
+                                             (virtualMemoryPart, segmentNumber);
+
+                    segmentNumber++;
+                }
+            }
+
+            EmulatorPaneController.this.
+                                        vmMemoryFrame.setNextCommandAddress(ic);
+
+            
         }
 
         public void haltRequested()
@@ -393,14 +434,14 @@ public class EmulatorPaneController
 
     }
     //--------------------------------------------------------------------------
-    private void setMemoryValues()
+    private void setRealMemoryValues()
     {
         int[] memoryDump = this.machine.getMemoryDump();
         for (int index = 0x0 ; index < 0xFFFF; index++)
         {
             EmulatorPaneController.this.emulatorFrame.
                                    getMainPane().setMemoryTableModelValue
-                                                  (memoryDump[index], index, 2);
+                                               (memoryDump[index], index, 2, 8);
         }
     }
 
@@ -455,22 +496,101 @@ public class EmulatorPaneController
                                getMemoryTableCellRenderer().
                                                      setPageTableArea(pageArea);
 
+        //int segmentQuantity = 0;
+
         for (int index = 0; index < 16; index++)
         {
-            int word = memoryDump[index + ptr];
-            int isGiven = word % 0x100;
+           
+            int blockAddress = this.analyzePageTable(index);
 
-            //Ar šis blokas atminties yra išskirtas
-            //1 - jei taip
-            //0 - jei ne
-            if (isGiven == 1)
+            //Jei atmintis išskirta
+            if (blockAddress != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN)
             {
-                int blockAddress = word / 0x1000000;
                 this.emulatorFrame.getMainPane().
-                           getMemoryTableCellRenderer().
-                               setVirtualMemoryAreaByIndex(index, blockAddress);
+                        getMemoryTableCellRenderer().
+                            setVirtualMemoryAreaByIndex(index, blockAddress);
+                //segmentQuantity++;
+            }
+        }
+        //System.out.println(segmentQuantity);
+          //  System.out.println("color");
+    }
+
+    /*
+     * Analizuoja i-tąjį puslapių lentelės žodį
+     * return - jei atmintis išskirta, tai bloko numerį
+     *          jei ne, reikšmę -1
+     */
+    private int analyzePageTable(int index)
+    {
+        int[] memoryDump = this.machine.getMemoryDump();
+        int ptr = this.machine.getRegister().ptr;
+
+         int word = memoryDump[index + ptr];
+         int isGiven = word % 0x100;
+
+         if (isGiven == 1)
+         {
+             //Gaunamas puslapių lentelės žodio paskutinis baitas
+             return word / 0x1000000;
+
+         }
+         else
+         {
+             return EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN;
+         }
+    }
+
+    /*
+     * Nustato virtualiuosius adresus
+     */
+    private void setVirtualMemoryAddress()
+    {
+        int givenMemoryBlockCount = 0;
+
+        for (int index = 0; index < 16; index++)
+        {
+            int blockAddress = this.analyzePageTable(index);
+
+            if (blockAddress != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN)
+            {
+                for (int jndex = 0; jndex < 0xFF; jndex++)
+                {
+                    int virtualAddress = jndex + (givenMemoryBlockCount * 0xFF);
+
+                    int row = blockAddress * 0xFF + jndex;
+
+                    this.emulatorFrame.getMainPane().
+                            setMemoryTableModelValue(virtualAddress, row, 1, 4);
+
+                }
+
+                givenMemoryBlockCount++;
             }
 
         }
+    }
+
+    private void prepareGUIToWork() throws MifOSException
+    {
+        this.isSettedColorAreas = true;
+        this.setVirtualMemoryAddress();
+        this.setColorAreas();
+        int segmentQuantity = 0;
+
+         
+        for (int index = 0; index < 0x10; index++)
+        {
+            int blockAddress = this.analyzePageTable(index);
+            
+            if (blockAddress != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN);
+            {
+                segmentQuantity++;
+            }
+
+        }
+
+        //System.out.println(segmentQuantity);
+        VMMemoryFrame.create(EmulatorPaneController.this, segmentQuantity);
     }
 }

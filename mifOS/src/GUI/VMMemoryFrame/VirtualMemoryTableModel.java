@@ -14,9 +14,8 @@ import javax.swing.table.AbstractTableModel;
  */
 public class VirtualMemoryTableModel extends AbstractTableModel
 {
-    private static final int NUMBER_OF_COLUMNS = 0x10;
-    private static final int SEGMENT_SIZE_DIVIDED_INTO_BLOCK_SIZE = 0x11;
-    //private static final int NUMBER_OF_ROWS = 0xFFFF;
+    private static final int NUMBER_OF_COLUMNS = 0x11;
+    private static final int SEGMENT_SIZE_DIVIDED_INTO_BLOCK_SIZE = 0x10;
 
     private String[] columnNames;
     private Object[][] data;
@@ -39,10 +38,8 @@ public class VirtualMemoryTableModel extends AbstractTableModel
 
         for (int index = 0x0; index < this.rowCount; index++)
         {
-            data[index][0] = MachineDataUtilities.formatData(index * 0xF, 4);
-
-            //Likusieji langeliai užpildomi tuščiomis žymėmis
-            for (int jndex = 1; jndex < 17; jndex++)
+            //Langeliai užpildomi tuščiomis žymėmis
+            for (int jndex = 0; jndex < 17; jndex++)
             {
                 data[index][jndex] = "-";
             }
@@ -57,7 +54,8 @@ public class VirtualMemoryTableModel extends AbstractTableModel
 
         for (int index = 1; index < columnNames.length; index++)
         {
-            this.columnNames[index] = MachineDataUtilities.formatData(index, 2);
+            this.columnNames[index] =
+                                  MachineDataUtilities.formatData(index - 1, 2);
         }
     }
 
@@ -88,6 +86,6 @@ public class VirtualMemoryTableModel extends AbstractTableModel
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)
     {
-        data[rowIndex][columnIndex] = ((String) aValue).toUpperCase();
+        data[rowIndex][columnIndex] = aValue;
     }
 }

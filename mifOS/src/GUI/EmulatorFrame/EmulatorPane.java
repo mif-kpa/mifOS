@@ -264,7 +264,7 @@ public class EmulatorPane extends javax.swing.JPanel {
                                     .addComponent(executeProgram)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(12, 12, 12)
                                 .addComponent(registerSFValue_4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -340,7 +340,7 @@ public class EmulatorPane extends javax.swing.JPanel {
                                     .addComponent(registerPDValue)
                                     .addComponent(registerMODEValue)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
+                        .addGap(75, 75, 75)
                         .addComponent(showVMMemoryButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -440,22 +440,20 @@ public class EmulatorPane extends javax.swing.JPanel {
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
-                                        .addGap(159, 159, 159))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jSeparator4)
                                         .addComponent(jSeparator3)
                                         .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(registerSFValue_4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(registerSFValue_4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel11))
                                         .addComponent(registerSFValue_3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(registerSFValue_2))
                                     .addComponent(registerSFValue_1)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(showVMMemoryButton)))))
-                .addContainerGap())
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(showVMMemoryButton)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -738,14 +736,20 @@ public class EmulatorPane extends javax.swing.JPanel {
         this.input.setEditable(status);
     }
 
-    public void setMemoryTableModelValue
-                        (int aValue, int rowIndex, int columnIndex)
+    /*
+     * Skirta realiems, virtualiems adresams, bei atminties reikšmėms surašyti
+     */
+    public void setMemoryTableModelValue (int aValue, int rowIndex,
+                                          int columnIndex, int digitCount)
     {
         this.memoryTableModel.setValueAt
-                           (MachineDataUtilities.formatData(aValue, 8),
+                           (MachineDataUtilities.formatData(aValue, digitCount),
                             rowIndex, columnIndex);
     }
 
+    /*
+     *Skirta išparsintom komandom
+     */
     public void setMemoryTableModelValue
                                  (String command, int rowIndex, int columnIndex)
     {

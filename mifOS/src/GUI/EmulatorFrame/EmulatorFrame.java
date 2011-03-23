@@ -7,6 +7,7 @@ package GUI.EmulatorFrame;
 
 import RealMachine.Machine;
 import Event.RMEventLauncher;
+import GUI.VMMemoryFrame.VMMemoryFrame;
 import RealMachine.RealMachine;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -39,7 +40,7 @@ public class EmulatorFrame extends JFrame
         this.setTitle("RM emuliatorius");
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.add(mainPane);
-        this.setSize(900, 500);
+        this.setSize(900, 545);
         this.setResizable(false);
     }
 

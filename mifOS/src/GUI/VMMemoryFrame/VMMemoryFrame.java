@@ -11,6 +11,9 @@
 
 package GUI.VMMemoryFrame;
 
+import GUI.EmulatorFrame.EmulatorPaneController;
+import MachineDataUtilities.MachineDataUtilities;
+
 /**
  *
  * @author karolis
@@ -18,8 +21,10 @@ package GUI.VMMemoryFrame;
 public class VMMemoryFrame extends javax.swing.JFrame {
 
     /** Creates new form VMMemoryFrame */
-    public VMMemoryFrame() {
+    public VMMemoryFrame(int segmentQuantity) {
+        initVirtualMemoryTableModel(segmentQuantity);
         initComponents();
+        initFrame();
     }
 
     /** This method is called from within the constructor to
@@ -36,17 +41,16 @@ public class VMMemoryFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        vmMemoryTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        vmMemoryTable.setModel(this.memoryTableModel);
+        try
+        {
+            this.vmMemoryTable.setDefaultRenderer(Class.forName
+                ( "java.lang.String" ), this.virtualMemoryTableCellRender);
+
+        } catch(ClassNotFoundException e)
+        {
+            System.exit( 0 );
+        }
         jScrollPane1.setViewportView(vmMemoryTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -75,12 +79,82 @@ public class VMMemoryFrame extends javax.swing.JFrame {
     private javax.swing.JTable vmMemoryTable;
     // End of variables declaration//GEN-END:variables
 
+    private VirtualMemoryTableModel memoryTableModel;
+    private VirtualMemoryTableCellRender virtualMemoryTableCellRender =
+                                             new VirtualMemoryTableCellRender();
+    //--------------------------------------------------------------------------
+    private void initFrame()
+    {
+        this.setTitle("VM atmintis");
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.setSize(900, 500);
+        this.setResizable(false);
+    }
+
+    private void initVirtualMemoryTableModel(int segmentQuantity)
+    {
+        this.memoryTableModel = new VirtualMemoryTableModel(segmentQuantity);
+
+        for (int index = 0; index < segmentQuantity * 0x100; index += 0x10)
+        {
+            this.setMemoryTableModelValue(index, index / 0x10, 0, 4);
+
+        }
+        
+        this.repaint();
+    }
+
+     /*
+     * Skirta virtualiems adresams
+     */
+    public void setMemoryTableModelValue (int aValue, int rowIndex,
+                                          int columnIndex, int digitCount)
+    {
+        this.memoryTableModel.setValueAt
+                           (MachineDataUtilities.formatData(aValue, digitCount),
+                            rowIndex, columnIndex);
+    }
+
+    /*
+     *Skirta išparsintom komandom
+     */
+    public void setMemoryTableModelValue
+                                 (String command, int rowIndex, int columnIndex)
+    {
+        this.memoryTableModel.setValueAt(command, rowIndex, columnIndex);
+    }
+
+    public void setNextCommandAddress(int address)
+    {
+        this.virtualMemoryTableCellRender.setNextCommandAddress(address);
+    }
+
+    public void updateVirtualMemoryTable(int[] virtualMemoryPart,
+                                         int segmentNumber)
+    {
+        for (int index = 0; index < virtualMemoryPart.length; index++)
+        {
+            String command = 
+                        MachineDataUtilities.
+                            parseInstruction(virtualMemoryPart[index]);
+
+            int column = index % 0x10 + 1;
+            int row = (index + (segmentNumber * 0xFF)) / 0x10;
+
+            this.memoryTableModel.setValueAt(command, row, column);
+        }
+
+        this.repaint();
+    }
 
     //--------------------------------------------------------------------------
-    public static void createAndShow()
+    public static void create(EmulatorPaneController emulatorPaneController,
+                              int segmentQunatity)
     {
-        VMMemoryFrame vmMemoryFrame = new VMMemoryFrame();
-        VMMemoryFrameController vmMemoryFrameController =
-                                     new VMMemoryFrameController(vmMemoryFrame);
+        VMMemoryFrame vmMemoryFrame = new VMMemoryFrame(segmentQunatity);
+        emulatorPaneController.setVMMemoryFrame(vmMemoryFrame);
+        //VMMemoryFrameController vmMemoryFrameController =
+        //                             new VMMemoryFrameController(vmMemoryFrame);
+        vmMemoryFrame.setVisible(true);
     }
 }
