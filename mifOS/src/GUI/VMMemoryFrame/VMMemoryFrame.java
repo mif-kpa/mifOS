@@ -132,6 +132,7 @@ public class VMMemoryFrame extends javax.swing.JFrame {
     public void updateVirtualMemoryTable(int[] virtualMemoryPart,
                                          int segmentNumber)
     {
+        
         for (int index = 0; index < virtualMemoryPart.length; index++)
         {
             String command = 
@@ -139,7 +140,7 @@ public class VMMemoryFrame extends javax.swing.JFrame {
                             parseInstruction(virtualMemoryPart[index]);
 
             int column = index % 0x10 + 1;
-            int row = (index + (segmentNumber * 0xFF)) / 0x10;
+            int row = (index + (segmentNumber * 0x100)) / 0x10;
 
             this.memoryTableModel.setValueAt(command, row, column);
         }

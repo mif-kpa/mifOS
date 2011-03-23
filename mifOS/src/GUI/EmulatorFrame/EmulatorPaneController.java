@@ -341,7 +341,7 @@ public class EmulatorPaneController
             for (int index = 0; index < 16; index++)
             {
                 if (EmulatorPaneController.this.analyzePageTable(index)
-                        != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN);
+                        != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN)
                 {
                     int[] virtualMemoryPart = new int[0x100];
                     //System.out.println(index);
@@ -552,7 +552,8 @@ public class EmulatorPaneController
         {
             int blockAddress = this.analyzePageTable(index);
 
-            if (blockAddress != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN)
+            if (blockAddress
+                       != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN)
             {
                 for (int jndex = 0; jndex < 0xFF; jndex++)
                 {
@@ -571,26 +572,49 @@ public class EmulatorPaneController
         }
     }
 
+
+    /**
+     * Išanalizuojama visa puslapių lentelė ir suskaičiuojama
+     * išskirtų segmentų skaičius
+     * @return išskirtų atminties segmentų kiekis.
+     */
+    private int getGivenMemorySegmentCount()
+    {
+        int givenSegmentCount = 0;
+
+        //System.out.println(givenSegmentCount);
+
+        for (int index = 0; index < 0x10; index++)
+        {
+            int blockAddress = this.analyzePageTable(index);
+
+            if (blockAddress
+                    != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN)
+            {
+                givenSegmentCount++;
+            }
+
+        }
+
+        return givenSegmentCount;
+    }
+
+
+    /**
+     * Paruošiamas darbui GUI:
+     * Pažymimi realios atminties ruožai pagal paskirtį
+     * Įrašomi virtualūs adresai
+     * Paruošiamą informacija VMMemoryFrame objektui.
+     *
+     * @throws MifOSException
+     */
     private void prepareGUIToWork() throws MifOSException
     {
         this.isSettedColorAreas = true;
         this.setVirtualMemoryAddress();
         this.setColorAreas();
-        int segmentQuantity = 0;
-
-         
-        for (int index = 0; index < 0x10; index++)
-        {
-            int blockAddress = this.analyzePageTable(index);
-            
-            if (blockAddress != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN);
-            {
-                segmentQuantity++;
-            }
-
-        }
-
         //System.out.println(segmentQuantity);
-        VMMemoryFrame.create(EmulatorPaneController.this, segmentQuantity);
+        VMMemoryFrame.create(EmulatorPaneController.this,
+                             this.getGivenMemorySegmentCount());
     }
 }
