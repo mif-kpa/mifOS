@@ -646,13 +646,13 @@ public class Machine implements RealMachine {
 			0x01000000,  //1E  O WO
 			0x524c4421,  //1F  RLD!
 			0x00000019,  //20
-            0x4C010020,  //21
-            0x4C00001D,  //22
-            0x4101001E,
-            0x4900001D,
-			0x5044001D,  //21 PD 1C
-            0x6C4F0023,
-			0x48414C54   //22
+            0x4C010020,  //21 mov m [20]
+            0x4C00001D,  //22 mov r [19]
+            0x4101001E,  //23 add r [1E]
+            0x4900001D,  //24 mov [1D] r
+			0x5044001D,  //25 PD 1C
+            0x6C4F0023,  //26
+			0x48414C54   //27
 		};
 
                 String fileName = "file.txt";
@@ -685,21 +685,16 @@ public class Machine implements RealMachine {
 			System.out.print(parseInt(m) + " ");
 
 			if (i > 80) break;
-<<<<<<< HEAD
 		}*/
-=======
-		}
-		 */
 
-		byte[] screen = rm.getScreen();
-
+		//byte[] screen = rm.getScreen();
+		/*
 		int i = 0;
 		for (byte b : screen) {
 			System.out.print((char)b);
 			if (++i == 80)
 				System.out.println();
-		}
->>>>>>> 168e0f76f21445d62f595d4ba98dab083dfe387c
+		}*/
 	}
 
 	public static String parseInt(int v) {
