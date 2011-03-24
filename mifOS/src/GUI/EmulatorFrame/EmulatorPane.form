@@ -26,13 +26,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="titleConsole" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
-                              <Component id="stateCPUTitle" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="stateCPUValue" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="titleConsole" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jSeparator1" alignment="0" max="32767" attributes="1"/>
                               <Component id="jScrollPane2" alignment="0" max="32767" attributes="1"/>
@@ -257,8 +251,6 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="titleRMMemory" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="titleConsole" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="stateCPUTitle" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="stateCPUValue" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -445,16 +437,6 @@
     <Component class="javax.swing.JLabel" name="registerCHST3Value">
       <Properties>
         <Property name="text" type="java.lang.String" value="#"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="stateCPUTitle">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="CPU b&#x16b;sena:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="stateCPUValue">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="laisvas"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="registerS">

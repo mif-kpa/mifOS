@@ -309,9 +309,9 @@ public class EmulatorPaneController
                 EmulatorFrame.showMessage(e.getMessage());
             }
 
-            EmulatorPaneController.this.
+            /*EmulatorPaneController.this.
                                     emulatorFrame.getMainPane().
-                                                    setCPUStateValue("laisvas");
+                                                    setCPUStateValue("laisvas");*/
 
             int ic = EmulatorPaneController.this.machine.getRegister().ic;
             int sf =
@@ -451,7 +451,7 @@ public class EmulatorPaneController
 
 
             //---------Atnaujiname virtualia atmintį----------------------------
-            int[] virtualMemory =
+            /*int[] virtualMemory =
                          EmulatorPaneController.this.machine.getVirtualMemory();
 
             int segmentNumber = 0;
@@ -476,16 +476,16 @@ public class EmulatorPaneController
             }
 
             EmulatorPaneController.this.
-                                        vmMemoryFrame.setNextCommandAddress(ic);
+                                        vmMemoryFrame.setNextCommandAddress(ic);*/
 
             
         }
 
         public void haltRequested()
         {
-            EmulatorPaneController.this.
+            /*EmulatorPaneController.this.
                                     emulatorFrame.getMainPane().
-                                                    setCPUStateValue("laisvas");
+                                                    setCPUStateValue("laisvas");*/
             EmulatorPaneController.this.machineIsHalted = true;
             String msg = "Mašina baigė darbą";
             EmulatorFrame.showMessage(msg);
@@ -734,10 +734,10 @@ public class EmulatorPaneController
     private void prepareGUIToWork() throws MifOSException
     {
         this.isSettedColorAreas = true;
-        this.setVirtualMemoryAddress();
+        //this.setVirtualMemoryAddress();
         this.setColorAreas();
         
-        VMMemoryFrame.create(EmulatorPaneController.this,
-                             this.getGivenMemorySegmentCount());
+        //VMMemoryFrame.create(EmulatorPaneController.this,
+          //                   this.getGivenMemorySegmentCount());
     }
 }
