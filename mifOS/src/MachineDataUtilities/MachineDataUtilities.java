@@ -5,6 +5,8 @@
 
 package MachineDataUtilities;
 
+import java.io.File;
+
 /**
  *
  * @author Karolis Voicechovskis
@@ -446,5 +448,10 @@ public class MachineDataUtilities
         }
 
         return hexValue;
+    }
+
+    public static File getSelectedFile()
+    {
+        return new File("/home/karolis/Documents/Java/program.txt");
     }
 }

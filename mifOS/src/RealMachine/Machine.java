@@ -874,6 +874,9 @@ public class Machine implements RealMachine {
 			realBuffer[i] = buffer[i];
 
 		pushOnScreen(realBuffer);
+
+                if (events != null)
+                    events.onScreen(this);
 	}
 
 	
