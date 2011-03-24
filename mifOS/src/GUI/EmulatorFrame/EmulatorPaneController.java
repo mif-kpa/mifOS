@@ -92,12 +92,12 @@ public class EmulatorPaneController
 
         public void actionPerformed(ActionEvent ae)
         {
-            /*int option = EmulatorPaneController.this.emulatorFrame.
+            int option = EmulatorPaneController.this.emulatorFrame.
                                         getMainPane().getFileChooser().
-                                                  showOpenDialog(emulatorFrame);*/
+                                                  showOpenDialog(emulatorFrame);
             
 
-            int[] dump = {
+            /*int[] dump = {
 				0x0021,   //0
 				0x0000,   //1
 				0x0000,   //2
@@ -142,15 +142,15 @@ public class EmulatorPaneController
 
 
                         EmulatorPaneController.this.machine.loadDump(dump);
-                         EmulatorPaneController.this.memoryDumpIsLoad = true;
+                        EmulatorPaneController.this.memoryDumpIsLoad = true;
 
                     EmulatorPaneController.this.setRealMemoryValues();
                     EmulatorPaneController.this.parseCommands();
 
                     EmulatorPaneController.this.emulatorFrame.
                                  getMainPane().setLoadProgramButtonState(false);
-                    EmulatorPaneController.this.emulatorFrame.repaint();
-            /*File file = null;
+                    EmulatorPaneController.this.emulatorFrame.repaint();*/
+            File file = null;
 
             if (option == JFileChooser.APPROVE_OPTION)
             {
@@ -185,8 +185,7 @@ public class EmulatorPaneController
                 }
               
             }
-        }*/
-
+        
         }
     }
     class ExecuteProgramButtonActionListener implements ActionListener

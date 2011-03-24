@@ -44,7 +44,7 @@ public class FileUtilities
 
             while ((c = fileInputStream.read()) != -1)
             {
-                c = c << base * 8;
+                c = c << (base * 8);
                 word += c;
                 base--;
 
