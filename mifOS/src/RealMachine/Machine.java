@@ -92,13 +92,13 @@ public class Machine implements RealMachine {
 		}
 	}
 
-	public boolean step() {
+	synchronized public boolean step() {
 		if (!inited) init();
 
 		return makeStep();
 	}
 
-	private boolean makeStep() {
+	synchronized private boolean makeStep() {
 		int instruction = getActualWord(registers.ic++);
 		registers.ic %= 0x10000;
 
@@ -589,7 +589,7 @@ public class Machine implements RealMachine {
 
 	public static void main(String[] args) {
 		int[] dump = {
-			0x0010,   //0
+			0x0021,   //0
 			0x0000,   //1
 			0x0000,   //2
 			0x0001,   //3
@@ -597,22 +597,53 @@ public class Machine implements RealMachine {
 			0x0000,   //5
 			0x0000,   //6
 			0x0000,   //7
-			0x0000,   //8
-			0x0000,   //9
-			0x0000,   //A
-			0x0000,   //B
-			0x0000,   //C
-			0x0000,   //D
-			0x0000,   //E
-			0x0000,   //F
-			0x4C010011,   //10
-			0x48414C54   //11
+			0x0013,   //8  GD interupas
+			0x0012,   //9
+			0x0012,   //A
+			0x0012,   //B
+			0x0012,   //C
+			0x0012,   //D
+			0x0012,   //E
+			0x0012,   //F
+			0x0012,   //10
+			0x0012,   //11
+			0x49524554,  //12 tuscias interupas
+			0x49524554,  //13 GD interupas
+			0x00000001,  //14
+			0x00000002,  //15
+			0x3,         //16
+			0x4,         //17
+			0x5,         //18
+			0x6,         //19
+			0x7,         //1A
+			0x8,         //1B
+			0x9,         //1C
+			0x40000000,  //1D  HELL
+			0x01000000,  //1E  O WO
+			0x524c4421,  //1F  RLD!
+			0x00000019,  //20
+            0x4C010020,  //21
+            0x4C00001D,  //22
+            0x4101001E,
+            0x4900001D,
+			0x5044001D,  //21 PD 1C
+            0x6C4F0023,
+			0x48414C54   //22
 		};
 
 		RealMachine rm = Machine.createMachine();
 		rm.loadDump(dump);
 
-		rm.run();
+		//rm.run();
+
+		for (int i = 0; i <= 400; i++) {
+			rm.step();
+			//System.out.println(rm.getRegister().m);
+		}
+
+		//rm.step();
+
+		/*
 
 		int[] mem = rm.getMemoryDump();
 
@@ -627,6 +658,16 @@ public class Machine implements RealMachine {
 			System.out.print(parseInt(m) + " ");
 
 			if (i > 80) break;
+		}
+		 */
+
+		byte[] screen = rm.getScreen();
+
+		int i = 0;
+		for (byte b : screen) {
+			System.out.print((char)b);
+			if (++i == 80)
+				System.out.println();
 		}
 	}
 
@@ -845,22 +886,22 @@ public class Machine implements RealMachine {
 		byte[] buffer = new byte[256];
 		boolean stop = false;
 
-		for (int i = 0; i < 256; i+= 4) {
+		for (int i = 0; i < 256; i++) {
 			if (!stop) {
-				buffer[i * 4] = (byte)(ram[adr + i] & 0xFF000000 >>> 24);
+				buffer[i * 4] = (byte)((ram[adr + i] & 0xFF000000) >>> 24);
 				if (buffer[i * 4] == 0) stop = true;
 			}
 			if (!stop) {
-				buffer[i * 4 + 1] = (byte)(ram[adr + i] & 0xFF0000 >>> 16);
+				buffer[i * 4 + 1] = (byte)((ram[adr + i] & 0xFF0000) >>> 16);
 				if (buffer[i * 4 + 1] == 0) stop = true;
 			}
 			if (!stop) {
-				buffer[i + 2] = (byte)(ram[adr + i] & 0xFF00 >>> 8);
-				if (buffer[i + 2] == 0) stop = true;
+				buffer[i * 4 + 2] = (byte)((ram[adr + i] & 0xFF00) >>> 8);
+				if (buffer[i * 4 + 2] == 0) stop = true;
 			}
 			if (!stop) {
-				buffer[i + 3] = (byte)(ram[adr + i] & 0xFF);
-				if (buffer[i + 3] == 0) stop = true;
+				buffer[i * 4 + 3] = (byte)(ram[adr + i] & 0xFF);
+				if (buffer[i * 4 + 3] == 0) stop = true;
 			}
 		}
 
