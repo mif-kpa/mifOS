@@ -97,48 +97,48 @@ public class EmulatorPaneController
                                                   showOpenDialog(emulatorFrame);*/
             
 
-            		int[] dump = {
-			0x0021,   //0
-			0x0000,   //1
-			0x0000,   //2
-			0x0001,   //3
-			0x0000,   //4
-			0x0000,   //5
-			0x0000,   //6
-			0x0000,   //7
-			0x0013,   //8  GD interupas
-			0x0012,   //9
-			0x0012,   //A
-			0x0012,   //B
-			0x0012,   //C
-			0x0012,   //D
-			0x0012,   //E
-			0x0012,   //F
-			0x0012,   //10
-			0x0012,   //11
-			0x49524554,  //12 tuscias interupas
-			0x49524554,  //13 GD interupas
-			0x00000001,  //14
-			0x00000002,  //15
-			0x3,         //16
-			0x4,         //17
-			0x5,         //18
-			0x6,         //19
-			0x7,         //1A
-			0x8,         //1B
-			0x9,         //1C
-			0x40000000,  //1D  HELL
-			0x01000000,  //1E  O WO
-			0x524c4421,  //1F  RLD!
-			0x00000026,  //20
-            0x4C010020,  //21
-            0x4C00001D,  //22
-            0x4101001E,
-            0x4900001D,
-	    0x5044001D,  //21 PD 1C
-            0x6C500023,
-			0x48414C54   //22
-    };
+            int[] dump = {
+				0x0021,   //0
+				0x0000,   //1
+				0x0000,   //2
+				0x0001,   //3
+				0x0000,   //4
+				0x0000,   //5
+				0x0000,   //6
+				0x0000,   //7
+				0x0013,   //8  GD interupas
+				0x0012,   //9
+				0x0012,   //A
+				0x0012,   //B
+				0x0012,   //C
+				0x0012,   //D
+				0x0012,   //E
+				0x0012,   //F
+				0x0012,   //10
+				0x0012,   //11
+				0x49524554,  //12 tuscias interupas
+				0x49524554,  //13 GD interupas
+				0x00000001,  //14
+				0x00000002,  //15
+				0x3,         //16
+				0x4,         //17
+				0x5,         //18
+				0x6,         //19
+				0x7,         //1A
+				0x8,         //1B
+				0x9,         //1C
+				0x40000000,  //1D  HELL
+				0x01000000,  //1E  O WO
+				0x524c4421,  //1F  RLD!
+				0x00000019,  //20
+				0x4C010020,  //21
+				0x4C00001D,  //22
+				0x4101001E,
+				0x4900001D,
+				0x5044001D,  //21 PD 1C
+				0x6C4F0023,
+				0x48414C54   //22
+			};
 
 
                         EmulatorPaneController.this.machine.loadDump(dump);
@@ -309,9 +309,9 @@ public class EmulatorPaneController
                 EmulatorFrame.showMessage(e.getMessage());
             }
 
-            EmulatorPaneController.this.
+            /*EmulatorPaneController.this.
                                     emulatorFrame.getMainPane().
-                                                    setCPUStateValue("laisvas");
+                                                    setCPUStateValue("laisvas");*/
 
             int ic = EmulatorPaneController.this.machine.getRegister().ic;
             int sf =
@@ -451,7 +451,7 @@ public class EmulatorPaneController
 
 
             //---------Atnaujiname virtualia atmintį----------------------------
-            int[] virtualMemory =
+            /*int[] virtualMemory =
                          EmulatorPaneController.this.machine.getVirtualMemory();
 
             int segmentNumber = 0;
@@ -476,16 +476,16 @@ public class EmulatorPaneController
             }
 
             EmulatorPaneController.this.
-                                        vmMemoryFrame.setNextCommandAddress(ic);
+                                        vmMemoryFrame.setNextCommandAddress(ic);*/
 
             
         }
 
         public void haltRequested()
         {
-            EmulatorPaneController.this.
+            /*EmulatorPaneController.this.
                                     emulatorFrame.getMainPane().
-                                                    setCPUStateValue("laisvas");
+                                                    setCPUStateValue("laisvas");*/
             EmulatorPaneController.this.machineIsHalted = true;
             String msg = "Mašina baigė darbą";
             EmulatorFrame.showMessage(msg);
@@ -734,10 +734,10 @@ public class EmulatorPaneController
     private void prepareGUIToWork() throws MifOSException
     {
         this.isSettedColorAreas = true;
-        this.setVirtualMemoryAddress();
+        //this.setVirtualMemoryAddress();
         this.setColorAreas();
         
-        VMMemoryFrame.create(EmulatorPaneController.this,
-                             this.getGivenMemorySegmentCount());
+        //VMMemoryFrame.create(EmulatorPaneController.this,
+          //                   this.getGivenMemorySegmentCount());
     }
 }

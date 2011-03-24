@@ -65,8 +65,6 @@ public class EmulatorPane extends javax.swing.JPanel {
         registerCHST1Value = new javax.swing.JLabel();
         registerCHST2Value = new javax.swing.JLabel();
         registerCHST3Value = new javax.swing.JLabel();
-        stateCPUTitle = new javax.swing.JLabel();
-        stateCPUValue = new javax.swing.JLabel();
         registerS = new javax.swing.JLabel();
         registerSValue = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -155,10 +153,6 @@ public class EmulatorPane extends javax.swing.JPanel {
         registerCHST2Value.setText("#");
 
         registerCHST3Value.setText("#");
-
-        stateCPUTitle.setText("CPU būsena:");
-
-        stateCPUValue.setText("laisvas");
 
         registerS.setText("S:");
 
@@ -261,12 +255,7 @@ public class EmulatorPane extends javax.swing.JPanel {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(titleConsole)
-                                .addGap(157, 157, 157)
-                                .addComponent(stateCPUTitle)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(stateCPUValue))
+                            .addComponent(titleConsole)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,14 +267,13 @@ public class EmulatorPane extends javax.swing.JPanel {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(executeProgram)))
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(44, 44, 44)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel13)
-                                            .addComponent(jLabel12)
-                                            .addComponent(jLabel14)
-                                            .addComponent(jLabel15)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel13)
+                                        .addComponent(jLabel12)
+                                        .addComponent(jLabel14)
+                                        .addComponent(jLabel15))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel11)
                                         .addGap(12, 12, 12)
@@ -447,9 +435,7 @@ public class EmulatorPane extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(titleRMMemory)
-                            .addComponent(titleConsole)
-                            .addComponent(stateCPUTitle)
-                            .addComponent(stateCPUValue))
+                            .addComponent(titleConsole))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -564,8 +550,6 @@ public class EmulatorPane extends javax.swing.JPanel {
     private javax.swing.JLabel registerSValue;
     private javax.swing.JLabel registerSValueR;
     private javax.swing.JButton showVMMemoryButton;
-    private javax.swing.JLabel stateCPUTitle;
-    private javax.swing.JLabel stateCPUValue;
     private javax.swing.JLabel titleChannelRegisters;
     private javax.swing.JLabel titleConsole;
     private javax.swing.JLabel titleRMMemory;
@@ -645,10 +629,10 @@ public class EmulatorPane extends javax.swing.JPanel {
         this.input.setText(text);
     }
 
-    public void setCPUStateValue(String cpuState)
+    /*public void setCPUStateValue(String cpuState)
     {
         this.stateCPUValue.setText(cpuState);
-    }
+    }*/
 
     public void setRegisterValue(Register register, int value)
     {

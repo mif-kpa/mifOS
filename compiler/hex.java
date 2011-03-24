@@ -15,23 +15,38 @@ public class hex {
 		  
 		  StringBuffer hex = new StringBuffer();
                   boolean op = false;
-		  for(int i = 0; i < chars.length; i++) {
-                    
-                    if (chars[i] == ' ') {
-                        op = true;
-                        continue;
-                    }
-                    if (op) {
-                        if ((chars[i]) < 58 && (chars[i]) > 47)
-                            hex.append((int)chars[i] - 48);
-                        else
-                            hex.append(chars[i]);
-                    } else {
-                        hex.append(Integer.toHexString((int)chars[i]).toUpperCase());
-                    }
-		  }
+
+		  //patikrinam ar tai skaicius
+		  boolean sk = true;
+		  for (char c : chars)
+			  if (c == ' ' || ((c < '0' || c > '9') && (c < 'A' || c > 'F'))) {
+				  sk = false;
+				  break;
+			  }
+
+		  if (sk) {
+			  for (char c : chars)
+				  hex.append(c);
+		  } else {
+
+			  for(int i = 0; i < chars.length; i++) {
+
+						if (chars[i] == ' ') {
+							op = true;
+							continue;
+						}
+						if (op) {
+							if ((chars[i]) < 58 && (chars[i]) > 47)
+								hex.append((int)chars[i] - 48);
+							else
+								hex.append(chars[i]);
+						} else {
+							hex.append(Integer.toHexString((int)chars[i]).toUpperCase());
+						}
+			  }
+		}
 	 
-		  return hex.toString();
+		return hex.toString();
 	}
 
         public static String stringToAscii(String hex){
@@ -107,5 +122,7 @@ public class hex {
             }
         }
 	
-
+        public static void main(String[] args) {
+            fileToHex(args[0], args[1]);
+        }
 }
