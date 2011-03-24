@@ -92,17 +92,78 @@ public class EmulatorPaneController
 
         public void actionPerformed(ActionEvent ae)
         {
-            int option = EmulatorPaneController.this.emulatorFrame.
+            /*int option = EmulatorPaneController.this.emulatorFrame.
                                         getMainPane().getFileChooser().
-                                                  showOpenDialog(emulatorFrame);
+                                                  showOpenDialog(emulatorFrame);*/
             
-            File file = null;
+
+            int[] dump = {
+				0x0021,   //0
+				0x0000,   //1
+				0x0000,   //2
+				0x0001,   //3
+				0x0000,   //4
+				0x0000,   //5
+				0x0000,   //6
+				0x0000,   //7
+				0x0013,   //8  GD interupas
+				0x0012,   //9
+				0x0012,   //A
+				0x0012,   //B
+				0x0012,   //C
+				0x0012,   //D
+				0x0012,   //E
+				0x0012,   //F
+				0x0012,   //10
+				0x0012,   //11
+				0x49524554,  //12 tuscias interupas
+				0x49524554,  //13 GD interupas
+				0x00000001,  //14
+				0x00000002,  //15
+				0x3,         //16
+				0x4,         //17
+				0x5,         //18
+				0x6,         //19
+				0x7,         //1A
+				0x8,         //1B
+				0x9,         //1C
+				0x40000000,  //1D  HELL
+				0x01000000,  //1E  O WO
+				0x524c4421,  //1F  RLD!
+				0x00000019,  //20
+				0x4C010020,  //21
+				0x4C00001D,  //22
+				0x4101001E,
+				0x4900001D,
+				0x5044001D,  //21 PD 1C
+				0x6C4F0023,
+				0x48414C54   //22
+			};
+
+
+                        EmulatorPaneController.this.machine.loadDump(dump);
+                         EmulatorPaneController.this.memoryDumpIsLoad = true;
+
+                    EmulatorPaneController.this.setRealMemoryValues();
+                    EmulatorPaneController.this.parseCommands();
+
+                    EmulatorPaneController.this.emulatorFrame.
+                                 getMainPane().setLoadProgramButtonState(false);
+                    EmulatorPaneController.this.emulatorFrame.repaint();
+            /*File file = null;
 
             if (option == JFileChooser.APPROVE_OPTION)
             {
-                file = EmulatorPaneController.this.emulatorFrame.
+                if (EmulatorPaneController.this.emulatorFrame.getHeight() > 545)
+                {
+                    file = MachineDataUtilities.getSelectedFile();
+                }
+                else
+                {
+                    file = EmulatorPaneController.this.emulatorFrame.
                                             getMainPane().getFileChooser().
                                                               getSelectedFile();
+                }
 
                 try
                 {
@@ -124,10 +185,10 @@ public class EmulatorPaneController
                 }
               
             }
+        }*/
+
         }
-
     }
-
     class ExecuteProgramButtonActionListener implements ActionListener
     {
 
@@ -350,6 +411,45 @@ public class EmulatorPaneController
             EmulatorPaneController.this.setRealMemoryValues();
             EmulatorPaneController.this.emulatorFrame.repaint();
 
+            //---PTR
+            if (ptr == 0)
+            {
+                int[] area = {0, 0};
+                EmulatorPaneController.this.
+                        emulatorFrame.getMainPane().
+                        getMemoryTableCellRenderer().setPageTableArea(area);
+            }
+            else
+            {
+                int[] area = {ptr, ptr + 16};
+                EmulatorPaneController.this.
+                        emulatorFrame.getMainPane().
+                        getMemoryTableCellRenderer().setPageTableArea(area);
+
+
+                for (int index = 0; index < 16; index++)
+                {
+
+                    int blockAddress = EmulatorPaneController.this.analyzePageTable(index);
+
+                    //Jei atmintis išskirta
+                    if (blockAddress != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN)
+                    {
+                        try
+                        {
+                            EmulatorPaneController.this.emulatorFrame.getMainPane().
+                                    getMemoryTableCellRenderer().
+                                    setVirtualMemoryAreaByIndex(index, blockAddress);
+                            //segmentQuantity++;
+                        } catch(MifOSException e)
+                        {
+                            
+                        }
+                    }
+                }
+            }
+
+
             //---------Atnaujiname virtualia atmintį----------------------------
             int[] virtualMemory =
                          EmulatorPaneController.this.machine.getVirtualMemory();
@@ -501,9 +601,32 @@ public class EmulatorPaneController
         int[] memoryDump = this.machine.getMemoryDump();
         int ptr = this.machine.getRegister().ptr;
         
-        int[] MPDArea = {0, 1};
-        int[] interuptArea = {2, 4};
+        int[] MPDArea = {0, 7};
+        int[] interuptArea = {8, 19};
         int[] pageArea = {ptr, ptr + 15};
+
+        if (ptr == 0) {
+            pageArea[0] = 0;
+            pageArea[1] = 0;
+        }
+        else
+        {
+            for (int index = 0; index < 16; index++)
+            {
+
+                int blockAddress = this.analyzePageTable(index);
+
+                //Jei atmintis išskirta
+                if (blockAddress != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN)
+                {
+                    this.emulatorFrame.getMainPane().
+                            getMemoryTableCellRenderer().
+                            setVirtualMemoryAreaByIndex(index, blockAddress);
+                    //segmentQuantity++;
+                }
+            }
+        }
+
 
         this.emulatorFrame.getMainPane().
                                getMemoryTableCellRenderer().setMPDArea(MPDArea);
@@ -514,24 +637,6 @@ public class EmulatorPaneController
                                getMemoryTableCellRenderer().
                                                      setPageTableArea(pageArea);
 
-        //int segmentQuantity = 0;
-
-        for (int index = 0; index < 16; index++)
-        {
-           
-            int blockAddress = this.analyzePageTable(index);
-
-            //Jei atmintis išskirta
-            if (blockAddress != EmulatorPaneController.MEMORY_SEGMENT_IS_NOT_GIVEN)
-            {
-                this.emulatorFrame.getMainPane().
-                        getMemoryTableCellRenderer().
-                            setVirtualMemoryAreaByIndex(index, blockAddress);
-                //segmentQuantity++;
-            }
-        }
-        //System.out.println(segmentQuantity);
-          //  System.out.println("color");
     }
 
     /*

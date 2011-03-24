@@ -98,7 +98,7 @@ public class Machine implements RealMachine {
 		return makeStep();
 	}
 
-	private boolean makeStep() {
+	synchronized private boolean makeStep() {
 		int instruction = getActualWord(registers.ic++);
 		registers.ic %= 0x10000;
 
@@ -618,20 +618,30 @@ public class Machine implements RealMachine {
 			0x7,         //1A
 			0x8,         //1B
 			0x9,         //1C
-			0x48454c4c,  //1D  HELL
-			0x4f20574f,  //1E  O WO
+			0x40000000,  //1D  HELL
+			0x01000000,  //1E  O WO
 			0x524c4421,  //1F  RLD!
-			0x00000000,  //20
+			0x00000019,  //20
+            0x4C010020,  //21
+            0x4C00001D,  //22
+            0x4101001E,
+            0x4900001D,
 			0x5044001D,  //21 PD 1C
+            0x6C4F0023,
 			0x48414C54   //22
 		};
 
 		RealMachine rm = Machine.createMachine();
 		rm.loadDump(dump);
 
-		rm.run();
+		//rm.run();
 
-		rm.step();
+		for (int i = 0; i <= 400; i++) {
+			rm.step();
+			//System.out.println(rm.getRegister().m);
+		}
+
+		//rm.step();
 
 		/*
 
@@ -905,6 +915,9 @@ public class Machine implements RealMachine {
 			realBuffer[i] = buffer[i];
 
 		pushOnScreen(realBuffer);
+
+                if (events != null)
+                    events.onScreen(this);
 	}
 
 	
