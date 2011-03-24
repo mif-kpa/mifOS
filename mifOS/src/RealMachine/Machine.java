@@ -1,6 +1,11 @@
 package RealMachine;
 
 import Event.Event;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -587,6 +592,25 @@ public class Machine implements RealMachine {
 		return true;
 	}
 
+        public static void writeFile(int[] dump, String fileName) {
+            FileWriter outstream;
+            try {
+                outstream = new FileWriter(fileName);
+           
+                BufferedWriter out = new BufferedWriter(outstream);
+
+                for (int i: dump) {
+                    out.write((byte)((i & 0xFF000000) >>> 24));
+                    out.write((byte)((i & 0xFF0000) >>> 16));
+                    out.write((byte)((i & 0xFF00) >>> 8));
+                    out.write((byte)((i & 0xFF)));
+                }
+                out.close();
+             } catch (IOException ex) {
+                Logger.getLogger(Machine.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
 	public static void main(String[] args) {
 		int[] dump = {
 			0x0010,   //0
@@ -609,7 +633,10 @@ public class Machine implements RealMachine {
 			0x48414C54   //11
 		};
 
-		RealMachine rm = Machine.createMachine();
+                String fileName = "file.txt";
+                writeFile(dump, fileName);
+                
+		/*RealMachine rm = Machine.createMachine();
 		rm.loadDump(dump);
 
 		rm.run();
@@ -627,7 +654,7 @@ public class Machine implements RealMachine {
 			System.out.print(parseInt(m) + " ");
 
 			if (i > 80) break;
-		}
+		}*/
 	}
 
 	public static String parseInt(int v) {
