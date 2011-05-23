@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * @author neworld
  */
 public class Machine implements RealMachine {
-	private int ram[] = new int[0x10000];
+	protected int ram[] = new int[0x10000];
 	private int external[] = new int[0x60000];
 	private byte screen[] = new byte[80*20];
 	private byte screenBuffer[] = new byte[80];
