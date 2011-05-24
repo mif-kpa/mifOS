@@ -116,8 +116,18 @@ public class Machine implements RealMachine {
 
 	synchronized public boolean step() {
 		if (!inited) init();
+		
+		if (!isSuper()) {
+			if (--ram[registers.pd] == 0) {
+				setSuperMode();
+			} else {
+				makeStep();
+			}
+		} else {
+			
+		}
 
-		return makeStep();
+		return true;
 	}
 
 	synchronized private boolean makeStep() {
@@ -133,7 +143,7 @@ public class Machine implements RealMachine {
 		
 		timer++;
 		
-		if (--ram[registers.pd] == 0) {
+		if (!isSuper() && --ram[registers.pd] == 0) {
 			//stabdom VM veikima
 		}
 
