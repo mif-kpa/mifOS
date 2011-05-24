@@ -503,7 +503,7 @@ public class Machine implements RealMachine {
 			//vykdom trukstamos atminties klaida
 			;
 
-		return ram[adr2 * 0x100 + adr & 0xFF];
+		return ram[adr2 + adr & 0xFF];
 	}
 
 	private void setActualWord(int adr, int word) {
@@ -521,7 +521,7 @@ public class Machine implements RealMachine {
 			//vykdom trukstamos atminties klaida
 			;
 
-		ram[adr2 * 0x100 + adr & 0xFF] = word;
+		ram[adr2 + adr & 0xFF] = word;
 	}
 	
 	private boolean checkRam(int adr, int segment) {
