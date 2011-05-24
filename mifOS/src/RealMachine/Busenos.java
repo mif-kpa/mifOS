@@ -9,5 +9,5 @@ package RealMachine;
  * @author neworld
  */
 public enum Busenos {
-	READY, BLOCK, RUNNING;
+	READY, BLOCK, RUNNING, WAITING;
 }

@@ -11,20 +11,26 @@ public class Process {
 	public String name;
 	public Busenos busena;
 	public ArrayList<Process> childs = new ArrayList<Process>();
+	public ArrayList<Resource> resources = new ArrayList<Resource>();
+	public Resource waiting;
 	private Process parent;
+	private Machine machine;
+	public byte priority;
 	
 	public int description;
 	
 	private static int _ID = 0;
 	
-	private Process (String name, Busenos busena, int description, byte data[]) {
+	protected Process (Machine machine, String name, Busenos busena, int descID, byte data[], byte priority) {
 		this.name = name;
 		this.busena = busena;
-		this.description = description;
+		this.description = descID;
+		this.machine = machine;
+		this.priority = priority;
 		id = _ID++;
 	}
 	
-	private boolean addChild(Process child) {
+	protected boolean addChild(Process child) {
 		if (child.parent != null)
 			return false;
 		
@@ -33,7 +39,7 @@ public class Process {
 		return true;
 	}
 	
-	private boolean removeChild(Process child) {
+	protected boolean removeChild(Process child) {
 		if (childs.indexOf(child) == -1)
 			return false;
 		
@@ -41,5 +47,9 @@ public class Process {
 		return true;
 	}
 	
-	
+	protected void addResource(Resource r) {
+		resources.add(r);
+		if (Busenos.BLOCK == busena && waiting == null)
+			busena = Busenos.READY;
+	}
 }
