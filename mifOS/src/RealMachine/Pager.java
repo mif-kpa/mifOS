@@ -58,8 +58,8 @@ public class Pager {
 		
 		PagerHeader ph = getHeader(adr);
 		
-		PagerHeader next;
-		PagerHeader prev;
+		PagerHeader next = null;
+		PagerHeader prev = null;
 		
 		if (ph.next > 0) next = getHeader(ph.next);
 		if (ph.prev > 0) prev = getHeader(ph.prev);

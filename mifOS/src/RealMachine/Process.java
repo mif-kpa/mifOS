@@ -21,12 +21,11 @@ public class Process {
 	
 	private static int _ID = 0;
 	
-	protected Process (Machine machine, String name, Busenos busena, int descID, byte data[], byte priority) {
+	protected Process (Machine machine, String name, Busenos busena, int descID, byte data[]) {
 		this.name = name;
 		this.busena = busena;
 		this.description = descID;
 		this.machine = machine;
-		this.priority = priority;
 		id = _ID++;
 	}
 	

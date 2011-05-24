@@ -4,6 +4,7 @@ import Event.Event;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +20,8 @@ public class Machine implements RealMachine {
 	private int screenPointer = 0;
 	private int screenBufferPointer = 0;
 	private Registers registers = new Registers();
+	
+	protected int timer = 0;
 
 	private boolean inited = false;
 	private Event events;
@@ -27,10 +30,14 @@ public class Machine implements RealMachine {
 	
 	protected MemoryManagement memoryManagement;
 	protected Pager pager;
+	protected InteruptController interuptController;
+	
+	protected ArrayList<Process> processes= new ArrayList<Process>();
 	
 	Machine() {
 		memoryManagement = new MemoryManagement(this);
 		pager = new Pager(this);
+		interuptController = new InteruptController(this);
 	}
 
 	public static RealMachine createMachine() {
@@ -77,8 +84,9 @@ public class Machine implements RealMachine {
 		registers.s = ram[registers.pd + 3];
 		registers.m = ram[registers.pd + 4];
 		registers.r = ram[registers.pd + 5];
+		registers.ptr = ram[registers.pd + 6];
 
-		if (ram[registers.pd] == 0) ram[registers.pd] = 0x100;
+		if (ram[registers.pd] == 0) ram[registers.pd] = 0x10;
 	}
 
 	private void setSuperMode() {
@@ -88,6 +96,7 @@ public class Machine implements RealMachine {
 		ram[registers.pd + 3] = registers.s;
 		ram[registers.pd + 4] = registers.m;
 		ram[registers.pd + 5] = registers.r;
+		ram[registers.pd + 6] = registers.ptr;
 
 		registers.ic = ram[0];
 		registers.sf = ram[1];
@@ -121,6 +130,12 @@ public class Machine implements RealMachine {
 		int z = (instruction & 0xFF);
 
 		int yz = (instruction & 0xFF);
+		
+		timer++;
+		
+		if (--ram[registers.pd] == 0) {
+			//stabdom VM veikima
+		}
 
 		if (komanda == 'H' && x == 'A' && y == 'L' && z == 'T') {
 			if (isSuper())
