@@ -19,7 +19,7 @@ public class Machine implements RealMachine {
 	private byte screenBuffer[] = new byte[80];
 	private int screenPointer = 0;
 	private int screenBufferPointer = 0;
-	private Registers registers = new Registers();
+	protected Registers registers = new Registers();
 	
 	protected int timer = 0;
 
@@ -71,7 +71,7 @@ public class Machine implements RealMachine {
 		inited = true;
 	}
 
-	private void setUserMode() {
+	protected void setUserMode() {
 		ram[0] = registers.ic;
 		ram[1] = registers.sf;
 		ram[2] = registers.s;
@@ -89,7 +89,7 @@ public class Machine implements RealMachine {
 		if (ram[registers.pd] == 0) ram[registers.pd] = 0x10;
 	}
 
-	private void setSuperMode() {
+	protected void setSuperMode() {
 		registers.mode = 1;
 		ram[registers.pd + 1] = registers.ic;
 		ram[registers.pd + 2] = registers.sf;

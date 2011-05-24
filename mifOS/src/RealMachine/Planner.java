@@ -20,7 +20,7 @@ public class Planner {
 				continue;
 			
 			if (pr instanceof Service) {
-				pr.priority += Math.round((float)Math.random() * 5);
+				pr.priority += 10 + Math.round((float)Math.random() * 2);
 				if (!(best instanceof Service) || best.priority < pr.priority)
 					best = pr;
 			} else {
@@ -28,7 +28,7 @@ public class Planner {
 					best = pr;
 			}
 		}
-		
+		best.priority /= machine.processes.size() + 1;
 		return best;
 	}
 }

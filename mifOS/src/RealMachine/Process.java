@@ -21,7 +21,7 @@ public class Process {
 	
 	private static int _ID = 0;
 	
-	protected Process (Machine machine, String name, Busenos busena, int descID, byte data[]) {
+	protected Process (Machine machine, String name, Busenos busena, int descID) {
 		this.name = name;
 		this.busena = busena;
 		this.description = descID;
@@ -50,5 +50,16 @@ public class Process {
 		resources.add(r);
 		if (Busenos.BLOCK == busena && waiting == null)
 			busena = Busenos.READY;
+	}
+	
+	public boolean run() {
+		if (Busenos.READY == busena) {
+			machine.registers.pd = description;
+			machine.setUserMode();
+			
+			return true;
+		}
+		
+		return false;
 	}
 }
