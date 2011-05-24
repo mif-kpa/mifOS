@@ -24,6 +24,14 @@ public class Machine implements RealMachine {
 	private Event events;
 
 	private boolean running = false;
+	
+	protected MemoryManagement memoryManagement;
+	protected Pager pager;
+	
+	Machine() {
+		memoryManagement = new MemoryManagement(this);
+		pager = new Pager(this);
+	}
 
 	public static RealMachine createMachine() {
 		return new Machine();
@@ -490,6 +498,10 @@ public class Machine implements RealMachine {
 
 		int vir = registers.ptr * 0x10 + ((adr & 0xF00) >> 16);
 		int adr2 = ram[vir];
+		
+		if (!checkRam(adr2, (adr & 0xF00) >> 16))
+			//vykdom trukstamos atminties klaida
+			;
 
 		return ram[adr2 * 0x100 + adr & 0xFF];
 	}
@@ -504,11 +516,21 @@ public class Machine implements RealMachine {
 
 		int vir = registers.ptr * 0x10 + ((adr & 0xF00) >> 16);
 		int adr2 = ram[vir];
+		
+		if (!checkRam(adr2, (adr & 0xF00) >> 16))
+			//vykdom trukstamos atminties klaida
+			;
 
 		ram[adr2 * 0x100 + adr & 0xFF] = word;
 	}
+	
+	private boolean checkRam(int adr, int segment) {
+		if (adr / 0x1000000 > 0) return true;
+		
+		return pager.allocPage(registers.ptr, segment);
+	}
 
-	private boolean check(int word, int mask, int need) {
+	public static boolean check(int word, int mask, int need) {
 		return (word & mask) == need;
 	}
 
