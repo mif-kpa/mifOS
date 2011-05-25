@@ -44,9 +44,9 @@ public class MemoryManagement {
 			
 			int free;
 			if (header.next > 0)
-				free = header.next - header.size;
+				free = header.next - header.size - header.adr - 2;
 			else
-				free = 0x10000 - adr - header.size;
+				free = 0x10000 - header.adr - header.size - 2;
 			
 			if (free >= need + 2) {
 				MemoryHeader mh = new MemoryHeader();

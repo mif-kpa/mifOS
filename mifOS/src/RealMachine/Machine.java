@@ -535,13 +535,15 @@ public class Machine implements RealMachine {
 		}
 
 		int vir = registers.ptr + ((adr & 0xF00) >> 16);
-		int adr2 = ram[vir];
+		int adr2 = ram[vir] & 0xFFFF;
 		
-		if (!checkRam(adr2, (adr & 0xF00) >> 16))
+		if (!checkRam(ram[vir], (adr & 0xF00) >> 16))
 			//vykdom trukstamos atminties klaida
 			;
-
-		return ram[adr2 + adr & 0xFF];
+		
+		//System.out.printf("GET: %x (ptr: %x vir: %x, adr2: %x) => %x\n", adr, registers.ptr, vir, adr2, adr2 + (adr & 0xFF));
+		
+		return ram[adr2 + (adr & 0xFF)];
 	}
 
 	public void setActualWord(int adr, int word) {
@@ -553,13 +555,14 @@ public class Machine implements RealMachine {
 		}
 
 		int vir = registers.ptr + ((adr & 0xF00) >> 16);
-		int adr2 = ram[vir];
+		int adr2 = ram[vir] & 0xFFFF;
 		
-		if (!checkRam(adr2, (adr & 0xF00) >> 16))
+		if (!checkRam(ram[vir], (adr & 0xF00) >> 16))
 			//vykdom trukstamos atminties klaida
 			;
 
-		ram[adr2 + adr & 0xFF] = word;
+		ram[adr2 + (adr & 0xFF)] = word;
+		System.out.printf("set: %x\n", adr2 + (adr & 0xFF));
 	}
 	
 	private boolean checkRam(int adr, int segment) {
@@ -928,7 +931,8 @@ public class Machine implements RealMachine {
 	private int virtualToReal(int virtual) {
 		int seg = virtual / 0x100;
 		int a = ram[registers.ptr + seg];
-		return (a & 0xFFFF) + virtual % 0x100;
+		//System.out.printf("## virtual %x (seg: %x a: %x) => %x \n", virtual, seg, a, (a & 0xFFFF) + (virtual & 0xFF));
+		return (a & 0xFFFF) + (virtual & 0xFF);
 	}
 
 	private int virtualToReal(int x, int y) {
@@ -966,9 +970,15 @@ public class Machine implements RealMachine {
 
 	private void PD(int x, int y) {
 		int adr = 0x100 * x + y;
+		int virtual = adr;
+		
+		//if (registers.pd > 0x1000)
+		//	adr = virtualToReal(adr);
 
 		if (!isSuper()) 
 			adr = virtualToReal(adr);
+		
+		System.out.printf("get: %x => %x\n", virtual, adr);
 
 		byte[] buffer = new byte[256];
 		boolean stop = false;

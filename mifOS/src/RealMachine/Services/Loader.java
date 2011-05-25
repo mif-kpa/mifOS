@@ -17,6 +17,7 @@ public class Loader extends Service {
 		
 	}
 	
+	@Override
 	public void interupt(Interupt i) {
 		//atgaminam info
 		int length = i.data[0];
@@ -37,7 +38,7 @@ public class Loader extends Service {
 		machine.ram[desc + 5] = data[4];
 		
 		//iskriaim atminties kodui
-		int segmentu = i.data[0];
+		int segmentu = data[0];
 		
 		int page = machine.pager.createTable();
 		
