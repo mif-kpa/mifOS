@@ -168,15 +168,16 @@ public class EmulatorPaneController
                 try
                 {
                     int[] programCode = FileUtilities.getDataFromFile(file);
-                    EmulatorPaneController.this.machine.loadDump(programCode);
+					EmulatorPaneController.this.machine.loadVM(programCode, file.getName());
+                    //EmulatorPaneController.this.machine.loadDump(programCode);
 
                     EmulatorPaneController.this.memoryDumpIsLoad = true;
 
                     EmulatorPaneController.this.setRealMemoryValues();
                     EmulatorPaneController.this.parseCommands();
 
-                    EmulatorPaneController.this.emulatorFrame.
-                                 getMainPane().setLoadProgramButtonState(false);
+                    //EmulatorPaneController.this.emulatorFrame.
+                    //             getMainPane().setLoadProgramButtonState(false);
                     EmulatorPaneController.this.emulatorFrame.repaint();
 
                 } catch (MifOSException e)
@@ -289,9 +290,17 @@ public class EmulatorPaneController
                           getMainPane().setRegisterValue(Register.CHST2, chst2);
             
             byte[] screen = EmulatorPaneController.this.machine.getScreen();
+			
+			String text = new String();
+			
+			for (int x = 0; x < 20; x++) {
+				text = text.concat(new String(screen, x*80, 80));
+				text += "\n";
+			}
+			
             EmulatorPaneController.this.
                         emulatorFrame.getMainPane().
-                                setConsoleText(new String(screen));
+                                setConsoleText(text);
         }
 
         public void stepRequested()

@@ -19,6 +19,11 @@ public class Planner {
 			if (pr.busena != Busenos.READY)
 				continue;
 			
+			if (best == null) {
+				best = pr;
+				continue;
+			}
+			
 			if (pr instanceof Service) {
 				pr.priority += 10 + Math.round((float)Math.random() * 2);
 				if (!(best instanceof Service) || best.priority < pr.priority)
@@ -28,6 +33,7 @@ public class Planner {
 					best = pr;
 			}
 		}
+		if (best == null) return null;
 		best.priority /= machine.processes.size() + 1;
 		return best;
 	}

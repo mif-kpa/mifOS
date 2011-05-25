@@ -14,13 +14,13 @@ public class Resource {
 	
 	public Process process;
 	public Process target;
-	public byte message[];
-	public byte response[];
+	public int message[];
+	public int response[];
 	public String type;
 	
 	public static final String GD = "GD";
 	
-	Resource(Process creator, byte[] msg, String type) {
+	Resource(Process creator, int [] msg, String type) {
 		message = Arrays.copyOf(msg, msg.length);
 		process = creator;
 		this.type = type;
@@ -32,7 +32,7 @@ public class Resource {
 		resources.add(this);
 	}
 	
-	public void response(byte response[]) {
+	public void response(int response[]) {
 		this.response = Arrays.copyOf(response, response.length);
 		if (process.waiting == this)
 			process.busena = Busenos.READY;

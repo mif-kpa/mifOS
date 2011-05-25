@@ -5,11 +5,11 @@ package RealMachine;
  * @author neworld
  */
 public class Service extends Process {
-	protected Service (Machine machine, String name, Busenos busena) {
+	public Service (Machine machine, String name, Busenos busena) {
 		super(machine, name, busena, 0x0);
 	}
 
-	void interupt(Interupt i) {
+	public void interupt(Interupt i) {
 		
 	}
 	

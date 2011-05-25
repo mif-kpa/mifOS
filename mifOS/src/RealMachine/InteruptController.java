@@ -21,8 +21,10 @@ public class InteruptController {
 	}
 	
 	public Interupt get() {
+		if (interupts.isEmpty()) return null;
+		
 		Interupt i = interupts.get(0);
-		interupts.remove(i);
+		interupts.remove(0);
 		
 		if (map.containsKey(i.type)) {
 			map.get(i.type).interupt(i);

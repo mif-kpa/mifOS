@@ -6,7 +6,7 @@ package RealMachine;
  */
 public class MemoryManagement {
 	private Machine machine;
-	private static final int START = 8;
+	private static final int START = 21;
 	
 	MemoryManagement(Machine machine) {
 		this.machine = machine;
@@ -20,7 +20,7 @@ public class MemoryManagement {
 		int data = machine.ram[adr];
 		
 		int prev = data % 0x10000;
-		data >>>= 8;
+		data >>>= 16;
 		int next = data;
 		
 		int size = machine.ram[adr + 1];
@@ -52,7 +52,7 @@ public class MemoryManagement {
 				MemoryHeader mh = new MemoryHeader();
 				
 				if (header.size != 0) {
-					mh.adr = header.adr + header.size;
+					mh.adr = header.adr + header.size + 2;
 					mh.next = header.next;
 					mh.prev = header.adr;
 					mh.size = need;

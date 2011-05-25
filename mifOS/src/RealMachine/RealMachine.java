@@ -43,4 +43,6 @@ public interface RealMachine {
 	 * @return
 	 */
 	public boolean pushData(byte[] data);
+	
+	public void loadVM(int[] data, String title);
 }

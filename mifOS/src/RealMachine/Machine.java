@@ -1,6 +1,7 @@
 package RealMachine;
 
 import Event.Event;
+import RealMachine.Services.Loader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,13 +14,13 @@ import java.util.logging.Logger;
  * @author neworld
  */
 public class Machine implements RealMachine {
-	protected int ram[] = new int[0x10000];
+	public int ram[] = new int[0x10000];
 	private int external[] = new int[0x60000];
 	private byte screen[] = new byte[80*20];
 	private byte screenBuffer[] = new byte[80];
 	private int screenPointer = 0;
 	private int screenBufferPointer = 0;
-	protected Registers registers = new Registers();
+	public Registers registers = new Registers();
 	
 	protected int timer = 0;
 
@@ -28,16 +29,21 @@ public class Machine implements RealMachine {
 
 	private boolean running = false;
 	
-	protected MemoryManagement memoryManagement;
-	protected Pager pager;
-	protected InteruptController interuptController;
+	public MemoryManagement memoryManagement;
+	public Pager pager;
+	public InteruptController interuptController;
+	public Planner planner;
 	
-	protected ArrayList<Process> processes= new ArrayList<Process>();
+	public ArrayList<Process> processes= new ArrayList<Process>();
 	
 	Machine() {
 		memoryManagement = new MemoryManagement(this);
 		pager = new Pager(this);
 		interuptController = new InteruptController(this);
+		planner = new Planner(this);
+		interuptController.atachInterupt(InteruptType.LOAD, new Loader(this, "Loader", Busenos.BLOCK));
+		for (int x = 0; x < screen.length; x++)
+			screen[x] = 32;
 	}
 
 	public static RealMachine createMachine() {
@@ -67,6 +73,8 @@ public class Machine implements RealMachine {
 		registers.m = ram[5];
 		registers.r = ram[6];
 		registers.ptr = ram[7];
+		
+		registers.mode = 1;
 
 		inited = true;
 	}
@@ -124,7 +132,16 @@ public class Machine implements RealMachine {
 				makeStep();
 			}
 		} else {
-			
+			//tikrinam interupus
+			if (interuptController.get() == null) {
+				//nebuvo interuptu
+				//tai gauname procesa
+				
+				Process nextProcess = planner.nextProcess();
+				if (nextProcess != null)
+					nextProcess.run();
+			}
+			events.onStep(this);
 		}
 
 		return true;
@@ -142,10 +159,6 @@ public class Machine implements RealMachine {
 		int yz = (instruction & 0xFF);
 		
 		timer++;
-		
-		if (!isSuper() && --ram[registers.pd] == 0) {
-			//stabdom VM veikima
-		}
 
 		if (komanda == 'H' && x == 'A' && y == 'L' && z == 'T') {
 			if (isSuper())
@@ -513,15 +526,15 @@ public class Machine implements RealMachine {
 		generateSF(rez, op1, op2);
     }
 
-	private int getActualWord(int adr) {
+	public int getActualWord(int adr) {
 		adr %= 0x10000;
 
-		if (check(registers.mode, 0x1, 0x1)) {
+		if (isSuper()) {
 			//supervizoriaus rezimas
 			return ram[adr];
 		}
 
-		int vir = registers.ptr * 0x10 + ((adr & 0xF00) >> 16);
+		int vir = registers.ptr + ((adr & 0xF00) >> 16);
 		int adr2 = ram[vir];
 		
 		if (!checkRam(adr2, (adr & 0xF00) >> 16))
@@ -531,15 +544,15 @@ public class Machine implements RealMachine {
 		return ram[adr2 + adr & 0xFF];
 	}
 
-	private void setActualWord(int adr, int word) {
+	public void setActualWord(int adr, int word) {
 		adr %= 0x10000;
 
-		if (check(registers.mode, 0x1, 0x1)) {
+		if (isSuper()) {
 			//supervizoriaus rezimas
 			ram[adr] = word;
 		}
 
-		int vir = registers.ptr * 0x10 + ((adr & 0xF00) >> 16);
+		int vir = registers.ptr + ((adr & 0xF00) >> 16);
 		int adr2 = ram[vir];
 		
 		if (!checkRam(adr2, (adr & 0xF00) >> 16))
@@ -915,7 +928,7 @@ public class Machine implements RealMachine {
 	private int virtualToReal(int virtual) {
 		int seg = virtual / 0x100;
 		int a = ram[registers.ptr + seg];
-		return a * 0x100 + virtual % 0x100;
+		return (a & 0xFFFF) + virtual % 0x100;
 	}
 
 	private int virtualToReal(int x, int y) {
@@ -954,7 +967,8 @@ public class Machine implements RealMachine {
 	private void PD(int x, int y) {
 		int adr = 0x100 * x + y;
 
-		if (!isSuper()) adr = virtualToReal(adr);
+		if (!isSuper()) 
+			adr = virtualToReal(adr);
 
 		byte[] buffer = new byte[256];
 		boolean stop = false;
@@ -993,5 +1007,18 @@ public class Machine implements RealMachine {
                     events.onScreen(this);
 	}
 
-	
+	public void loadVM(int[] data, String title) {
+		int[] d = new int[data.length + title.length() + 1];
+		
+		d[0] = title.length();
+		int i = 1;
+		for (i = 1; i <= title.length(); i++)
+			d[i] = title.charAt(i-1);
+		
+		for (i = 0; i < data.length; i++)
+			d[i + title.length() + 1] = data[i];
+		
+		Interupt in = new Interupt(InteruptType.LOAD, d);
+		interuptController.interupt(in);
+	}
 }

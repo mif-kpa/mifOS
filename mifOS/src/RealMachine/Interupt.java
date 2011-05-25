@@ -10,17 +10,17 @@ public class Interupt {
 	public int ID;
 	public Process process = null;
 	public InteruptType type;
-	public byte[] data;
+	public int[] data;
 	
 	private static int _ID = 0;
 	
-	protected Interupt(InteruptType type, byte[] data) {
+	protected Interupt(InteruptType type, int[] data) {
 		ID = _ID++;
 		this.type = type;
-		data = Arrays.copyOf(data, data.length);
+		this.data = Arrays.copyOf(data, data.length);
 	}
 	
-	protected Interupt(InteruptType type, byte[] data, Process process) {
+	protected Interupt(InteruptType type, int[] data, Process process) {
 		this(type, data);
 		this.process = process;
 	}

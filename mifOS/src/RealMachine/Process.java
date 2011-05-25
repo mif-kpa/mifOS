@@ -14,14 +14,14 @@ public class Process {
 	public ArrayList<Resource> resources = new ArrayList<Resource>();
 	public Resource waiting;
 	private Process parent;
-	private Machine machine;
+	protected Machine machine;
 	public byte priority;
 	
 	public int description;
 	
 	private static int _ID = 0;
 	
-	protected Process (Machine machine, String name, Busenos busena, int descID) {
+	public Process (Machine machine, String name, Busenos busena, int descID) {
 		this.name = name;
 		this.busena = busena;
 		this.description = descID;
