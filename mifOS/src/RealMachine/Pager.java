@@ -44,7 +44,7 @@ public class Pager {
 		if (machine.ram[adr + segment] / 0x1000000 > 0)
 			return true;
 		
-		int new_adr = machine.memoryManagement.alloc(0x1000);
+		int new_adr = machine.memoryManagement.alloc(0x100);
 		if (new_adr == 0) return false;
 		
 		machine.ram[adr + segment] = 0x1000000 + new_adr;

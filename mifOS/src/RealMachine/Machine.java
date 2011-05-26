@@ -1,6 +1,7 @@
 package RealMachine;
 
 import Event.Event;
+import RealMachine.Services.GetData;
 import RealMachine.Services.Loader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -42,6 +43,11 @@ public class Machine implements RealMachine {
 		interuptController = new InteruptController(this);
 		planner = new Planner(this);
 		interuptController.atachInterupt(InteruptType.LOAD, new Loader(this, "Loader", Busenos.BLOCK));
+		
+		Service GD = new GetData(this, "GetData", Busenos.BLOCK);
+		interuptController.atachInterupt(InteruptType.GETDATA, GD);
+		Resource.registered.put(Resource.GD, GD);
+		
 		for (int x = 0; x < screen.length; x++)
 			screen[x] = 32;
 	}
@@ -946,7 +952,7 @@ public class Machine implements RealMachine {
 		interupt(1, true, realadr, false, 0);
 	}
 
-	private void GD(int x, int y) {
+	public void GD(int x, int y) {
 		if (!isSuper()) {
 			VMGD(x, y);
 			return;
@@ -955,6 +961,11 @@ public class Machine implements RealMachine {
 		registers.chm2 = 0x100 * x + y;
 		if (events != null)
 			events.onRequestInput(this);
+	}
+	
+	public void GD() {
+		if (events != null)
+			events.onRequestInput(this);		
 	}
 
 	private void pushOnScreen(byte[] data) {
