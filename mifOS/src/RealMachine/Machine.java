@@ -1060,4 +1060,8 @@ public class Machine implements RealMachine {
 		Interupt in = new Interupt(InteruptType.LOAD, d);
 		interuptController.interupt(in);
 	}
+
+	public ArrayList<Process> getProcess() {
+		return processes;
+	}
 }

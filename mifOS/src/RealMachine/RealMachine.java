@@ -1,6 +1,7 @@
 package RealMachine;
 
 import Event.Event;
+import java.util.ArrayList;
 
 /**
  *
@@ -45,4 +46,6 @@ public interface RealMachine {
 	public boolean pushData(byte[] data);
 	
 	public void loadVM(int[] data, String title);
+	
+	public ArrayList<Process> getProcess();
 }
