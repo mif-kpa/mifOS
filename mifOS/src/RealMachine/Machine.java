@@ -3,6 +3,7 @@ package RealMachine;
 import Event.Event;
 import RealMachine.Services.GetData;
 import RealMachine.Services.Loader;
+import RealMachine.Services.StopMachine;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class Machine implements RealMachine {
 	public Planner planner;
 	
 	public ArrayList<Process> processes= new ArrayList<Process>();
+	private Process activeVM;
 	
 	Machine() {
 		memoryManagement = new MemoryManagement(this);
@@ -47,6 +49,8 @@ public class Machine implements RealMachine {
 		Service GD = new GetData(this, "GetData", Busenos.BLOCK);
 		interuptController.atachInterupt(InteruptType.GETDATA, GD);
 		Resource.registered.put(Resource.GD, GD);
+		
+		interuptController.atachInterupt(InteruptType.HALT, new StopMachine(this, "StopMachine", Busenos.BLOCK));
 		
 		for (int x = 0; x < screen.length; x++)
 			screen[x] = 32;
@@ -144,8 +148,10 @@ public class Machine implements RealMachine {
 				//tai gauname procesa
 				
 				Process nextProcess = planner.nextProcess();
-				if (nextProcess != null)
+				if (nextProcess != null) {
 					nextProcess.run();
+					activeVM = nextProcess;
+				}
 			}
 			events.onStep(this);
 		}
@@ -169,8 +175,10 @@ public class Machine implements RealMachine {
 		if (komanda == 'H' && x == 'A' && y == 'L' && z == 'T') {
 			if (isSuper())
 				HALT();
-			else
+			else {
 				setSuperMode();
+				activeVM.busena = Busenos.FINISHED;
+			}
 		} else {
 
 			switch (komanda) {
@@ -222,6 +230,9 @@ public class Machine implements RealMachine {
 					break;
 				case 'G':
 					if (x == 'D') GD(y, z);
+					break;
+				case 'i':
+					if (x == 'n') interupt(z);
 					break;
 			}
 
@@ -568,7 +579,7 @@ public class Machine implements RealMachine {
 			;
 
 		ram[adr2 + (adr & 0xFF)] = word;
-		System.out.printf("set: %x\n", adr2 + (adr & 0xFF));
+		//System.out.printf("set: %x\n", adr2 + (adr & 0xFF));
 	}
 	
 	private boolean checkRam(int adr, int segment) {
@@ -894,10 +905,14 @@ public class Machine implements RealMachine {
 	private void interupt(int x) {
 		boolean wasSuper = false;
 
-		if (!isSuper())
+		if (!isSuper()) {
 			halt();
-		else
+		} else
 			wasSuper = true;
+		
+		
+		if (x == 10)
+			interuptController.interupt(new Interupt(InteruptType.HALT, new int[0]));
 
 
 		enter();
@@ -970,10 +985,11 @@ public class Machine implements RealMachine {
 
 	private void pushOnScreen(byte[] data) {
 		for (byte b : data) {
+			screen[screenPointer++] = b;
+			
 			if (b == 13)
 				screenPointer = ((screenPointer / 80) + 1) * 80;
-
-			screen[screenPointer++] = b;
+			
 			if (screenPointer >= screen.length)
 				screenPointer = 0;
 		}
@@ -989,7 +1005,9 @@ public class Machine implements RealMachine {
 		if (!isSuper()) 
 			adr = virtualToReal(adr);
 		
-		System.out.printf("get: %x => %x\n", virtual, adr);
+		registers.chm1 = adr;
+		
+		//System.out.printf("get: %x => %x\n", virtual, adr);
 
 		byte[] buffer = new byte[256];
 		boolean stop = false;
