@@ -48,4 +48,6 @@ public interface RealMachine {
 	public void loadVM(int[] data, String title);
 	
 	public ArrayList<Process> getProcess();
+	public Process getVM();
+	
 }

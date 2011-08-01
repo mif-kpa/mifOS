@@ -16,7 +16,8 @@ public class Planner {
 		Process best = null;
 		
 		for (Process pr : machine.processes) {
-			pr.priority += 10 + Math.round((float)Math.random() * 5);
+			if (pr.priority < 100)
+				pr.priority += 10 + Math.round((float)Math.random() * 5);
 			
 			if (pr.busena != Busenos.READY)
 				continue;

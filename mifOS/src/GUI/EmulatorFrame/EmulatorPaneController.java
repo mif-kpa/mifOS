@@ -17,7 +17,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
+import RealMachine.Process;
+import RealMachine.Busenos;
+import RealMachine.Service;
 
 /**
  *
@@ -381,6 +385,29 @@ public class EmulatorPaneController {
 					}
 				}
 			}
+			
+			ArrayList<Process> process = EmulatorPaneController.this.machine.getProcess();
+			
+			String rez = "";
+			for (Process pr : process) {
+				String ser = (pr instanceof Service)? "*" : "";
+				
+				rez += "#" + pr.id + ": '" + pr.name + "'"+ser+": pr: " + pr.priority + " busena: ";
+				
+				if (pr == EmulatorPaneController.this.machine.getVM()) {
+					rez += "RUNNING";
+				} else if (pr.busena == Busenos.BLOCK)
+					rez += "BLOCKED";
+				else if (pr.busena == Busenos.READY)
+					rez += "READY";
+				else if (pr.busena == Busenos.FINISHED)
+					rez += "FINISHED";
+				
+				rez += "\n";
+			}
+			
+			
+			EmulatorPaneController.this.emulatorFrame.getMainPane().setP(rez);
 
 
 			//---------Atnaujiname virtualia atmintį----------------------------

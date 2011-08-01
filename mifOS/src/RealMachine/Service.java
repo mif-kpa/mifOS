@@ -15,9 +15,12 @@ public class Service extends Process {
 	
 	@Override
 	public boolean run() {
+		System.out.println("zazaDFSGF");
+		doService();
+		
 		if (Busenos.READY == busena) {
 			
-			doService();
+			
 			
 			return true;
 		} else {
@@ -25,7 +28,7 @@ public class Service extends Process {
 		}
 	}
 
-	private void doService() {
+	public void doService() {
 		
 	}
 }

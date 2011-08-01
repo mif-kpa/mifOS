@@ -37,20 +37,26 @@ public class Machine implements RealMachine {
 	public Planner planner;
 	
 	public ArrayList<Process> processes= new ArrayList<Process>();
-	private Process activeVM;
+	public Process activeVM;
 	
 	Machine() {
 		memoryManagement = new MemoryManagement(this);
 		pager = new Pager(this);
 		interuptController = new InteruptController(this);
 		planner = new Planner(this);
-		interuptController.atachInterupt(InteruptType.LOAD, new Loader(this, "Loader", Busenos.BLOCK));
+		Service loader = new Loader(this, "Loader", Busenos.BLOCK);
+		interuptController.atachInterupt(InteruptType.LOAD, loader);
 		
 		Service GD = new GetData(this, "GetData", Busenos.BLOCK);
 		interuptController.atachInterupt(InteruptType.GETDATA, GD);
 		Resource.registered.put(Resource.GD, GD);
 		
-		interuptController.atachInterupt(InteruptType.HALT, new StopMachine(this, "StopMachine", Busenos.BLOCK));
+		Service halter = new StopMachine(this, "StopMachine", Busenos.BLOCK);
+		interuptController.atachInterupt(InteruptType.HALT, halter);
+		
+		processes.add(GD);
+		processes.add(loader);
+		processes.add(halter);
 		
 		for (int x = 0; x < screen.length; x++)
 			screen[x] = 32;
@@ -104,7 +110,7 @@ public class Machine implements RealMachine {
 		registers.r = ram[registers.pd + 5];
 		registers.ptr = ram[registers.pd + 6];
 
-		if (ram[registers.pd] == 0) ram[registers.pd] = 0x10;
+		if (ram[registers.pd] == 0) ram[registers.pd] = 0x100;
 	}
 
 	protected void setSuperMode() {
@@ -1062,6 +1068,15 @@ public class Machine implements RealMachine {
 	}
 
 	public ArrayList<Process> getProcess() {
-		return processes;
+		ArrayList<Process> rez = new ArrayList<Process>();
+		
+		for (Process pr : processes)
+			rez.add(pr);
+		
+		return rez;
+	}
+	
+	public Process getVM() {
+		return activeVM;
 	}
 }

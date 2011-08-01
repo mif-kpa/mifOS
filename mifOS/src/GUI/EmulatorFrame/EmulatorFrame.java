@@ -40,7 +40,7 @@ public class EmulatorFrame extends JFrame
         this.setTitle("RM emuliatorius");
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.add(mainPane);
-        this.setSize(960, 508);
+        this.setSize(1224, 508);
         this.setResizable(false);
     }
 
